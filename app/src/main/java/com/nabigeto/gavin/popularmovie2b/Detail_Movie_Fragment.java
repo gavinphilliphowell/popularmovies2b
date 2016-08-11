@@ -172,7 +172,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     getActivity(),
                     Movie_Contract.MovieInfo.CONTENT_URI,
                     DETAIL_COLUMNS,
-                    null,
+                    row_Pref,
                     null,
                     null
 
@@ -197,12 +197,12 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public void onLoadFinished(Loader<Cursor> loader, Cursor data_d) {
          if (data_d != null) {
 
-             getActivity();
+
 
         dContext = getContext();
-        int position_d = Integer.valueOf(dUri);
-        data_d.moveToPosition(position_d);
-        Log.v("Gavin", "Position passed to loader" + position_d);
+
+        data_d.moveToFirst();
+        Log.v("Gavin", "Position passed to loader");
         int position = data_d.getPosition();
         String positions = Integer.toString(position);
         Log.v("Gavin", "Cursor position in detail fragment" + positions);

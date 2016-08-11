@@ -137,7 +137,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                                                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                                                 if (cursor != null) {
-                                                    String title = cursor.getString(COL_MOVIE_ID);
+                                                    String title = cursor.getString(COL_MOVIE_ENTRY_ID);
 
                                                     Log.v("Gavin", "MainActivityFragment" + title);
                                                     Uri puri = Movie_Contract.MovieInfo.CONTENT_URI;
