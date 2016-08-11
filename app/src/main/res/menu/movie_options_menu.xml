@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".Details_Fragment">
+
+    <item android:id="@+id/movie_options_sort1"
+        android:title="@string/movie_sort_most_popular"
+        android:orderInCategory="98"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/movie_options_sort2"
+        android:title="@string/movie_sort_highest_rating"
+        android:orderInCategory="99"
+        app:showAsAction="never" />
+
+</menu>
