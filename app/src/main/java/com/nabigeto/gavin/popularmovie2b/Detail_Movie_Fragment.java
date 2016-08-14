@@ -2,6 +2,7 @@ package com.nabigeto.gavin.popularmovie2b;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.media.Image;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     public String sduri;
 
+    View view = null;
 /**
     public String mTitle;
     public String mRelease;
@@ -98,7 +100,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     public ImageView dImage_File;
     public TextView dID;
-    private TextView dTitle;
+    public TextView dTitle;
     public TextView dRelease_Date;
     public TextView dRating;
     public TextView dInfo;
@@ -139,21 +141,20 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         if (arguments != null) {
             dUri = arguments.getString(KEY_FILE);
 
-            Log.v("Gavin", "uri " + dUri);
+            Log.v("Gavin", "uri " + "KEY_FILE" + dUri);
         }
-
+        else{
+            dUri = "12";
+        }
+        Log.v("Gavin", "uri " + dUri);
 
         View rootView = inflater.inflate(R.layout.fragment_details_layout, container, false);
         Log.v("Gavin", "Got to the bit in the detail fragment");
 
         dImage_File = (ImageView) rootView.findViewById(R.id.detail_movie_poster);
-
-
-
         dRating = (TextView) rootView.findViewById(R.id.movie_user_rating_d);
         dRelease_Date = (TextView) rootView.findViewById(R.id.movie_release_date_d);
         dInfo = (TextView) rootView.findViewById(R.id.movie_info_d);
-
         dTitle = (TextView) rootView.findViewById(R.id.movie_title_d);
 
         Log.v("Gavin", "About to load rootview");
@@ -195,7 +196,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 **/
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data_d) {
-         if (data_d != null) {
+
 
 
 
@@ -223,16 +224,17 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
         dTitle.setText(filmTitle_a);
 
- /**
-        String filmRelease = data.getString(Detail_Movie_Fragment.COL_MOVIE_RELEASE_DATE);
-        Log.v("Gavin", filmRelease);
-        mRelease_Date.setText(filmRelease);
+        String filmInfo = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO_D);
+        dInfo.setText(filmInfo);
 
-        String filmRating = data.getString(Detail_Movie_Fragment.COL_MOVIE_RATING);
+        String filmRelease = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RELEASE_DATE_D);
+        Log.v("Gavin", filmRelease);
+        dRelease_Date.setText(filmRelease);
+
+        String filmRating = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RATING_D);
         Log.v("Gavin", filmRating);
-        mRating.setText(filmRating);
-  **/
-        final String filmInfo = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO_D);
+        dRating.setText(filmRating);
+
 
 
 
@@ -251,14 +253,13 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
 
              **/
-    }
-    else {
-        Log.v("Gavin", "Cursor has no data");
+
+
     };
 
 
 
-    }
+
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {

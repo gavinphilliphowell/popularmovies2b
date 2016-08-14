@@ -21,7 +21,7 @@ public class Detail_Movie_Activity extends AppCompatActivity {
 
     public static final String KEY_FILE = "Shared_Preference_KEY_FILE_Detail";
     public static final String KEY_FILE2 = "movie";
-    private Detail_Movie_Fragment dataFragment;
+
 
 
     @Override
@@ -38,11 +38,12 @@ public class Detail_Movie_Activity extends AppCompatActivity {
             String location_ID_d = getIntent().getExtras().getString(KEY_FILE2);
             Log.v("Gavin", "DetailMovieActivity" + location_ID_d);
 
-            Bundle arguements = new Bundle();
-            arguements.putString(KEY_FILE, getIntent().getExtras().getString(KEY_FILE2));
+            Bundle arguments = new Bundle();
+
+            arguments.putString(KEY_FILE, location_ID_d);
 
             Detail_Movie_Fragment fragment = new Detail_Movie_Fragment();
-            fragment.setArguments(arguements);
+            fragment.setArguments(arguments);
 
 
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_detail_container, fragment).commit();
