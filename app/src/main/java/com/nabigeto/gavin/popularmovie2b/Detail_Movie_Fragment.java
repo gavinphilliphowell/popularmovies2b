@@ -2,6 +2,7 @@ package com.nabigeto.gavin.popularmovie2b;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Movie;
 import android.media.Image;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -144,7 +145,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
             Log.v("Gavin", "uri " + "KEY_FILE" + dUri);
         }
         else{
-            dUri = "12";
+            dUri = "3";
         }
         Log.v("Gavin", "uri " + dUri);
 
@@ -165,7 +166,13 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String row_Pref = dUri;
+        ;
+
+
+        String position = " _ID = " + dUri;
+  /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
+       **/
+   String row_Pref = dUri;
         Log.v("Gavin", "dUuri" + row_Pref);
         if (null != dUri) {
             Log.v("Gavin", "Detail Loader cursor created");
@@ -173,7 +180,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     getActivity(),
                     Movie_Contract.MovieInfo.CONTENT_URI,
                     DETAIL_COLUMNS,
-                    row_Pref,
+                    position,
                     null,
                     null
 

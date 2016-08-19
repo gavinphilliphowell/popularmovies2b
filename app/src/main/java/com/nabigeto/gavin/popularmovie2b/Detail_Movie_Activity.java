@@ -21,6 +21,7 @@ public class Detail_Movie_Activity extends AppCompatActivity {
 
     public static final String KEY_FILE = "Shared_Preference_KEY_FILE_Detail";
     public static final String KEY_FILE2 = "movie";
+    public static final String KEY_FILE3 = "startmovie";
 
 
 

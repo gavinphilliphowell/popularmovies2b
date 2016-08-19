@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity  implements MainActivityFrag
 
     public boolean mTwoPane;
     public static final String FRAGMENT_NAME = "Frag1";
+    public static final String KEY_FILE = "Shared_Preference_KEY_FILE_Detail";
     public static final String KEY_FILE2 = "movie";
     public static final String KEY_FILE3 = "startmovie";
 
@@ -98,14 +99,14 @@ public class MainActivity extends AppCompatActivity  implements MainActivityFrag
         if (mTwoPane) {
 
             Bundle args = new Bundle();
-            Log.v("Gavin", table_ID);
-            args.putString(KEY_FILE2, table_ID);
+            Log.v("Gavin", "MainActivity Passer" + table_ID);
 
+            args.putString(KEY_FILE,table_ID);
 
             Detail_Movie_Fragment DF = new Detail_Movie_Fragment();
             DF.setArguments(args);
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_detail_container, new Detail_Movie_Fragment(), FRAGMENT_NAME).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_detail_container, DF, FRAGMENT_NAME).commit();
 
         } else {
             Intent intent = new Intent(this, Detail_Movie_Activity.class).putExtra(KEY_FILE2,table_ID);
