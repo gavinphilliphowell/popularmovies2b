@@ -12,7 +12,7 @@ import android.util.Log;
 /**
  * Created by Gavin on 3/29/2016.
  */
-public abstract class movieContentProvider1 extends ContentProvider {
+public abstract class reviewContentProvider extends ContentProvider {
 /**
     public static final UriMatcher sUriMatcher = buildUriMatcher();
 

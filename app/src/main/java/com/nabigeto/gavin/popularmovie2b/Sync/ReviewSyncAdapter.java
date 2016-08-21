@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.nabigeto.gavin.popularmovie2b.R;
-
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
 
 import org.json.JSONArray;
@@ -33,7 +32,7 @@ import java.util.Vector;
 /**
  * Created by Gavin on 6/8/2016.
  */
-public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
+public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static final int SYNC_INTERVAL = 1;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/2;
@@ -47,12 +46,20 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             Movie_Contract.MovieInfo.COLUMN_NAME_RATING,
             Movie_Contract.MovieInfo.COLUMN_NAME_INFO,
             Movie_Contract.MovieInfo.COLUMN_NAME_IMAGE_FILE,
+            Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1,
+            Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2,
+            Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3,
+            Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1,
+            Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2,
+            Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3,
             Movie_Contract.MovieInfo.COLUMN_FAVOURITE,
    /**         Movie_Contract.MovieInfo.COLUMN_NAME_BACKGROUND,
 **/
     };
 
-    public MovieSyncAdapter(Context context, boolean autoInitialize) {
+    public String movie_api_id = "550";
+
+    public ReviewSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
     }
 
@@ -76,16 +83,14 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             builder.scheme("http")
                     .authority("api.themoviedb.org")
                     .appendPath("3")
-                    .appendPath("discover")
                     .appendPath("movie")
-                    .appendQueryParameter("sort_by", "popular.desc")
-                    .appendQueryParameter("release_date.gte", "1940")
-                    .appendQueryParameter("vote_count.get", "100")
-                    .appendQueryParameter("api_key", MOVIE_KEY);
+                    .appendPath(movie_api_id)
+                    .appendQueryParameter("api_key", MOVIE_KEY)
+                    .appendQueryParameter("append_to_response","reviews,trailers");
 
             String Web_Location_URL = builder.build().toString();
 
-            Log.v("Gavin", Web_Location_URL);
+            Log.v("Gavin", "Reviews and Trailers" + Web_Location_URL);
 
             URL url = new URL(Web_Location_URL);
 
@@ -156,93 +161,107 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 /**
         ArrayList<Movie_Adapter> movie_adapters = new ArrayList<Movie_Adapter>();
 **/
-        final String OWM_RESULTS = "results";
-        final String OWM_NAME = "original_title";
-        final String OWM_RATING = "vote_average";
-        final String OWM_RELEASE = "release_date";
-        final String OWM_INFO = "overview";
-        final String OWM_IMAGE = "poster_path";
-        final String OWM_BACKGROUND = "backdrop_path";
+        final String OWM_RESULTS_R = "reviews";
+        final String OWM_RESULTS_T = "trailers";
+        final String OWM_RESULTS_RE = "results";
+        final String OWM_YOUTUBE = "youtube";
+
+        final String OWM_REVIEW_FILTER = "name";
+        final String OWM_TRAILER_FILTER = "name";
+        final String OWM_TRAILER_SOURCE = "source";
+
         final String OWM_ID = "id";
-
-        final String picture_URL = "http://image.tmdb.org/t/p/w185//";
-
-
 
 
         try {
 
 
-            JSONObject movieJson = new JSONObject(movieJsonStr);
-            JSONArray movieArray = movieJson.getJSONArray(OWM_RESULTS);
+            JSONObject reviewJson = new JSONObject(movieJsonStr);
 
+            JSONObject review_object = reviewJson.getJSONObject(OWM_RESULTS_R);
+
+            JSONArray results_SubR = review_object.getJSONArray(OWM_RESULTS_RE);
+
+            for (int i=0; i<results_SubR.length(); i++) {
+                String review_name = results_SubR.getJSONObject(i).getString(OWM_REVIEW_FILTER);
+                Log.v("Gavin", "review name" + review_name);
+            }
+
+            JSONObject trailer_object = reviewJson.getJSONObject(OWM_RESULTS_T);
+
+            JSONArray trailer_SubR = trailer_object.getJSONArray(OWM_YOUTUBE);
+
+            for (int i=0; i<trailer_SubR.length(); i++) {
+                String trailer_name = trailer_SubR.getJSONObject(i).getString(OWM_TRAILER_FILTER);
+                String trailer_source = trailer_SubR.getJSONObject(i).getString(OWM_TRAILER_SOURCE);
+                Log.v("Gavin", "trailer name" + trailer_name);
+                Log.v("Gavin", "trailer source" + trailer_source);
+            }
+/**
             Vector<ContentValues> cMector = new Vector<ContentValues>(movieArray.length());
 
            /** long favouriteID =addFavourite(OWM_NAME, "y");
                     **/
             Log.v("Gavin", "Started JSON");
-
+/**
             for (int i = 0; i < movieArray.length(); i++) {
 
-                String number_ID;
-                String title;
-                String rating;
-                String release;
-                String info;
-                String image;
-                String background;
-                String id;
-                String favourite_s;
+        /**        String number_ID;
+                String reviews1;
+                String reviews2;
+                String reviews3;  **/
+ /**               String trailer1;
+                String trailer2;
+                String trailer3;
+       /**         String id;
+**/
 
-
+/**
                 // Get the JSON object representing the day
                 JSONObject movieItem = movieArray.getJSONObject(i);
-
+/**
                 number_ID = Integer.toString(i);
-                title = movieItem.getString(OWM_NAME);
-                rating = movieItem.getString(OWM_RATING);
-                release = movieItem.getString(OWM_RELEASE);
-                info = movieItem.getString(OWM_INFO);
-                image = picture_URL + movieItem.getString(OWM_IMAGE);
-                background = picture_URL + movieItem.getString(OWM_BACKGROUND);
-                id = movieItem.getString(OWM_ID);
-                favourite_s = "n";
+
+                reviews1 = movieItem.getString(OWM_REVIEWS1);
+                reviews2 = movieItem.getString(OWM_REVIEWS2);
+                reviews3 = movieItem.getString(OWM_REVIEWS3); **/
+ /**               trailer1 = movieJson.getString(OWM_TRAILER1);
+                trailer2 = movieJson.getString(OWM_TRAILER2);
+                trailer3 = movieJson.getString(OWM_TRAILER3);
+    /**            id = movieItem.getString(OWM_ID);
+**/
 
                 ContentValues movieValues = new ContentValues();
 
 
             /**    movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_ENTRY_KEY, favouriteID);  **/
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_ENTRY_ID, number_ID);
+ /**               movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_ENTRY_ID, number_ID);
                 movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_MOVIE_ID, id);
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TITLE, title);
-
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_RELEASE_DATE, release);
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_RATING, rating);
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_INFO, info);
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_IMAGE_FILE, image);
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_FAVOURITE, favourite_s);
-
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1, "b");
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2, "b");
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3, "b");
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1, "b");
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2, "b");
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3, "b");
-
-
-                Log.v("Gavin", number_ID);
-                Log.v("Gavin", title);
-
+                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1, reviews1);
+                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2, reviews1);
+                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3, reviews1);
+                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1, trailer1);
+                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2, trailer2);
+                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3, trailer3);
+**/
+     /**           Log.v("Gavin", number_ID);
+                Log.v("Gavin", reviews1);
+                Log.v("Gavin", reviews2);
+                Log.v("Gavin", reviews3); **/
+   /**             Log.v("Gavin", trailer_name);
+                Log.v("Gavin", trailer2);
+                Log.v("Gavin", trailer3);
+/**
                 cMector.add(movieValues);
 
                 /**
                  Movie_Adapter movie_data = new Movie_Adapter(name, rating, release, info, image, background, id);
                  movie_adapters.add(movie_data);
                  **/
-
+/**
             }
-
-            int inserted = 0;
+        **/
+  /**          int inserted = 0;
             String Start = "0";
 
             if (cMector.size() > 0) {
@@ -253,13 +272,13 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 cMector.toArray(cvArray);
                 getContext().getContentResolver().bulkInsert(Movie_Contract.MovieInfo.CONTENT_URI, cvArray);
         /**        getContext().getContentResolver().bulkInsert(Movie_Contract.Favourites.CONTENT_URI,cvArray);
-**/
-                Log.v("Gavin", "Database Upload Complete");
+
+               Log.v("Gavin", "Database Upload Complete");
 
                 getContext().getContentResolver().delete(Movie_Contract.MovieInfo.CONTENT_URI, Movie_Contract.MovieInfo.COLUMN_NAME_ENTRY_ID + "<=?", new String[]{Start});
-
-            }
-
+                **/
+   /**         }
+**/
         }
 
 
@@ -349,16 +368,18 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static void onAccountCreated(Account newAccount, Context context) {
 
-        MovieSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
+        ReviewSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
 
         ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
 
         syncImmediately(context);
     }
 
-    public static void initialiseSyncAdapter(Context context){
+    public static String initialiseSyncAdapter(Context context, String movie){
         getSyncAccount(context);
+        String movie_api_id = movie;
         Log.v("Gavin", "Sync adapter launched");
+        return movie_api_id;
     }
 
 }

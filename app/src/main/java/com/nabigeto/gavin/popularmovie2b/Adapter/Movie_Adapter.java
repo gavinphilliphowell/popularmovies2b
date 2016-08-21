@@ -1,4 +1,4 @@
-package com.nabigeto.gavin.popularmovie2b;
+package com.nabigeto.gavin.popularmovie2b.Adapter;
 
 import android.os.Parcel;
 import android.os.Parcelable;

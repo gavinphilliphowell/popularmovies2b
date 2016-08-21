@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
+import com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
 import com.squareup.picasso.Picasso;
 
@@ -122,21 +123,6 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         Log.v("Gavin", "onActivityCreated");
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
-
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        setHasOptionsMenu(false);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
         Bundle arguments = getArguments();
 
         if (arguments != null) {
@@ -149,6 +135,24 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         }
         Log.v("Gavin", "uri " + dUri);
 
+        ReviewSyncAdapter.initialiseSyncAdapter(getContext(), dUri);
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        setHasOptionsMenu(false);
+
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+
         View rootView = inflater.inflate(R.layout.fragment_details_layout, container, false);
         Log.v("Gavin", "Got to the bit in the detail fragment");
 
@@ -157,6 +161,8 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         dRelease_Date = (TextView) rootView.findViewById(R.id.movie_release_date_d);
         dInfo = (TextView) rootView.findViewById(R.id.movie_info_d);
         dTitle = (TextView) rootView.findViewById(R.id.movie_title_d);
+
+
 
         Log.v("Gavin", "About to load rootview");
         return rootView;
@@ -214,6 +220,11 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         int position = data_d.getPosition();
         String positions = Integer.toString(position);
         Log.v("Gavin", "Cursor position in detail fragment" + positions);
+
+        int movie_api_id = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_MOVIE_ID);
+        String movie_api_id_s = data_d.getString(movie_api_id);
+
+        ReviewSyncAdapter.initialiseSyncAdapter(getContext(), movie_api_id_s);
 
         int image_file_position = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_IMAGE_FILE);
 

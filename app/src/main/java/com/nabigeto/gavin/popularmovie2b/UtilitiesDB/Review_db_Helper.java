@@ -10,13 +10,13 @@ import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract.MovieInfo;
 /**
  * Created by Gavin on 3/8/2016.
  */
-public class Movie_db_Helper extends SQLiteOpenHelper {
+public class Review_db_Helper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME ="movie_database_b.db";
 
 
-    public Movie_db_Helper(Context context) {
+    public Review_db_Helper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
 
@@ -36,7 +36,7 @@ public class Movie_db_Helper extends SQLiteOpenHelper {
 
             Log.v("Gavin", "Got to this bit in the db Helper 1");
 **/
-        final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + Movie_Contract.MovieInfo.TABLE_NAME + " (" +
+        final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + MovieInfo.TABLE_NAME + " (" +
 
                 MovieInfo._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 
@@ -74,7 +74,7 @@ public class Movie_db_Helper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion){
 
   /**      sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Movie_Contract.Favourites.TABLE_NAME); **/
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Movie_Contract.MovieInfo.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MovieInfo.TABLE_NAME);
 
         onCreate(sqLiteDatabase);
     }

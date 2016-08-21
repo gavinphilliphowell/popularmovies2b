@@ -62,6 +62,12 @@ public class Movie_Contract {
         public static final String COLUMN_NAME_RATING = "rating";
         public static final String COLUMN_NAME_INFO = "info";
         public static final String COLUMN_NAME_IMAGE_FILE = "image_file";
+        public static final String COLUMN_NAME_REVIEW1 = "review1";
+        public static final String COLUMN_NAME_REVIEW2 = "review2";
+        public static final String COLUMN_NAME_REVIEW3 = "review3";
+        public static final String COLUMN_NAME_TRAILER1 = "trailer1";
+        public static final String COLUMN_NAME_TRAILER2 = "trailer2";
+        public static final String COLUMN_NAME_TRAILER3 = "trailer3";
         public static final String COLUMN_FAVOURITE = "favourite";
 
 

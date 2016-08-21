@@ -2,28 +2,18 @@ package com.nabigeto.gavin.popularmovie2b.Adapter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewDebug;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nabigeto.gavin.popularmovie2b.MainActivityFragment;
-import com.nabigeto.gavin.popularmovie2b.Movie_Adapter;
 import com.nabigeto.gavin.popularmovie2b.R;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 
 
 /**
