@@ -216,20 +216,6 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
        /**         String id;
 **/
 
-/**
-                // Get the JSON object representing the day
-                JSONObject movieItem = movieArray.getJSONObject(i);
-/**
-                number_ID = Integer.toString(i);
-
-                reviews1 = movieItem.getString(OWM_REVIEWS1);
-                reviews2 = movieItem.getString(OWM_REVIEWS2);
-                reviews3 = movieItem.getString(OWM_REVIEWS3); **/
- /**               trailer1 = movieJson.getString(OWM_TRAILER1);
-                trailer2 = movieJson.getString(OWM_TRAILER2);
-                trailer3 = movieJson.getString(OWM_TRAILER3);
-    /**            id = movieItem.getString(OWM_ID);
-**/
 
                 ContentValues movieValues = new ContentValues();
 

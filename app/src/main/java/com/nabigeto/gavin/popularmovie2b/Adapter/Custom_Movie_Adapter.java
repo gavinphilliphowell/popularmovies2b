@@ -88,7 +88,7 @@ public class Custom_Movie_Adapter extends CursorAdapter {
     @Override
     public void bindView (View view, Context context, Cursor cursor) {
 
-     /**   mCursor.moveToPosition(); **/
+
 
 
 
@@ -101,20 +101,7 @@ public class Custom_Movie_Adapter extends CursorAdapter {
 
             String url = cursor.getString(image_file_position);
 
-
-
-        /**           switch (viewType) {
-
-                case VIEW_TYPE_DETAIL: {
-
-                    Picasso.with(mContext).load(url).fit().centerInside().into(viewHolder.imagePoster);
-
-                    break;
-                }
-
-                case VIEW_TYPE_GRID_VIEW: {
-        **/
-        Picasso.with(mContext).load(url).placeholder(R.drawable.worms_head).into(viewHolder.imagegridPoster);
+            Picasso.with(mContext).load(url).placeholder(R.drawable.worms_head).into(viewHolder.imagegridPoster);
                     String movieTitles = cursor.getString(MainActivityFragment.COL_MOVIE_TITLE) + " " + cursor.getString(MainActivityFragment.COL_MOVIE_RATING);
                     Log.v("Gavin", movieTitles + " loading this text");
                     viewHolder.movieTitle.setText(movieTitles);

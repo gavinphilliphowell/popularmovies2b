@@ -65,6 +65,13 @@
         android:background="#FFFFFF"
         />
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:id="@+id/movie_review_listview"
+        android:orientation="horizontal"
+    />
+
 </LinearLayout>
 
     </ScrollView>

@@ -14,11 +14,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
+import com.nabigeto.gavin.popularmovie2b.Adapter.Movie_Review_Adapter;
 import com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
 import com.squareup.picasso.Picasso;
@@ -44,6 +47,8 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     public String sduri;
 
+    public Movie_Review_Adapter rAdapter;
+
     View view = null;
 /**
     public String mTitle;
@@ -66,6 +71,9 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
 
     private static final int DETAIL_LOADER = 1;
+    private static final  int REVIEW_LOADER = 2;
+    private static final int TRAILER_LOADER = 3;
+
 
     private static final String [] DETAIL_COLUMNS = {
             Movie_Contract.MovieInfo.TABLE_NAME + "." +
@@ -77,6 +85,9 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
             Movie_Contract.MovieInfo.COLUMN_NAME_RATING,
             Movie_Contract.MovieInfo.COLUMN_NAME_INFO,
             Movie_Contract.MovieInfo.COLUMN_NAME_IMAGE_FILE,
+            Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1,
+            Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2,
+            Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3,
             Movie_Contract.MovieInfo.COLUMN_FAVOURITE
 
 
@@ -90,6 +101,9 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public static final int COL_MOVIE_RATING_D = 5;
     public static final int COL_MOVIE_INFO_D = 6;
     public static final int COL_MOVIE_IMAGE_FILE_D = 7;
+    public static final int COL_MOVIE_REVIEW1 = 8;
+    public static final int COL_MOVIE_REVIEW2 = 9;
+    public static final int COL_MOVIE_REVIEW3 = 10;
     public static final int COL_FAVOURITE_D = 8;
 
 
@@ -108,10 +122,22 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public TextView dInfo;
     public TextView dFavourites;
 
-/**    private TextView mReview_One;
-    private TextView mReview_Two;
-    private ImageView mTrailer;
-**/
+
+    private static final String [] REVIEW_COLUMNS ={
+        Movie_Contract.MovieInfo.TABLE_NAME + "." +
+                Movie_Contract.MovieInfo._ID,
+        Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1,
+        Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2,
+        Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3
+    };
+
+    private static final String [] TRAILER_COLUMNS ={
+            Movie_Contract.MovieInfo.TABLE_NAME + "." +
+                    Movie_Contract.MovieInfo._ID,
+            Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1,
+            Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2,
+            Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3
+    };
 
     public Detail_Movie_Fragment() {
         // Required empty public constructor
@@ -122,6 +148,9 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.v("Gavin", "onActivityCreated");
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+        getLoaderManager().initLoader(REVIEW_LOADER, null, this);
+        getLoaderManager().initLoader(TRAILER_LOADER, null, this);
+
         super.onActivityCreated(savedInstanceState);
         Bundle arguments = getArguments();
 
@@ -162,7 +191,9 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         dInfo = (TextView) rootView.findViewById(R.id.movie_info_d);
         dTitle = (TextView) rootView.findViewById(R.id.movie_title_d);
 
-
+        final ListView listView_Review = (ListView) view.findViewById(R.id.movie_review_listview);
+        rAdapter = new Movie_Review_Adapter(getActivity(), null, 0);
+        listView_Review.setAdapter(rAdapter);
 
         Log.v("Gavin", "About to load rootview");
         return rootView;
@@ -172,110 +203,159 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        ;
+
+        String position;
+        String row_Pref;
+
+        switch (id) {
 
 
-        String position = " _ID = " + dUri;
-  /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
-       **/
-   String row_Pref = dUri;
-        Log.v("Gavin", "dUuri" + row_Pref);
-        if (null != dUri) {
-            Log.v("Gavin", "Detail Loader cursor created");
-            return new CursorLoader(
-                    getActivity(),
-                    Movie_Contract.MovieInfo.CONTENT_URI,
-                    DETAIL_COLUMNS,
-                    position,
-                    null,
-                    null
+            case DETAIL_LOADER:
 
-            );
+                position = " _ID = " + dUri;
+                /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
+                 **/
+                row_Pref = dUri;
+                Log.v("Gavin", "dUuri" + row_Pref);
+                if (null != dUri) {
+                    Log.v("Gavin", "Detail Loader cursor created");
+                    return new CursorLoader(
+                            getActivity(),
+                            Movie_Contract.MovieInfo.CONTENT_URI,
+                            DETAIL_COLUMNS,
+                            position,
+                            null,
+                            null
+
+                    );
+
+                }
+                Log.v("Gavin", "Loader cursor finished" + "Detail Loader");
+                Log.v("Gavin", "Loader cursor finished" + dUri);
+                return null;
+
+            case REVIEW_LOADER:
+
+                position = " _ID = " + dUri;
+                /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
+                 **/
+                row_Pref = dUri;
+                Log.v("Gavin", "dUuri" + row_Pref);
+                if (null != dUri) {
+                    Log.v("Gavin", "Detail Loader cursor created");
+                    return new CursorLoader(
+                            getActivity(),
+                            Movie_Contract.MovieInfo.CONTENT_URI,
+                            REVIEW_COLUMNS,
+                            position,
+                            null,
+                            null
+
+                    );
+
+                }
+                Log.v("Gavin", "Loader cursor finished" + "Review Loader");
+                Log.v("Gavin", "Loader cursor finished" + dUri);
+                return null;
+
+
+            case TRAILER_LOADER:
+
+                position = " _ID = " + dUri;
+                /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
+                 **/
+                row_Pref = dUri;
+                Log.v("Gavin", "dUuri" + row_Pref);
+                if (null != dUri) {
+                    Log.v("Gavin", "Detail Loader cursor created");
+                    return new CursorLoader(
+                            getActivity(),
+                            Movie_Contract.MovieInfo.CONTENT_URI,
+                            TRAILER_COLUMNS,
+                            position,
+                            null,
+                            null
+
+                    );
+
+                }
+                Log.v("Gavin", "Loader cursor finished" + "Trailer Loader");
+                Log.v("Gavin", "Loader cursor finished" + dUri);
+                return null;
 
         }
-        Log.v("Gavin", "Loader cursor finished");
-        Log.v("Gavin", "Loader cursor finished" + dUri);
+
         return null;
     }
-/**
-    void onMovieChanged(int newMovie){
-        Uri uri = dUri;
-        if(uri != null){
-            Uri updateUri = Movie_Contract.MovieInfo.buildMovie_InfoUri(newMovie);
-            dUri = updateUri;
-            getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
-        }
-    }
-**/
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data_d) {
 
+        int loader_ID;
+        int position;
+        String positions;
 
-
-
+        loader_ID = loader.getId();
         dContext = getContext();
 
-        data_d.moveToFirst();
-        Log.v("Gavin", "Position passed to loader");
-        int position = data_d.getPosition();
-        String positions = Integer.toString(position);
-        Log.v("Gavin", "Cursor position in detail fragment" + positions);
-
-        int movie_api_id = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_MOVIE_ID);
-        String movie_api_id_s = data_d.getString(movie_api_id);
-
-        ReviewSyncAdapter.initialiseSyncAdapter(getContext(), movie_api_id_s);
-
-        int image_file_position = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_IMAGE_FILE);
+        switch (loader_ID) {
 
 
-        String url = data_d.getString(image_file_position);
-             Log.v("Gavin", "DetailActivityFragment" + url);
+            case DETAIL_LOADER:
 
-             Log.v("Gavin", "Loading picasso in detail fragment");
+                data_d.moveToFirst();
+                Log.v("Gavin", "Position passed to loader");
+                position = data_d.getPosition();
+                positions = Integer.toString(position);
+                Log.v("Gavin", "Cursor position in detail fragment" + positions);
 
-             Picasso.with(dContext).load(url).placeholder(R.drawable.worms_head).into(dImage_File);
+                int movie_api_id = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_MOVIE_ID);
+                String movie_api_id_s = data_d.getString(movie_api_id);
 
-        int filmTitle = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TITLE);
-             String filmTitle_a = data_d.getString(filmTitle);
-             Log.v("Gavin", "DetailActivityFragment" + filmTitle_a);
+                ReviewSyncAdapter.initialiseSyncAdapter(getContext(), movie_api_id_s);
 
-        dTitle.setText(filmTitle_a);
-
-        String filmInfo = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO_D);
-        dInfo.setText(filmInfo);
-
-        String filmRelease = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RELEASE_DATE_D);
-        Log.v("Gavin", filmRelease);
-        dRelease_Date.setText(filmRelease);
-
-        String filmRating = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RATING_D);
-        Log.v("Gavin", filmRating);
-        dRating.setText(filmRating);
+                int image_file_position = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_IMAGE_FILE);
 
 
+                String url = data_d.getString(image_file_position);
+                Log.v("Gavin", "DetailActivityFragment" + url);
+
+                Log.v("Gavin", "Loading picasso in detail fragment");
+
+                Picasso.with(dContext).load(url).placeholder(R.drawable.worms_head).into(dImage_File);
+
+                int filmTitle = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TITLE);
+                String filmTitle_a = data_d.getString(filmTitle);
+                Log.v("Gavin", "DetailActivityFragment" + filmTitle_a);
+
+                dTitle.setText(filmTitle_a);
+
+                String filmInfo = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO_D);
+                dInfo.setText(filmInfo);
+
+                String filmRelease = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RELEASE_DATE_D);
+                Log.v("Gavin", filmRelease);
+                dRelease_Date.setText(filmRelease);
+
+                String filmRating = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RATING_D);
+                Log.v("Gavin", filmRating);
+                dRating.setText(filmRating);
+
+
+                Log.v("Gavin", filmInfo);
+
+                break;
+
+                case REVIEW_LOADER:
+
+                    data_d.moveToFirst();
 
 
 
-        Log.v("Gavin", filmInfo);
-  /**
-        /**
-         String filmReview1 = data.getString(COL_REVIEW_ONE);
-         mReview_One.setText(filmReview1);
+        }
+        ;
 
-         String filmReview2 = data.getString(COL_REVIEW_TWO);
-         mReview_Two.setText(filmReview2);
-
-
-
-
-
-             **/
-
-
-    };
-
-
+    }
 
 
 
