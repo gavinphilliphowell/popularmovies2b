@@ -2,9 +2,6 @@ package com.nabigeto.gavin.popularmovie2b;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Movie;
-import android.media.Image;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -14,21 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
-import com.nabigeto.gavin.popularmovie2b.Adapter.Movie_Review_Adapter;
 import com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -47,7 +36,6 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     public String sduri;
 
-    public Movie_Review_Adapter rAdapter;
 
     View view = null;
 /**
@@ -104,6 +92,12 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public static final int COL_MOVIE_REVIEW1 = 8;
     public static final int COL_MOVIE_REVIEW2 = 9;
     public static final int COL_MOVIE_REVIEW3 = 10;
+    public static final int COL_MOVIE_REVIEW_AUTHOR1 =11;
+    public static final int COL_MOVIE_REVIEW_AUTHOR2 =12;
+    public static final int COL_MOVIE_REVIEW_AUTHOR3 =13;
+    public static final int COL_MOVIE_TRAILER1 = 14;
+    public static final int COL_MOVIE_TRAILER2 = 15;
+    public static final int COL_MOVIE_TRAILER3 = 16;
     public static final int COL_FAVOURITE_D = 8;
 
 
@@ -121,6 +115,18 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public TextView dRating;
     public TextView dInfo;
     public TextView dFavourites;
+
+    public TextView dReview1;
+    public TextView dReview2;
+    public TextView dReview3;
+
+    public TextView dReviewauthor1;
+    public TextView dReviewauthor2;
+    public TextView dReviewauthor3;
+
+    public ImageView dTrailer1;
+    public ImageView dTrailer2;
+    public ImageView dTrailer3;
 
 
     private static final String [] REVIEW_COLUMNS ={
@@ -185,15 +191,24 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         View rootView = inflater.inflate(R.layout.fragment_details_layout, container, false);
         Log.v("Gavin", "Got to the bit in the detail fragment");
 
+
         dImage_File = (ImageView) rootView.findViewById(R.id.detail_movie_poster);
         dRating = (TextView) rootView.findViewById(R.id.movie_user_rating_d);
         dRelease_Date = (TextView) rootView.findViewById(R.id.movie_release_date_d);
         dInfo = (TextView) rootView.findViewById(R.id.movie_info_d);
         dTitle = (TextView) rootView.findViewById(R.id.movie_title_d);
 
-        final ListView listView_Review = (ListView) view.findViewById(R.id.movie_review_listview);
-        rAdapter = new Movie_Review_Adapter(getActivity(), null, 0);
-        listView_Review.setAdapter(rAdapter);
+        dReview1 = (TextView) rootView.findViewById(R.id.movie_review1);
+        dReview2 = (TextView) rootView.findViewById(R.id.movie_review2);
+        dReview3 = (TextView) rootView.findViewById(R.id.movie_review3);
+
+        dReviewauthor1 = (TextView) rootView.findViewById(R.id.movie_review1_author);
+        dReviewauthor2 = (TextView) rootView.findViewById(R.id.movie_review2_author);
+        dReviewauthor3 = (TextView) rootView.findViewById(R.id.movie_review3_author);
+
+        dTrailer1 = (ImageView) rootView.findViewById(R.id.movie_Trailer1);
+        dTrailer2 = (ImageView) rootView.findViewById(R.id.movie_Trailer2);
+        dTrailer3 = (ImageView) rootView.findViewById(R.id.movie_Trailer3);
 
         Log.v("Gavin", "About to load rootview");
         return rootView;
@@ -312,7 +327,6 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                 int movie_api_id = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_MOVIE_ID);
                 String movie_api_id_s = data_d.getString(movie_api_id);
 
-                ReviewSyncAdapter.initialiseSyncAdapter(getContext(), movie_api_id_s);
 
                 int image_file_position = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_IMAGE_FILE);
 
@@ -350,8 +364,29 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     data_d.moveToFirst();
 
+                    String movieReview1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW1);
+                    dReview1.setText(movieReview1);
 
+                    String movieReview2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW2);
+                    dReview2.setText(movieReview2);
 
+                    String movieReview3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW3);
+                    dReview3.setText(movieReview3);
+
+                break;
+
+                case TRAILER_LOADER:
+
+                    data_d.moveToFirst();
+
+                    String movieTrailer1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER1);
+                    dReview1.setText(movieTrailer1);
+
+                    String movieTrailer2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER2);
+                    dReview2.setText(movieTrailer2);
+
+                    String movieTrailer3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER3);
+                    dReview3.setText(movieTrailer3);
         }
         ;
 

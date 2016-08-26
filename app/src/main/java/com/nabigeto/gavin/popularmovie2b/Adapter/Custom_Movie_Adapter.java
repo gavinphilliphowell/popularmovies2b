@@ -109,18 +109,10 @@ public class Custom_Movie_Adapter extends CursorAdapter {
          **/
     }
 
-/**
-        }
 
 
-    @Override
-    public int getItemViewType(int position){
-        String pos1 = Integer.toString(position);
-        Log.v("Gavin", pos1);
 
-        return (position == 0 && mUseCaseLayout) ? VIEW_TYPE_GRID_VIEW :VIEW_TYPE_DETAIL;
-    }
-**/
+
 
     @Override
     public int getViewTypeCount(){
@@ -129,13 +121,7 @@ public class Custom_Movie_Adapter extends CursorAdapter {
 
 }
 
-/**
-    public void setuseCaseLayout(boolean useCaseLayout){
-        mUseCaseLayout = useCaseLayout;
-    }
-
-}
 
 
-**/
+
 
