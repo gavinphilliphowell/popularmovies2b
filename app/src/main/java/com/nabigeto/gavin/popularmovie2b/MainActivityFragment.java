@@ -96,6 +96,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         super.onCreate(saveInstanceState);
         setHasOptionsMenu(true);
 
+
     if (isOnline() != true) {
     Toast.makeText(getActivity(), "No network detected", Toast.LENGTH_LONG).show();
 

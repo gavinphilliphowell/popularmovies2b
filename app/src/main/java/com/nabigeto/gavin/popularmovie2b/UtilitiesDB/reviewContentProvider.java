@@ -13,7 +13,7 @@ import android.util.Log;
  * Created by Gavin on 3/29/2016.
  */
 public abstract class reviewContentProvider extends ContentProvider {
-/**
+
     public static final UriMatcher sUriMatcher = buildUriMatcher();
 
     private Movie_db_Helper mOpenHelper;
@@ -29,32 +29,27 @@ public abstract class reviewContentProvider extends ContentProvider {
         sMovie_Info_FavouritesQueryBuilder = new SQLiteQueryBuilder();
 
         sMovie_Info_FavouritesQueryBuilder.setTables(
-                Movie_Contract.MovieInfo.TABLE_NAME + " INNER_JOIN " +
-                        Movie_Contract.Favourites.TABLE_NAME +
-                        " ON " + Movie_Contract.MovieInfo.TABLE_NAME +
-                        "."  + Movie_Contract.MovieInfo.COLUMN_NAME_TITLE +
-                        " = " + Movie_Contract.Favourites.TABLE_NAME +
-                        "." + Movie_Contract.Favourites.COLUMN_NAME_TITLE_F);
+                Favourite_Contract.FavouriteInfo.TABLE_NAME);
 
 
     }
 
-    private static final String sMovie_InfoSettingSelection = Movie_Contract.MovieInfo.TABLE_NAME + " = ? ";
+    private static final String sFavourite_InfoSettingSelection = Favourite_Contract.FavouriteInfo.TABLE_NAME + " = ? ";
 
-    private static final String sMovie_Info_FavouritesSettingSelection = Movie_Contract.MovieInfo.TABLE_NAME + "."
-            + Movie_Contract.MovieInfo._ID + " = ? AND " +
-            Movie_Contract.Favourites._ID + " + ? ";
+    private static final String sMovie_Info_FavouritesSettingSelection = Favourite_Contract.FavouriteInfo.TABLE_NAME + "."
+            + Favourite_Contract.FavouriteInfo._ID + " = ? AND " +
+            Favourite_Contract.FavouriteInfo._ID + " + ? ";
 
 
-    private Cursor getMovie_Info(Uri uri, String[] projection, String sortOrder) {
+    private Cursor getFavourite_Info(Uri uri, String[] projection, String sortOrder) {
 
-        String Movie_Info_Setting = Movie_Contract.MovieInfo.getMovieNameFromUri(uri);
-        String Favourites = Movie_Contract.Favourites.getFavouritesFromUri(uri);
+        String Movie_Info_Setting = Favourite_Contract.FavouriteInfo.getFavouriteNameFromUri(uri);
+
 
         String[] selectionArgs;
         String selection;
 
-        selection = sMovie_InfoSettingSelection;
+        selection = sFavourite_InfoSettingSelection;
         selectionArgs = new String[]{Movie_Info_Setting};
 
         Log.v("Gavin", "in the provider");
@@ -73,11 +68,9 @@ public abstract class reviewContentProvider extends ContentProvider {
     static UriMatcher buildUriMatcher() {
 
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = Movie_Contract.CONTENT_AUTHORITY;
+        final String authority = Favourite_Contract.CONTENT_AUTHORITY;
 
-        matcher.addURI(authority, Movie_Contract.PATH_MOVIE, MOVIE_INFO);
-        matcher.addURI(authority, Movie_Contract.PATH_MOVIE + "/*", MOVIE_INFO_WITH_FAVOURITE);
-        matcher.addURI(authority, Movie_Contract.PATH_FAVOURITE, FAVOURITE);
+        matcher.addURI(authority, Favourite_Contract.PATH_FAVOURITE, FAVOURITE);
 
         return matcher;
 
@@ -97,13 +90,13 @@ public abstract class reviewContentProvider extends ContentProvider {
         switch (typeUri) {
 
             case MOVIE_INFO:
-                return Movie_Contract.MovieInfo.CONTENT_TYPE;
+                return Favourite_Contract.FavouriteInfo.CONTENT_TYPE;
 
             case MOVIE_INFO_WITH_FAVOURITE:
-                return Movie_Contract.MovieInfo.CONTENT_ITEM_TYPE;
+                return Favourite_Contract.FavouriteInfo.CONTENT_ITEM_TYPE;
 
             case FAVOURITE:
-                return Movie_Contract.Favourites.CONTENT_TYPE;
+                return Favourite_Contract.FavouriteInfo.CONTENT_TYPE;
 
             default:
                 throw new UnsupportedOperationException("Unknown URI" + uri);
@@ -122,7 +115,7 @@ public abstract class reviewContentProvider extends ContentProvider {
 
             case MOVIE_INFO:
                 retCursor = mOpenHelper.getReadableDatabase().query(
-                        Movie_Contract.MovieInfo.TABLE_NAME,
+                        Favourite_Contract.FavouriteInfo.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -133,14 +126,14 @@ public abstract class reviewContentProvider extends ContentProvider {
                 break;
 
             case MOVIE_INFO_WITH_FAVOURITE:
-                retCursor = getMovie_Info(uri, projection, sortOrder);
+                retCursor = getFavourite_Info(uri, projection, sortOrder);
 
 
                 break;
 
             case FAVOURITE:
                 retCursor = mOpenHelper.getReadableDatabase().query(
-                Movie_Contract.Favourites.TABLE_NAME,
+                Favourite_Contract.FavouriteInfo.TABLE_NAME,
                 projection,
                         selection,
                         selectionArgs,
@@ -170,10 +163,10 @@ public abstract class reviewContentProvider extends ContentProvider {
 
             case MOVIE_INFO: {
 
-                long _id = db.insert(Movie_Contract.MovieInfo.TABLE_NAME, null, contentValues);
+                long _id = db.insert(Favourite_Contract.FavouriteInfo.TABLE_NAME, null, contentValues);
                 Log.v("Gavin", "Inserting");
                 if (_id > 0)
-                    returnUri = Movie_Contract.MovieInfo.buildMovie_InfoUri(_id);
+                    returnUri = Favourite_Contract.FavouriteInfo.buildFavourite_InfoUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into" + uri);
                 break;
@@ -181,10 +174,10 @@ public abstract class reviewContentProvider extends ContentProvider {
 
             case FAVOURITE: {
 
-                long _id = db.insert(Movie_Contract.Favourites.TABLE_NAME, null, contentValues);
+                long _id = db.insert(Favourite_Contract.FavouriteInfo.TABLE_NAME, null, contentValues);
                 Log.v("Gavin", "Inserting");
                 if (_id > 0)
-                    returnUri = Movie_Contract.Favourites.buildFavouriteUri(_id);
+                    returnUri = Favourite_Contract.FavouriteInfo.buildFavourite_InfoUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into" + uri);
                 break;
@@ -209,12 +202,12 @@ public abstract class reviewContentProvider extends ContentProvider {
         switch(match){
 
             case MOVIE_INFO:{
-                rowsUpdated = db.update(Movie_Contract.MovieInfo.TABLE_NAME, contentvalues, selection, selectionArgs);
+                rowsUpdated = db.update(Favourite_Contract.FavouriteInfo.TABLE_NAME, contentvalues, selection, selectionArgs);
                 break;
             }
 
             case FAVOURITE:{
-                rowsUpdated = db.update(Movie_Contract.Favourites.TABLE_NAME, contentvalues, selection, selectionArgs);
+                rowsUpdated = db.update(Favourite_Contract.FavouriteInfo.TABLE_NAME, contentvalues, selection, selectionArgs);
                 break;
             }
 
@@ -240,12 +233,12 @@ public abstract class reviewContentProvider extends ContentProvider {
         switch(match){
 
             case MOVIE_INFO:{
-                rowsDeleted = db.delete(Movie_Contract.MovieInfo.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = db.delete(Favourite_Contract.FavouriteInfo.TABLE_NAME, selection, selectionArgs);
                 break;
             }
 
             case FAVOURITE:{
-                rowsDeleted = db.delete(Movie_Contract.Favourites.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = db.delete(Favourite_Contract.FavouriteInfo.TABLE_NAME, selection, selectionArgs);
                 break;
             }
             default:
@@ -276,7 +269,7 @@ public abstract class reviewContentProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values){
                         Log.v("Gavin", "Trying to insert" + value);
-                        long _id = db.insert(Movie_Contract.MovieInfo.TABLE_NAME, null, value);
+                        long _id = db.insert(Favourite_Contract.FavouriteInfo.TABLE_NAME, null, value);
                         if(_id != -1) {
                             returnCount++;
                         }
@@ -298,7 +291,7 @@ public abstract class reviewContentProvider extends ContentProvider {
     public void shutdown() {
         mOpenHelper.close();
         super.shutdown();
-    }**/
+    }
     }
 
 

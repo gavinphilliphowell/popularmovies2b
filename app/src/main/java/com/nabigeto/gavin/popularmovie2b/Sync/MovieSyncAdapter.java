@@ -54,6 +54,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public MovieSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
+        Log.v("Gavin", "Test begining");
     }
 
     @Override
@@ -61,7 +62,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
         final int numMovies =10;
         final String MOVIE_KEY = "bb8bfd709e4e16f868ddf8fbd62b2d59";
-
+        Log.v("Gavin", "MovieSync Adapter Started");
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -167,7 +168,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
         final String picture_URL = "http://image.tmdb.org/t/p/w185//";
 
-
+        Log.v("Gavin", picture_URL);
 
 
         try {
@@ -225,6 +226,11 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1, "b");
                 movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2, "b");
                 movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3, "b");
+
+                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1, "b");
+                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR2, "b");
+                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR3, "b");
+
                 movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1, "b");
                 movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2, "b");
                 movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3, "b");
@@ -306,7 +312,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
         Account account = getSyncAccount(context);
-        String authority = context.getString(R.string.content_authority);
+        String authority = context.getString(R.string.content_authority_movie);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             SyncRequest request = new SyncRequest.Builder().
                     syncPeriodic(syncInterval, flexTime).
@@ -324,7 +330,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         ContentResolver.requestSync(getSyncAccount(context),
-                context.getString(R.string.content_authority), bundle);
+                context.getString(R.string.content_authority_movie), bundle);
     }
 
     public static Account getSyncAccount(Context context) {
@@ -351,14 +357,14 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
         MovieSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
 
-        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
+        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority_movie), true);
 
         syncImmediately(context);
     }
 
     public static void initialiseSyncAdapter(Context context){
         getSyncAccount(context);
-        Log.v("Gavin", "Sync adapter launched");
+        Log.v("Gavin", "Sync adapter launched 1");
     }
 
 }

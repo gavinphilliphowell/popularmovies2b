@@ -311,7 +311,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
         Account account = getSyncAccount(context);
-        String authority = context.getString(R.string.content_authority);
+        String authority = context.getString(R.string.content_authority_movie);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             SyncRequest request = new SyncRequest.Builder().
                     syncPeriodic(syncInterval, flexTime).
@@ -329,7 +329,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         ContentResolver.requestSync(getSyncAccount(context),
-                context.getString(R.string.content_authority), bundle);
+                context.getString(R.string.content_authority_review), bundle);
     }
 
     public static Account getSyncAccount(Context context) {
@@ -356,7 +356,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
         ReviewSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
 
-        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
+        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority_review), true);
 
         syncImmediately(context);
     }
@@ -364,7 +364,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
     public static String initialiseSyncAdapter(Context context, String movie){
         getSyncAccount(context);
         String movie_api_id = movie;
-        Log.v("Gavin", "Sync adapter launched");
+        Log.v("Gavin", "Sync adapter launched 2");
         return movie_api_id;
     }
 

@@ -46,10 +46,17 @@
         </activity>
 
         <provider
-            android:authorities="@string/content_authority"
+            android:authorities="@string/content_authority_movie"
             android:name=".UtilitiesDB.movieContentProvider"
             android:exported="true"
             android:syncable="true" />
+<!--
+        <provider
+            android:authorities="@string/content_authority_review"
+            android:name=".UtilitiesDB.reviewContentProvider"
+            android:exported="true"
+            android:syncable="true" />
+        -->
 
         <!-- SyncAdapter's dummy authentication service -->
         <service android:name=".Sync.MovieAuthenticatorService">
@@ -71,11 +78,11 @@
             </intent-filter>
             <meta-data
                 android:name="android.content.SyncAdapter"
-                android:resource="@xml/syncadapter" />
+                android:resource="@xml/syncadapter_movie" />
         </service>
 
         <!-- The Review SyncAdapter Service-->
-        <service
+       <service
             android:name=".Sync.ReviewSyncService"
             android:exported="true"
             >
@@ -84,7 +91,7 @@
             </intent-filter>
             <meta-data
                 android:name="android.content.SyncAdapter"
-                android:resource="@xml/syncadapter" />
+                android:resource="@xml/syncadapter_review" />
         </service>
     </application>
 
