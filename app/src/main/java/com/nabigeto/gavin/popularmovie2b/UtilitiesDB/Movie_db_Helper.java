@@ -27,7 +27,7 @@ public class Movie_db_Helper extends SQLiteOpenHelper {
 
 
         Cursor c = sqLiteDatabase.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + MovieInfo.TABLE_NAME + "'", null);
-
+/**
         if (c != null) {
             if (c.getCount() > 0) {
                 Log.v("Gavin", "Table exists");
@@ -39,7 +39,7 @@ public class Movie_db_Helper extends SQLiteOpenHelper {
         }
 
 
-
+**/
         final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + Movie_Contract.MovieInfo.TABLE_NAME + " (" +
 
                 MovieInfo._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +

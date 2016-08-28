@@ -227,13 +227,13 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2, "b");
                 movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3, "b");
 
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1, "b");
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR2, "b");
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR3, "b");
+                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1, "bb");
+                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR2, "bb");
+                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR3, "bb");
 
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1, "b");
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2, "b");
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3, "b");
+                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1, "bbb");
+                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2, "bbb");
+                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3, "bbb");
 
 
                 Log.v("Gavin", number_ID);

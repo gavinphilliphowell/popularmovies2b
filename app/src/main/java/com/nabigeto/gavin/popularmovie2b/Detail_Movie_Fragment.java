@@ -76,6 +76,12 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
             Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1,
             Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2,
             Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3,
+            Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1,
+            Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR2,
+            Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR3,
+            Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1,
+            Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2,
+            Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3,
             Movie_Contract.MovieInfo.COLUMN_FAVOURITE
 
 
@@ -98,7 +104,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public static final int COL_MOVIE_TRAILER1 = 14;
     public static final int COL_MOVIE_TRAILER2 = 15;
     public static final int COL_MOVIE_TRAILER3 = 16;
-    public static final int COL_FAVOURITE_D = 8;
+    public static final int COL_FAVOURITE_D = 17;
 
 
 
@@ -261,7 +267,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     return new CursorLoader(
                             getActivity(),
                             Movie_Contract.MovieInfo.CONTENT_URI,
-                            REVIEW_COLUMNS,
+                            DETAIL_COLUMNS,
                             position,
                             null,
                             null
@@ -282,11 +288,11 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                 row_Pref = dUri;
                 Log.v("Gavin", "dUuri" + row_Pref);
                 if (null != dUri) {
-                    Log.v("Gavin", "Detail Loader cursor created");
+                    Log.v("Gavin", "Trailer Loader cursor created");
                     return new CursorLoader(
                             getActivity(),
                             Movie_Contract.MovieInfo.CONTENT_URI,
-                            TRAILER_COLUMNS,
+                            DETAIL_COLUMNS,
                             position,
                             null,
                             null
@@ -367,11 +373,20 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     String movieReview1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW1);
                     dReview1.setText(movieReview1);
 
+                    String movieReviewAuthor1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR1);
+                    dReviewauthor1.setText(movieReviewAuthor1);
+
                     String movieReview2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW2);
                     dReview2.setText(movieReview2);
 
+                    String movieReviewAuthor2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR2);
+                    dReviewauthor2.setText(movieReviewAuthor2);
+
                     String movieReview3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW3);
                     dReview3.setText(movieReview3);
+
+                    String movieReviewAuthor3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR3);
+                    dReviewauthor3.setText(movieReviewAuthor3);
 
                 break;
 
