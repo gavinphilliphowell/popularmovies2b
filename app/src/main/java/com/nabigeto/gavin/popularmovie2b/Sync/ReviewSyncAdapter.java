@@ -57,7 +57,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 **/
     };
 
-    public String movie_api_id = "550";
+
 
     public ReviewSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -68,7 +68,15 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
         final int numMovies =10;
         final String MOVIE_KEY = "bb8bfd709e4e16f868ddf8fbd62b2d59";
+        final String movie_api_id;
 
+        if (extras != null) {
+            movie_api_id = extras.getString("reviewsync_location");
+            Log.v("Gavin", "Sync Movie Location" + movie_api_id);
+        }
+        else {
+            movie_api_id = "192324";
+        }
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -167,6 +175,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
         final String OWM_YOUTUBE = "youtube";
 
         final String OWM_REVIEW_FILTER = "name";
+        final String OWM_REVIEW_AUTHOR = "author";
         final String OWM_TRAILER_FILTER = "name";
         final String OWM_TRAILER_SOURCE = "source";
 
@@ -182,20 +191,28 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
             JSONArray results_SubR = review_object.getJSONArray(OWM_RESULTS_RE);
 
+            String[] review_name = new String [results_SubR.length()];
+            String[] review_author = new String [results_SubR.length()];
+
+
             for (int i=0; i<results_SubR.length(); i++) {
-                String review_name = results_SubR.getJSONObject(i).getString(OWM_REVIEW_FILTER);
-                Log.v("Gavin", "review name" + review_name);
+                review_name[i] = results_SubR.getJSONObject(i).getString(OWM_REVIEW_FILTER);
+                review_author[i] = results_SubR.getJSONObject(i).getString(OWM_REVIEW_AUTHOR);
+                Log.v("Gavin", "review name" + review_name[i]);
             }
 
             JSONObject trailer_object = reviewJson.getJSONObject(OWM_RESULTS_T);
 
             JSONArray trailer_SubR = trailer_object.getJSONArray(OWM_YOUTUBE);
 
+            String[] trailer_name = new String [trailer_SubR.length()];
+            String[] trailer_source = new String [trailer_SubR.length()];
+
             for (int i=0; i<trailer_SubR.length(); i++) {
-                String trailer_name = trailer_SubR.getJSONObject(i).getString(OWM_TRAILER_FILTER);
-                String trailer_source = trailer_SubR.getJSONObject(i).getString(OWM_TRAILER_SOURCE);
-                Log.v("Gavin", "trailer name" + trailer_name);
-                Log.v("Gavin", "trailer source" + trailer_source);
+                trailer_name[i] = trailer_SubR.getJSONObject(i).getString(OWM_TRAILER_FILTER);
+                trailer_source[i] = trailer_SubR.getJSONObject(i).getString(OWM_TRAILER_SOURCE);
+                Log.v("Gavin", "trailer name" + trailer_name[i]);
+                Log.v("Gavin", "trailer source" + trailer_source[i]);
             }
 /**
             Vector<ContentValues> cMector = new Vector<ContentValues>(movieArray.length());
@@ -217,26 +234,26 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 **/
 
 
-                ContentValues movieValues = new ContentValues();
+                ContentValues reviewValues = new ContentValues();
 
 
-            /**    movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_ENTRY_KEY, favouriteID);  **/
- /**               movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_ENTRY_ID, number_ID);
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_MOVIE_ID, id);
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1, reviews1);
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2, reviews1);
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3, reviews1);
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1, trailer1);
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2, trailer2);
-                movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3, trailer3);
-**/
-     /**           Log.v("Gavin", number_ID);
-                Log.v("Gavin", reviews1);
-                Log.v("Gavin", reviews2);
-                Log.v("Gavin", reviews3); **/
-   /**             Log.v("Gavin", trailer_name);
-                Log.v("Gavin", trailer2);
-                Log.v("Gavin", trailer3);
+            reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1, review_name[1]);
+            reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2, review_name[2]);
+            reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3, review_name[3]);
+
+            reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1, review_author[1]);
+            reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR2, review_author[2]);
+            reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR3, review_author[3]);
+
+            reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1, trailer_name[1]);
+            reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2, trailer_name[2]);
+            reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3, trailer_name[3]);
+/**
+            reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER_SOURCE1, trailer_source[1]);
+            reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER_SOURCE2, trailer_source[2]);
+            reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER_SOURCE3, trailer_source[3]);
+ **/
+
 /**
                 cMector.add(movieValues);
 
@@ -361,11 +378,11 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
         syncImmediately(context);
     }
 
-    public static String initialiseSyncAdapter(Context context, String movie){
+    public static void initialiseSyncAdapter(Context context){
         getSyncAccount(context);
-        String movie_api_id = movie;
+
         Log.v("Gavin", "Sync adapter launched 2");
-        return movie_api_id;
+
     }
 
 }

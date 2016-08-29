@@ -41,6 +41,7 @@ public class Movie_Contract {
         public static final String COLUMN_NAME_REVIEW1 = "review1";
         public static final String COLUMN_NAME_REVIEW2 = "review2";
         public static final String COLUMN_NAME_REVIEW3 = "review3";
+
         public static final String COLUMN_NAME_REVIEW_AUTHOR1 = "author1";
         public static final String COLUMN_NAME_REVIEW_AUTHOR2 = "author2";
         public static final String COLUMN_NAME_REVIEW_AUTHOR3 = "author3";

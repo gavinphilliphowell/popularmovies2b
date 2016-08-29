@@ -1,5 +1,6 @@
 package com.nabigeto.gavin.popularmovie2b;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.nabigeto.gavin.popularmovie2b.Adapter.Custom_Movie_Adapter;
 import com.nabigeto.gavin.popularmovie2b.Sync.MovieSyncAdapter;
+import com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
 
 import java.net.URI;
@@ -139,17 +141,22 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                                                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                                                 if (cursor != null) {
                                                     cursor.moveToPosition(position);
-                                                    String title = cursor.getString(_ID);
+                                                    String id = cursor.getString(_ID);
+                                                    String movie_id = cursor.getString(COL_MOVIE_ID);
                                                     String image = cursor.getString(COL_MOVIE_IMAGE_FILE);
                                                     String info = cursor.getString(COL_MOVIE_INFO);
                                                     Log.v("Gavin", "MainActivityFragement" + position);
-                                                    Log.v("Gavin", "MainActivityFragment" + title);
+                                                    Log.v("Gavin", "MainActivityFragment" + movie_id);
                                                     Log.v("Gavin", "MainActivityFragment" + image);
                                                     Log.v("Gavin", "MainActivityFragment" + info);
                                                     Uri puri = Movie_Contract.MovieInfo.CONTENT_URI;
                                                     String ppuri = puri.toString();
                                                     Log.v("Gavin", "MainActivityFragment" + ppuri);
-                                                    ((Callback) getActivity()).onItemSelected(title);
+                                                    ((Callback) getActivity()).onItemSelected(id);
+
+                                                    Bundle settingBundle = new Bundle();
+                                                    settingBundle.putString("reviewsync_location" , movie_id);
+                                                    ReviewSyncAdapter.syncImmediately(getContext());
                                                 }
                                                 mPosition = position;
 

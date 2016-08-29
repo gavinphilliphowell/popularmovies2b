@@ -25,21 +25,8 @@ public class Movie_db_Helper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Movie_Contract.MovieInfo.TABLE_NAME);
 
-        Cursor c = sqLiteDatabase.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + MovieInfo.TABLE_NAME + "'", null);
-/**
-        if (c != null) {
-            if (c.getCount() > 0) {
-                Log.v("Gavin", "Table exists");
-                c.close();
-                sqLiteDatabase.delete(MovieInfo.TABLE_NAME, null, null);
-            }
-            sqLiteDatabase.delete(MovieInfo.TABLE_NAME, null, null);
-            c.close();
-        }
-
-
-**/
         final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + Movie_Contract.MovieInfo.TABLE_NAME + " (" +
 
                 MovieInfo._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -66,9 +53,6 @@ public class Movie_db_Helper extends SQLiteOpenHelper {
         Log.v("Gavin", "Got to this bit in db Helper 2");
 
 
-
-  /**      sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MovieInfo.TABLE_NAME);
-**/
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIE_TABLE);
 
     }

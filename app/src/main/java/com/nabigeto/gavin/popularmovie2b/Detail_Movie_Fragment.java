@@ -1,5 +1,6 @@
 package com.nabigeto.gavin.popularmovie2b;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
@@ -164,6 +165,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         getLoaderManager().initLoader(TRAILER_LOADER, null, this);
 
         super.onActivityCreated(savedInstanceState);
+
         Bundle arguments = getArguments();
 
         if (arguments != null) {
@@ -176,7 +178,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         }
         Log.v("Gavin", "uri " + dUri);
 
-        ReviewSyncAdapter.initialiseSyncAdapter(getContext(), dUri);
+
 
     }
 
@@ -185,6 +187,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(false);
+
 
 
     }

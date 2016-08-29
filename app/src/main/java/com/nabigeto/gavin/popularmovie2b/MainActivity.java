@@ -9,6 +9,8 @@ import android.view.MenuItem;
 
 import com.nabigeto.gavin.popularmovie2b.Adapter.Movie_Adapter;
 import com.nabigeto.gavin.popularmovie2b.Sync.MovieSyncAdapter;
+import com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter;
+import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
 
 public class MainActivity extends AppCompatActivity  implements MainActivityFragment.Callback {
 
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity  implements MainActivityFrag
         mainActivityFragment.setuseCaseLayout(!mTwoPane);
 Log.v("Gavin", "Test 1");
         MovieSyncAdapter.initialiseSyncAdapter(this);
+        ReviewSyncAdapter.initialiseSyncAdapter(this);
         Log.v("Gavin", "Test 2");
     }
 
