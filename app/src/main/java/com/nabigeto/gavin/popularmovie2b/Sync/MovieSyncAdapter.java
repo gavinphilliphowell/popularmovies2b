@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.util.Log;
 import com.nabigeto.gavin.popularmovie2b.R;
 
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
+import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_db_Helper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,6 +57,8 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     public MovieSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         Log.v("Gavin", "Test begining");
+
+
     }
 
     @Override
@@ -63,6 +67,12 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         final int numMovies =10;
         final String MOVIE_KEY = "bb8bfd709e4e16f868ddf8fbd62b2d59";
         Log.v("Gavin", "MovieSync Adapter Started");
+
+        Movie_db_Helper mdbmovie = new Movie_db_Helper(getContext());
+
+        SQLiteDatabase db = mdbmovie.getWritableDatabase();
+        mdbmovie.onClear(db);
+        mdbmovie.onCreate(db);
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;

@@ -48,6 +48,7 @@
         <provider
             android:authorities="@string/content_authority_movie"
             android:name=".UtilitiesDB.movieContentProvider"
+            android:permission="true"
             android:exported="true"
             android:syncable="true" />
 <!--

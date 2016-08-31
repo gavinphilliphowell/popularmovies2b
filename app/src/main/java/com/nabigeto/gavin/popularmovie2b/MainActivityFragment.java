@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -27,6 +28,7 @@ import com.nabigeto.gavin.popularmovie2b.Adapter.Custom_Movie_Adapter;
 import com.nabigeto.gavin.popularmovie2b.Sync.MovieSyncAdapter;
 import com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
+import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_db_Helper;
 
 import java.net.URI;
 
@@ -106,6 +108,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     Toast.makeText(getActivity(), "Network connection available - we are getting your data", Toast.LENGTH_LONG).show();
 
     }
+
     }
 
 
@@ -141,7 +144,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                                                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                                                 if (cursor != null) {
                                                     cursor.moveToPosition(position);
-                                                    String id = cursor.getString(_ID);
+
+                                                    String[] moviedata = new String[2];
+                                                    moviedata[0] = cursor.getString(_ID);
+                                                    moviedata[1] = cursor.getString(COL_MOVIE_ID);
+
+                                                    String database_id = cursor.getString(_ID);
                                                     String movie_id = cursor.getString(COL_MOVIE_ID);
                                                     String image = cursor.getString(COL_MOVIE_IMAGE_FILE);
                                                     String info = cursor.getString(COL_MOVIE_INFO);
@@ -152,10 +160,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                                                     Uri puri = Movie_Contract.MovieInfo.CONTENT_URI;
                                                     String ppuri = puri.toString();
                                                     Log.v("Gavin", "MainActivityFragment" + ppuri);
-                                                    ((Callback) getActivity()).onItemSelected(id);
+                                                    ((Callback) getActivity()).onItemSelected(database_id);
 
                                                     Bundle settingBundle = new Bundle();
                                                     settingBundle.putString("reviewsync_location" , movie_id);
+                                                    settingBundle.putString("reviewsync_id", database_id);
+                                                    settingBundle.putStringArray("review_total", moviedata);
                                                     ReviewSyncAdapter.syncImmediately(getContext());
                                                 }
                                                 mPosition = position;

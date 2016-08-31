@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.util.Log;
 
 import com.nabigeto.gavin.popularmovie2b.R;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
+import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_db_Helper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,10 +71,18 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
         final int numMovies =10;
         final String MOVIE_KEY = "bb8bfd709e4e16f868ddf8fbd62b2d59";
         final String movie_api_id;
+        final String movie_database_id;
+        String[] movie_data = new String[2];
 
         if (extras != null) {
+            movie_database_id = extras.getString("reviewsync_id");
             movie_api_id = extras.getString("reviewsync_location");
+
+            movie_data[0] = extras.getString("reviewsync_id");
+            movie_data[1] = extras.getString("reviewsync_location");
+
             Log.v("Gavin", "Sync Movie Location" + movie_api_id);
+            Log.v("Gavin", "Sync Movie Location" + movie_database_id);
         }
         else {
             movie_api_id = "192324";
@@ -152,7 +162,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
         }
         try {
 
-            get_movie_details_Json(movieJsonStr, numMovies);
+            get_movie_details_Json(movieJsonStr, movie_data[0]);
 
         } catch (JSONException e) {
             Log.e("Gavin", e.getMessage(), e);
@@ -162,7 +172,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
         return;
     }
 
-    private void get_movie_details_Json(String movieJsonStr, int numMovies)
+    private void get_movie_details_Json(String movieJsonStr, String movie_id_string)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
@@ -234,7 +244,11 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 **/
 
 
-                ContentValues reviewValues = new ContentValues();
+            Movie_db_Helper mdbmovie = new Movie_db_Helper(getContext());
+
+            SQLiteDatabase db = mdbmovie.getWritableDatabase();
+
+            ContentValues reviewValues = new ContentValues();
 
 
             reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1, review_name[1]);
@@ -253,6 +267,20 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
             reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER_SOURCE2, trailer_source[2]);
             reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER_SOURCE3, trailer_source[3]);
  **/
+
+
+            String rSelectionClause = Movie_Contract.MovieInfo._ID + "LIKE ?";
+            String[] rSelectionArgs = {movie_id_string};
+            int num_rows = 0;
+
+            num_rows = getContext().getContentResolver().update(
+                    Movie_Contract.MovieInfo.CONTENT_URI,
+                    reviewValues,
+                    rSelectionClause,
+                    rSelectionArgs
+            );
+
+
 
 /**
                 cMector.add(movieValues);

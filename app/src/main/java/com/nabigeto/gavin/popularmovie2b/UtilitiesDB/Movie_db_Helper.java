@@ -25,7 +25,6 @@ public class Movie_db_Helper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Movie_Contract.MovieInfo.TABLE_NAME);
 
         final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + Movie_Contract.MovieInfo.TABLE_NAME + " (" +
 
@@ -63,6 +62,11 @@ public class Movie_db_Helper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Movie_Contract.MovieInfo.TABLE_NAME);
 
         onCreate(sqLiteDatabase);
+    }
+
+    public void onClear(SQLiteDatabase sqLiteDatabase){
+
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Movie_Contract.MovieInfo.TABLE_NAME);
     }
 
 }
