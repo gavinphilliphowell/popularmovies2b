@@ -145,10 +145,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                                                 if (cursor != null) {
                                                     cursor.moveToPosition(position);
 
-                                                    String[] moviedata = new String[2];
-                                                    moviedata[0] = cursor.getString(_ID);
-                                                    moviedata[1] = cursor.getString(COL_MOVIE_ID);
-
                                                     String database_id = cursor.getString(_ID);
                                                     String movie_id = cursor.getString(COL_MOVIE_ID);
                                                     String image = cursor.getString(COL_MOVIE_IMAGE_FILE);
@@ -160,13 +156,21 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                                                     Uri puri = Movie_Contract.MovieInfo.CONTENT_URI;
                                                     String ppuri = puri.toString();
                                                     Log.v("Gavin", "MainActivityFragment" + ppuri);
+                                      /**              ReviewSyncAdapter.initialiseSyncAdapter(getContext());
+                                         **/
+
+                                                    Bundle extras_m = new Bundle();
+                                                    extras_m.putString("reviewsync_location", movie_id);
+
+                                                    Log.v("Gavin", movie_id);
+                                                    Log.v("Gavin", database_id);
+
+
+
                                                     ((Callback) getActivity()).onItemSelected(database_id);
 
-                                                    Bundle settingBundle = new Bundle();
-                                                    settingBundle.putString("reviewsync_location" , movie_id);
-                                                    settingBundle.putString("reviewsync_id", database_id);
-                                                    settingBundle.putStringArray("review_total", moviedata);
-                                                    ReviewSyncAdapter.syncImmediately(getContext());
+
+
                                                 }
                                                 mPosition = position;
 

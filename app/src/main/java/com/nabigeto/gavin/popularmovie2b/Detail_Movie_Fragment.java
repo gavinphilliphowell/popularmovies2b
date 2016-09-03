@@ -58,6 +58,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     public String dUri;
 
+    private static final String Youtube_KEY = "AIzaSyD4abokmDnidF1bBI2c5nrSMIb7Q73Tnnk";
 
     private static final int DETAIL_LOADER = 1;
     private static final  int REVIEW_LOADER = 2;

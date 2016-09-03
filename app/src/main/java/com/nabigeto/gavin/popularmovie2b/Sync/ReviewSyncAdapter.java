@@ -37,7 +37,7 @@ import java.util.Vector;
  */
 public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
-    public static final int SYNC_INTERVAL = 1000;
+    public static final int SYNC_INTERVAL = 60;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/2;
 
     private final static String[] NOTIFY_MOVIE_PROJECTION = new String[]{
@@ -67,37 +67,35 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     @Override
-    public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
+    public void onPerformSync(Account account, Bundle extras_m, String authority, ContentProviderClient provider, SyncResult syncResult) {
 
         final int numMovies =10;
         final String MOVIE_KEY = "bb8bfd709e4e16f868ddf8fbd62b2d59";
-        final String movie_api_id;
-        final String movie_database_id;
-        String[] movie_data = new String[2];
+        String movie_api_id;
+        String movie_database_id;
 
- /**       if (extras != null) { **/
-            movie_database_id = extras.getString("reviewsync_id");
-            movie_api_id = extras.getString("reviewsync_location");
 
-            movie_data[0] = extras.getString("reviewsync_id");
-            movie_data[1] = extras.getString("reviewsync_location");
+       if (extras_m != null) {
 
-            Log.v("Gavin", "Sync Movie Location" + movie_api_id);
-            Log.v("Gavin", "Sync Movie Location" + movie_database_id);
+           movie_api_id = extras_m.getString("reviewsync_location");
+        Log.v("Gavin", "extras loaded");
+        Log.v("Gavin", "Sync Movie Location" + movie_api_id);
+       }
+        else {
+           movie_database_id = "8";
+           movie_api_id = "27579";
+           Log.v("Gavin", "no extras loaded");
+       }
 
- /**       else {
-            movie_data[0] = "1";
-            movie_data[1] = "27579";
-        }
-**/
+
+
+
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
 
         // Will contain the raw JSON response as a string.
         String movieJsonStr = null;
 
-        String reviews1 = "reviews,trailers";
-        Log.v("Gavin", reviews1);
 
         try {
 
@@ -106,9 +104,9 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
                     .authority("api.themoviedb.org")
                     .appendPath("3")
                     .appendPath("movie")
-                    .appendPath("27755")
+                    .appendPath(movie_api_id)
                     .appendQueryParameter("api_key", MOVIE_KEY)
-                    .appendQueryParameter("append_to_response",reviews1);
+                    .appendQueryParameter("append_to_response","reviews,trailers");
 
             String Web_Location_URL = builder.build().toString();
 
@@ -166,7 +164,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
         }
         try {
 
-            get_movie_details_Json(movieJsonStr, movie_data[0]);
+            get_movie_details_Json(movieJsonStr, movie_api_id);
 
         } catch (JSONException e) {
             Log.e("Gavin", e.getMessage(), e);
@@ -212,6 +210,8 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
             int review_case;
             int trailer_case;
 
+
+
             if (results_SubR.length() > length_t) {
                 review_case = 1;
                 for (int i = 0; i < results_SubR.length(); i++) {
@@ -232,6 +232,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
             String[] trailer_name = new String [trailer_SubR.length()];
             String[] trailer_source = new String [trailer_SubR.length()];
 
+
             if (trailer_SubR.length() > length_t) {
                 trailer_case = 1;
                 for (int i=0; i<trailer_SubR.length(); i++) {
@@ -244,6 +245,10 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
             else {
                 trailer_case = 2;
+            }
+
+            for (int i=0; i<trailer_SubR.length(); i++) {
+
             }
 /**
             Vector<ContentValues> cMector = new Vector<ContentValues>(movieArray.length());
@@ -271,50 +276,73 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
             ContentValues reviewValues = new ContentValues();
 
+
+
             switch (review_case){
 
                 case (1):
 
-                    reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1, review_name[1]);
-                    reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2, review_name[2]);
-                    reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3, review_name[3]);
+                    if(review_name[0] != null){
+                        reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1, review_name[0]);
+                    }
+                    if(review_name[1] != null){
+                        reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2, review_name[1]);
+                    }
+                    if(review_name[2] != null){
+                        reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3, review_name[2]);
+                    }
 
-                    reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1, review_author[1]);
-                    reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR2, review_author[2]);
-                    reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR3, review_author[3]);
+                    if(review_author[0] != null){
+                        reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1, review_author[0]);
+                    }
+                    if(review_author[1] != null){
+                        reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR2, review_author[1]);
+                    }
+                    if(review_author[2] != null){
+                        reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR3, review_author[2]);
+                    }
 
                     break;
 
                     default:
+
                     break;
             }
+
+            ContentValues trailerValues = new ContentValues();
 
             switch (trailer_case){
 
                 case (1):
 
-                    reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1, trailer_name[1]);
-                    reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2, trailer_name[2]);
-                    reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3, trailer_name[3]);
-/**
- reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER_SOURCE1, trailer_source[1]);
- reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER_SOURCE2, trailer_source[2]);
- reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER_SOURCE3, trailer_source[3]);
- **/
+                    if (trailer_source[0] != null) {
+                        Log.v("Gavin", "checking this bit");
+                        trailerValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1, trailer_source[0]);
+                        Log.v("Gavin", "checking this bit again");
+                    }
+                    if (trailer_source[1] != null) {
+                        Log.v("Gavin", "checking this bit 2");
+                        trailerValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2, trailer_source[1]);
+                    }
+                    if (trailer_source[2] != null) {
+                        Log.v("Gavin", "checking this bit 3");
+                        trailerValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3, trailer_source[2]);
+                    }
+
                     break;
 
                     default:
 
-                        break;
+                    break;
             }
 
-            if(reviewValues != null) {
+            if(review_case <= 1) {
 
 
-
+            Log.v("Gavin", "got to this bit loader");
             String rSelectionClause = Movie_Contract.MovieInfo._ID + "LIKE ?";
             String[] rSelectionArgs = {movie_id_string};
-
+            Log.v("Gavin","got to this bit loader 2");
 
             int num_rows = getContext().getContentResolver().update(
                     Movie_Contract.MovieInfo.CONTENT_URI,
@@ -322,14 +350,35 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
                     rSelectionClause,
                     rSelectionArgs
             );
-
+            Log.v("Gavin", "got to this bit loader 3");
         }
             else {
-                Log.v("Gavin", "No reviews or trailers");
-                Toast.makeText(getContext(), "No reviews or trailers", Toast.LENGTH_LONG).show();
+                Log.v("Gavin", "No reviews");
+
+
             }
 
 
+            if(trailer_case <= 1) {
+
+
+                Log.v("Gavin", "got to this bit loader t");
+                String rSelectionClause = Movie_Contract.MovieInfo._ID + " LIKE ? ";
+                String[] rSelectionArgs = {movie_id_string};
+                Log.v("Gavin","got to this bit loader 2 t");
+
+                int num_rows = getContext().getContentResolver().update(
+                        Movie_Contract.MovieInfo.CONTENT_URI,
+                        trailerValues,
+                        rSelectionClause,
+                        rSelectionArgs
+                );
+                Log.v("Gavin", "got to this bit loader 3 t");
+            }
+            else {
+                Log.v("Gavin", "No trailers");
+
+            }
 /**
                 cMector.add(movieValues);
 
