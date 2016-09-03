@@ -18,7 +18,7 @@
     <string name="sync_account_type"> popularmovie2b.nabigeto.com </string>
     <string name="sync_account_settings">  </string>
     <string name="content_authority_movie"> com.nabigeto.gavin.popularmovie2b </string>
-    <string name="content_authority_review"> com.nabigeto.gavin.popularmovie2b.review </string>
+    <string name="content_authority_review"> com.nabigeto.gavin.popularmovie2b </string>
 
 
 </resources>

@@ -37,7 +37,7 @@ import java.util.Vector;
  */
 public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
-    public static final int SYNC_INTERVAL = 1;
+    public static final int SYNC_INTERVAL = 1000;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/2;
 
     private final static String[] NOTIFY_MOVIE_PROJECTION = new String[]{
