@@ -53,11 +53,9 @@ public class MainActivity extends AppCompatActivity  implements MainActivityFrag
         MainActivityFragment mainActivityFragment = ((MainActivityFragment)getSupportFragmentManager().findFragmentById(R.id.main_activity_fragment));
         mainActivityFragment.setuseCaseLayout(!mTwoPane);
 Log.v("Gavin", "Test 1");
-        MovieSyncAdapter.initialiseSyncAdapter(this);
-        ReviewSyncAdapter.initialiseSyncAdapter(this);
+
         Log.v("Gavin", "Test 2");
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

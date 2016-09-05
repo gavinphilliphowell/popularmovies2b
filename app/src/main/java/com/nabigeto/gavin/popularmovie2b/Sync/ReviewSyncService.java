@@ -18,7 +18,7 @@ public class ReviewSyncService extends Service {
             Log.v("Gavin", "onCreate - ReviewSyncService");
             synchronized (sRSyncAdapterLock) {
                 if (sReviewSyncAdapter == null) {
-                    sReviewSyncAdapter = new ReviewSyncAdapter(getApplicationContext(), true);
+                    sReviewSyncAdapter = new ReviewSyncAdapter(getApplicationContext(), false, true);
                 }
             }
         }

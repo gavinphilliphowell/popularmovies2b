@@ -40,6 +40,10 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
     public static final int SYNC_INTERVAL = 60;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/2;
 
+    ContentResolver rContentResolver;
+
+
+
     private final static String[] NOTIFY_MOVIE_PROJECTION = new String[]{
 
     /**        Movie_Contract.MovieInfo.COLUMN_NAME_ENTRY_KEY,  **/
@@ -61,13 +65,14 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
     };
 
 
+    public ReviewSyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
+        super (context, autoInitialize, allowParallelSyncs);
 
-    public ReviewSyncAdapter(Context context, boolean autoInitialize) {
-        super(context, autoInitialize);
+        rContentResolver = context.getContentResolver();
     }
 
     @Override
-    public void onPerformSync(Account account, Bundle extras_m, String authority, ContentProviderClient provider, SyncResult syncResult) {
+    public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
 
         final int numMovies =10;
         final String MOVIE_KEY = "bb8bfd709e4e16f868ddf8fbd62b2d59";
@@ -75,9 +80,10 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
         String movie_database_id;
 
 
-       if (extras_m != null) {
+       if (extras != null) {
 
-           movie_api_id = extras_m.getString("reviewsync_location");
+           movie_api_id = extras.getString("reviewsync_api");
+           movie_database_id = extras.getString("reviewsync_database");
         Log.v("Gavin", "extras loaded");
         Log.v("Gavin", "Sync Movie Location" + movie_api_id);
        }
@@ -164,7 +170,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
         }
         try {
 
-            get_movie_details_Json(movieJsonStr, movie_api_id);
+            get_movie_details_Json(movieJsonStr, movie_database_id);
 
         } catch (JSONException e) {
             Log.e("Gavin", e.getMessage(), e);
@@ -498,7 +504,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
         ReviewSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
 
-        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority_review), true);
+        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority_review), false);
 
         syncImmediately(context);
     }

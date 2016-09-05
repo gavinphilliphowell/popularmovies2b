@@ -68,6 +68,10 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         final String MOVIE_KEY = "bb8bfd709e4e16f868ddf8fbd62b2d59";
         Log.v("Gavin", "MovieSync Adapter Started");
 
+        int database_location = extras.getInt("gridview_default_load");
+        String show_database_location = Integer.toString(database_location);
+        Log.v("Gavin", "Movie Sync Adapter extras" + show_database_location);
+
         Movie_db_Helper mdbmovie = new Movie_db_Helper(getContext());
 
         SQLiteDatabase db = mdbmovie.getWritableDatabase();
@@ -264,7 +268,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             if (cMector.size() > 0) {
 
                 Log.v("Gavin", "Started Database Upload");
-
+                Uri uri = Uri.parse("content://" + "com.nabigeto.gavin.popularmovie2b.UtilitiesDB.movieContent.provider");
                 ContentValues[] cvArray = new ContentValues[cMector.size()];
                 cMector.toArray(cvArray);
                 getContext().getContentResolver().bulkInsert(Movie_Contract.MovieInfo.CONTENT_URI, cvArray);

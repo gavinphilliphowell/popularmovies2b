@@ -12,49 +12,45 @@ import android.util.Log;
 /**
  * Created by Gavin on 3/29/2016.
  */
-public abstract class reviewContentProvider extends ContentProvider {
+public class reviewContentProvider extends ContentProvider {
 
     public static final UriMatcher sUriMatcher = buildUriMatcher();
 
     private Movie_db_Helper mOpenHelper;
 
-    static final int MOVIE_INFO = 100;
-    static final int MOVIE_INFO_WITH_FAVOURITE = 101;
-    static final int FAVOURITE = 200;
+    static final int MOVIE_INFO = 101;
 
-    private static final SQLiteQueryBuilder sMovie_Info_FavouritesQueryBuilder;
+    private static final String AUTHORITY = Movie_Contract.CONTENT_AUTHORITY;
+
+    private static final SQLiteQueryBuilder sMovie_InfoQueryBuilder;
 
     static {
 
-        sMovie_Info_FavouritesQueryBuilder = new SQLiteQueryBuilder();
+        sMovie_InfoQueryBuilder = new SQLiteQueryBuilder();
 
-        sMovie_Info_FavouritesQueryBuilder.setTables(
-                Favourite_Contract.FavouriteInfo.TABLE_NAME);
+        sMovie_InfoQueryBuilder.setTables(
+                Movie_Contract.MovieInfo.TABLE_NAME);
 
 
     }
 
-    private static final String sFavourite_InfoSettingSelection = Favourite_Contract.FavouriteInfo.TABLE_NAME + " = ? ";
+    private static final String sMovie_InfoSettingSelection = Movie_Contract.MovieInfo.TABLE_NAME + " = ? ";
 
-    private static final String sMovie_Info_FavouritesSettingSelection = Favourite_Contract.FavouriteInfo.TABLE_NAME + "."
-            + Favourite_Contract.FavouriteInfo._ID + " = ? AND " +
-            Favourite_Contract.FavouriteInfo._ID + " + ? ";
+    
+    private Cursor getMovie_Info(Uri uri, String[] projection, String sortOrder) {
 
-
-    private Cursor getFavourite_Info(Uri uri, String[] projection, String sortOrder) {
-
-        String Movie_Info_Setting = Favourite_Contract.FavouriteInfo.getFavouriteNameFromUri(uri);
+        String Movie_Info_Setting = Movie_Contract.MovieInfo.getMovieNameFromUri(uri);
 
 
         String[] selectionArgs;
         String selection;
 
-        selection = sFavourite_InfoSettingSelection;
+        selection = sMovie_InfoSettingSelection;
         selectionArgs = new String[]{Movie_Info_Setting};
 
         Log.v("Gavin", "in the provider");
 
-        return sMovie_Info_FavouritesQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+        return sMovie_InfoQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
                 selection,
                 selectionArgs,
@@ -68,9 +64,9 @@ public abstract class reviewContentProvider extends ContentProvider {
     static UriMatcher buildUriMatcher() {
 
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = Favourite_Contract.CONTENT_AUTHORITY;
+        final String authority = Movie_Contract.CONTENT_AUTHORITY;
 
-        matcher.addURI(authority, Favourite_Contract.PATH_FAVOURITE, FAVOURITE);
+        matcher.addURI(authority, Movie_Contract.PATH_MOVIE, MOVIE_INFO);
 
         return matcher;
 
@@ -90,16 +86,10 @@ public abstract class reviewContentProvider extends ContentProvider {
         switch (typeUri) {
 
             case MOVIE_INFO:
-                return Favourite_Contract.FavouriteInfo.CONTENT_TYPE;
-
-            case MOVIE_INFO_WITH_FAVOURITE:
-                return Favourite_Contract.FavouriteInfo.CONTENT_ITEM_TYPE;
-
-            case FAVOURITE:
-                return Favourite_Contract.FavouriteInfo.CONTENT_TYPE;
+                return Movie_Contract.MovieInfo.CONTENT_TYPE;
 
             default:
-                throw new UnsupportedOperationException("Unknown URI" + uri);
+                throw new UnsupportedOperationException("Unknown URI + 1" + uri);
         }
     }
 
@@ -115,37 +105,20 @@ public abstract class reviewContentProvider extends ContentProvider {
 
             case MOVIE_INFO:
                 retCursor = mOpenHelper.getReadableDatabase().query(
-                        Favourite_Contract.FavouriteInfo.TABLE_NAME,
+                        Movie_Contract.MovieInfo.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
                         null,
                         null,
                         sortOrder
+
                 );
-                break;
-
-            case MOVIE_INFO_WITH_FAVOURITE:
-                retCursor = getFavourite_Info(uri, projection, sortOrder);
-
-
-                break;
-
-            case FAVOURITE:
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                Favourite_Contract.FavouriteInfo.TABLE_NAME,
-                projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
-                );
-
                 break;
 
             default:
-                throw new UnsupportedOperationException("Unknown URI: " + uri);
+                throw new UnsupportedOperationException("Unknown URI: + 2" + uri);
+
         }
 
         retCursor.setNotificationUri(getContext().getContentResolver(),uri);
@@ -158,32 +131,22 @@ public abstract class reviewContentProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         Uri returnUri;
-
+        Log.v("Gavin", "Tester 1");
         switch(match) {
 
             case MOVIE_INFO: {
 
-                long _id = db.insert(Favourite_Contract.FavouriteInfo.TABLE_NAME, null, contentValues);
+                long _id = db.insert(Movie_Contract.MovieInfo.TABLE_NAME, null, contentValues);
                 Log.v("Gavin", "Inserting");
                 if (_id > 0)
-                    returnUri = Favourite_Contract.FavouriteInfo.buildFavourite_InfoUri(_id);
+                    returnUri = Movie_Contract.MovieInfo.buildMovie_InfoUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into" + uri);
                 break;
             }
 
-            case FAVOURITE: {
-
-                long _id = db.insert(Favourite_Contract.FavouriteInfo.TABLE_NAME, null, contentValues);
-                Log.v("Gavin", "Inserting");
-                if (_id > 0)
-                    returnUri = Favourite_Contract.FavouriteInfo.buildFavourite_InfoUri(_id);
-                else
-                    throw new android.database.SQLException("Failed to insert row into" + uri);
-                break;
-            }
             default:
-                throw new UnsupportedOperationException("Unknown uri" + uri);
+                throw new UnsupportedOperationException("Unknown uri + 3" + uri);
 
         }
 
@@ -202,17 +165,12 @@ public abstract class reviewContentProvider extends ContentProvider {
         switch(match){
 
             case MOVIE_INFO:{
-                rowsUpdated = db.update(Favourite_Contract.FavouriteInfo.TABLE_NAME, contentvalues, selection, selectionArgs);
-                break;
-            }
-
-            case FAVOURITE:{
-                rowsUpdated = db.update(Favourite_Contract.FavouriteInfo.TABLE_NAME, contentvalues, selection, selectionArgs);
+                rowsUpdated = db.update(Movie_Contract.MovieInfo.TABLE_NAME, contentvalues, selection, selectionArgs);
                 break;
             }
 
             default:
-                throw new UnsupportedOperationException("Unknown uri" + uri);
+                throw new UnsupportedOperationException("Unknown uri + 4" + uri);
         }
 
         if (rowsUpdated != 0) {
@@ -233,16 +191,12 @@ public abstract class reviewContentProvider extends ContentProvider {
         switch(match){
 
             case MOVIE_INFO:{
-                rowsDeleted = db.delete(Favourite_Contract.FavouriteInfo.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = db.delete(Movie_Contract.MovieInfo.TABLE_NAME, selection, selectionArgs);
                 break;
             }
 
-            case FAVOURITE:{
-                rowsDeleted = db.delete(Favourite_Contract.FavouriteInfo.TABLE_NAME, selection, selectionArgs);
-                break;
-            }
             default:
-                throw new UnsupportedOperationException("Unknown uri" + uri);
+                throw new UnsupportedOperationException("Unknown uri + 5" + uri);
         }
 
         getContext().getContentResolver().notifyChange(uri, null);
@@ -269,7 +223,7 @@ public abstract class reviewContentProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values){
                         Log.v("Gavin", "Trying to insert" + value);
-                        long _id = db.insert(Favourite_Contract.FavouriteInfo.TABLE_NAME, null, value);
+                        long _id = db.insert(Movie_Contract.MovieInfo.TABLE_NAME, null, value);
                         if(_id != -1) {
                             returnCount++;
                         }

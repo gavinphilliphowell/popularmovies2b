@@ -24,6 +24,10 @@ public class movieContentProvider extends ContentProvider {
 
     static final int MOVIE_INFO = 101;
 
+    private static final String AUTHORITY = Movie_Contract.CONTENT_AUTHORITY;
+
+
+
     private static final SQLiteQueryBuilder sMovie_InfoQueryBuilder;
 
     static {

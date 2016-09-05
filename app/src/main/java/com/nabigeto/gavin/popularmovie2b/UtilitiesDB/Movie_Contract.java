@@ -13,7 +13,7 @@ import com.nabigeto.gavin.popularmovie2b.R;
  */
 public class Movie_Contract {
 
-    public static final String CONTENT_AUTHORITY = ("com.nabigeto.gavin.popularmovie2b");
+    public static final String CONTENT_AUTHORITY = ("com.nabigeto.gavin.popularmovie2b.Sync.MovieSyncAdapter");
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final String PATH_MOVIE = "movie";

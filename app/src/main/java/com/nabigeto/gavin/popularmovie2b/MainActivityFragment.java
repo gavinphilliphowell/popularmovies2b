@@ -1,5 +1,7 @@
 package com.nabigeto.gavin.popularmovie2b;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -45,6 +47,16 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public static final String FRAGMENT_NAME = "Frag1";
 
     public int position;
+
+
+    public static final String AUTHORITY = "com.nabigeto.gavin.popularmovie2b.UtilitiesDB.movieContent.provider";
+    public static final String AUTHORITY_1 = "com.nabigeto.gavin.popularmovie2b.UtilitiesDB.reviewContent.provider";
+    public static final String ACCOUNT_TYPE = "popularmovie2b.nabigeto.com";
+    public static final String ACCOUNT = "dummyaccount";
+    public static final String ACCOUNT_R = "dummyaccount_r";
+
+    Account mAccount;
+    Account rAccount;
 
     private GridView gridView;
     private boolean ismUseCaseLayout;
@@ -100,8 +112,17 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         super.onCreate(saveInstanceState);
         setHasOptionsMenu(true);
 
+        mAccount = CreateSyncAccount(getContext());
 
-    if (isOnline() != true) {
+        Bundle settingsBundlem = new Bundle();
+        settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        settingsBundlem.putInt("gridview_default load", 1);
+
+        ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlem);
+
+
+        if (isOnline() != true) {
     Toast.makeText(getActivity(), "No network detected", Toast.LENGTH_LONG).show();
 
     } else {
@@ -111,6 +132,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.movie_options_menu, menu);
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -125,6 +151,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         Log.v("Gavin", "Got to this part - launching view");
+
+
+
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
 
         final GridView gridView = (GridView) view.findViewById(R.id.grid_view_movie);
@@ -156,11 +185,16 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                                                     Uri puri = Movie_Contract.MovieInfo.CONTENT_URI;
                                                     String ppuri = puri.toString();
                                                     Log.v("Gavin", "MainActivityFragment" + ppuri);
-                                      /**              ReviewSyncAdapter.initialiseSyncAdapter(getContext());
-                                         **/
 
-                                                    Bundle extras_m = new Bundle();
-                                                    extras_m.putString("reviewsync_location", movie_id);
+
+
+                                                    Bundle settingsBundle = new Bundle();
+                                                    settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+                                                    settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+                                                    settingsBundle.putString("reviewsync_database", movie_id);
+                                                    settingsBundle.putString("reviewsync_api", database_id);
+
+                                                    ContentResolver.requestSync(mAccount, AUTHORITY_1, settingsBundle);
 
                                                     Log.v("Gavin", movie_id);
                                                     Log.v("Gavin", database_id);
@@ -188,11 +222,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.movie_options_menu, menu);
 
-    }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -268,5 +298,30 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         }
 
 
+    public static Account CreateSyncAccount(Context context) {
+        Account newAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
+
+        AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
+
+        if (accountManager.addAccountExplicitly(newAccount, null, null)) {
+
+        } else {
+
+        }
+        return newAccount;
+    }
+
+    public static Account CreateSyncAccount_R(Context context) {
+        Account newAccount = new Account(ACCOUNT_R, ACCOUNT_TYPE);
+
+        AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
+
+        if (accountManager.addAccountExplicitly(newAccount, null, null)) {
+
+        } else {
+
+        }
+        return newAccount;
+    }
 
 }

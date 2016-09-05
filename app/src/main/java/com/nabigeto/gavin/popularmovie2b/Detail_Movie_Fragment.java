@@ -1,5 +1,7 @@
 package com.nabigeto.gavin.popularmovie2b;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
@@ -54,8 +56,14 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     /**
     String mMovie_ID_http = ("/movie/" + mMovie_ID + "/video");
     String mMovie_Trailer_http = ("/movie/" + mMovie_Trailer + "/reviews");
-**/
 
+
+    public static final String AUTHORITY = ".UtilitiesDB.movieContentProvider";
+    public static final String ACCOUNT_TYPE = "nabigeto.com";
+    public static final String ACCOUNT = "dummyaccount";
+
+    Account rAccount;
+    **/
     public String dUri;
 
     private static final String Youtube_KEY = "AIzaSyD4abokmDnidF1bBI2c5nrSMIb7Q73Tnnk";
@@ -188,9 +196,9 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(false);
-
-
-
+/**
+        rAccount = CreateSyncAccount(getContext());
+**/
     }
 
     @Override
@@ -418,8 +426,19 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     }
 
+/**
+    public static Account CreateSyncAccount(Context context) {
+        Account newAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
 
+        AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
 
+        if (accountManager.addAccountExplicitly(newAccount, null, null)) {
 
+        } else {
+
+        }
+        return newAccount;
+    }
+**/
 
 }
