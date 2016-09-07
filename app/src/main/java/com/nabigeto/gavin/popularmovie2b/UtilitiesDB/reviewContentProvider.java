@@ -20,7 +20,7 @@ public class reviewContentProvider extends ContentProvider {
 
     static final int MOVIE_INFO = 101;
 
-    private static final String AUTHORITY = Movie_Contract.CONTENT_AUTHORITY;
+    private static final String AUTHORITY = Movie_Contract.CONTENT_AUTHORITY_R;
 
     private static final SQLiteQueryBuilder sMovie_InfoQueryBuilder;
 
@@ -64,7 +64,7 @@ public class reviewContentProvider extends ContentProvider {
     static UriMatcher buildUriMatcher() {
 
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = Movie_Contract.CONTENT_AUTHORITY;
+        final String authority = Movie_Contract.CONTENT_AUTHORITY_R;
 
         matcher.addURI(authority, Movie_Contract.PATH_MOVIE, MOVIE_INFO);
 
@@ -86,7 +86,7 @@ public class reviewContentProvider extends ContentProvider {
         switch (typeUri) {
 
             case MOVIE_INFO:
-                return Movie_Contract.MovieInfo.CONTENT_TYPE;
+                return Movie_Contract.MovieInfo.CONTENT_TYPE_R;
 
             default:
                 throw new UnsupportedOperationException("Unknown URI + 1" + uri);
@@ -201,7 +201,7 @@ public class reviewContentProvider extends ContentProvider {
 
         getContext().getContentResolver().notifyChange(uri, null);
 
-
+        db.close();
         return rowsDeleted;
     }
 

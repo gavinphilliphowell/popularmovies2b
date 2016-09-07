@@ -72,6 +72,9 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         String show_database_location = Integer.toString(database_location);
         Log.v("Gavin", "Movie Sync Adapter extras" + show_database_location);
 
+        String api_selection_option = extras.getString("gridview_load");
+        Log.v("Gavin", "Movie Sync Adapter extras" + api_selection_option);
+
         Movie_db_Helper mdbmovie = new Movie_db_Helper(getContext());
 
         SQLiteDatabase db = mdbmovie.getWritableDatabase();
@@ -91,13 +94,21 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             builder.scheme("http")
                     .authority("api.themoviedb.org")
                     .appendPath("3")
-                    .appendPath("discover")
                     .appendPath("movie")
-                    .appendQueryParameter("sort_by", "popular.desc")
-                    .appendQueryParameter("release_date.gte", "1940")
-                    .appendQueryParameter("vote_count.get", "100")
+                    .appendPath(api_selection_option)
                     .appendQueryParameter("api_key", MOVIE_KEY);
 
+            /**
+             .authority("api.themoviedb.org")
+             .appendPath("3")
+             .appendPath("discover")
+             .appendPath("movie")
+             .appendQueryParameter("sort_by", api_selection_option)
+             .appendQueryParameter("release_date.gte", "1940")
+             .appendQueryParameter("vote_count.get", "100")
+             .appendQueryParameter("api_key", MOVIE_KEY);
+             *
+             */
             String Web_Location_URL = builder.build().toString();
 
             Log.v("Gavin", Web_Location_URL);

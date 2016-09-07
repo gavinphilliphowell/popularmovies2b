@@ -85,7 +85,8 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
            movie_api_id = extras.getString("reviewsync_api");
            movie_database_id = extras.getString("reviewsync_database");
         Log.v("Gavin", "extras loaded");
-        Log.v("Gavin", "Sync Movie Location" + movie_api_id);
+        Log.v("Gavin", "Sync Movie Location" + movie_database_id);
+           Log.v("Gavin", "Sync Movie ID" + movie_api_id);
        }
         else {
            movie_database_id = "8";
@@ -169,8 +170,8 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
             }
         }
         try {
-
-            get_movie_details_Json(movieJsonStr, movie_database_id);
+            Log.v("Gavin", "Gotten to this bit review sync adapter");
+            get_movie_details_Json(movieJsonStr, movie_api_id);
 
         } catch (JSONException e) {
             Log.e("Gavin", e.getMessage(), e);
@@ -199,6 +200,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
         final String OWM_ID = "id";
 
+        Log.v("Gavin", "Review Sync Adapter" + movie_id_string);
 
         try {
 
@@ -324,17 +326,19 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
                     if (trailer_source[0] != null) {
                         Log.v("Gavin", "checking this bit");
                         trailerValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1, trailer_source[0]);
-                        Log.v("Gavin", "checking this bit again");
+                        Log.v("Gavin", "checking this bit again" + trailer_source[0]);
                     }
-                    if (trailer_source[1] != null) {
+   /**                 if (trailer_source[1] != null) {
                         Log.v("Gavin", "checking this bit 2");
                         trailerValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2, trailer_source[1]);
+                        Log.v("Gavin", "checking this bit again" + trailer_source[1]);
                     }
                     if (trailer_source[2] != null) {
                         Log.v("Gavin", "checking this bit 3");
                         trailerValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3, trailer_source[2]);
+                        Log.v("Gavin", "checking this bit again" + trailer_source[2]);
                     }
-
+**/
                     break;
 
                     default:
@@ -351,7 +355,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
             Log.v("Gavin","got to this bit loader 2");
 
             int num_rows = getContext().getContentResolver().update(
-                    Movie_Contract.MovieInfo.CONTENT_URI,
+                    Movie_Contract.MovieInfo.CONTENT_URI_R,
                     reviewValues,
                     rSelectionClause,
                     rSelectionArgs
@@ -373,8 +377,8 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
                 String[] rSelectionArgs = {movie_id_string};
                 Log.v("Gavin","got to this bit loader 2 t");
 
-                int num_rows = getContext().getContentResolver().update(
-                        Movie_Contract.MovieInfo.CONTENT_URI,
+                getContext().getContentResolver().update(
+                        Movie_Contract.MovieInfo.CONTENT_URI_R,
                         trailerValues,
                         rSelectionClause,
                         rSelectionArgs
@@ -383,8 +387,10 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
             }
             else {
                 Log.v("Gavin", "No trailers");
-
             }
+
+            db.close();
+
 /**
                 cMector.add(movieValues);
 
@@ -459,7 +465,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
         Account account = getSyncAccount(context);
-        String authority = context.getString(R.string.content_authority_movie);
+        String authority = context.getString(R.string.content_authority_review);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             SyncRequest request = new SyncRequest.Builder().
                     syncPeriodic(syncInterval, flexTime).
@@ -512,7 +518,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
     public static void initialiseSyncAdapter(Context context){
         getSyncAccount(context);
 
-        Log.v("Gavin", "Sync adapter launched 2");
+        Log.v("Gavin", "Review Sync adapter launched 2");
 
     }
 

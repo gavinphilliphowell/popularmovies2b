@@ -13,4 +13,14 @@
         android:orderInCategory="99"
         app:showAsAction="never" />
 
+    <item android:id="@+id/movie_options_sort3"
+        android:title="Favourites"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/movie_options_sort4"
+        android:title="Settings"
+        android:orderInCategory="101"
+        app:showAsAction="never" />
+
 </menu>

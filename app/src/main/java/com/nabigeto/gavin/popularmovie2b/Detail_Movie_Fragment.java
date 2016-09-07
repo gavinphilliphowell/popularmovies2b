@@ -254,7 +254,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     Log.v("Gavin", "Detail Loader cursor created");
                     return new CursorLoader(
                             getActivity(),
-                            Movie_Contract.MovieInfo.CONTENT_URI,
+                            Movie_Contract.MovieInfo.CONTENT_URI_R,
                             DETAIL_COLUMNS,
                             position,
                             null,
@@ -278,7 +278,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     Log.v("Gavin", "Detail Loader cursor created");
                     return new CursorLoader(
                             getActivity(),
-                            Movie_Contract.MovieInfo.CONTENT_URI,
+                            Movie_Contract.MovieInfo.CONTENT_URI_R,
                             DETAIL_COLUMNS,
                             position,
                             null,
@@ -303,7 +303,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     Log.v("Gavin", "Trailer Loader cursor created");
                     return new CursorLoader(
                             getActivity(),
-                            Movie_Contract.MovieInfo.CONTENT_URI,
+                            Movie_Contract.MovieInfo.CONTENT_URI_R,
                             DETAIL_COLUMNS,
                             position,
                             null,

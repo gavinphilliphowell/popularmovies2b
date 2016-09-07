@@ -48,6 +48,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     public int position;
 
+    public String movie_selection_type;
+
 
     public static final String AUTHORITY = "com.nabigeto.gavin.popularmovie2b.UtilitiesDB.movieContent.provider";
     public static final String AUTHORITY_1 = "com.nabigeto.gavin.popularmovie2b.UtilitiesDB.reviewContent.provider";
@@ -114,13 +116,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         mAccount = CreateSyncAccount(getContext());
 
-        Bundle settingsBundlem = new Bundle();
-        settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        settingsBundlem.putInt("gridview_default load", 1);
-
-        ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlem);
-
 
         if (isOnline() != true) {
     Toast.makeText(getActivity(), "No network detected", Toast.LENGTH_LONG).show();
@@ -142,6 +137,40 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
+        String id_selection = Integer.toString(id);
+        Log.v("Gavin", "Selection" + id_selection);
+
+        switch(id){
+
+            case(R.id.movie_options_sort1):
+                movie_selection_type = "popular";
+
+                Bundle settingsBundlem = new Bundle();
+
+                settingsBundlem.putString("gridview_load", movie_selection_type);
+                settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+                settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+                ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlem);
+                break;
+
+            case(R.id.movie_options_sort2):
+                movie_selection_type = "top_rated";
+
+                Bundle settingsBundlen = new Bundle();
+                settingsBundlen.putString("gridview_load", movie_selection_type);
+                settingsBundlen.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+                settingsBundlen.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+                ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlen);
+                break;
+
+            case(R.id.movie_options_sort3):
+                movie_selection_type = "favourite";
+                break;
+
+            case(R.id.movie_options_sort4):
+
+                break;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -152,6 +181,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                              final Bundle savedInstanceState) {
         Log.v("Gavin", "Got to this part - launching view");
 
+        String start_bundle = "popular";
+        Bundle settingsBundlem = new Bundle();
+
+        settingsBundlem.putString("gridview_default load", start_bundle);
+        settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+
+        ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlem);
 
 
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
@@ -182,7 +219,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                                                     Log.v("Gavin", "MainActivityFragment" + movie_id);
                                                     Log.v("Gavin", "MainActivityFragment" + image);
                                                     Log.v("Gavin", "MainActivityFragment" + info);
-                                                    Uri puri = Movie_Contract.MovieInfo.CONTENT_URI;
+                                                    Uri puri = Movie_Contract.MovieInfo.CONTENT_URI_R;
                                                     String ppuri = puri.toString();
                                                     Log.v("Gavin", "MainActivityFragment" + ppuri);
 
@@ -191,10 +228,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                                                     Bundle settingsBundle = new Bundle();
                                                     settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
                                                     settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-                                                    settingsBundle.putString("reviewsync_database", movie_id);
-                                                    settingsBundle.putString("reviewsync_api", database_id);
+                                                    settingsBundle.putString("reviewsync_database", database_id);
+                                                    settingsBundle.putString("reviewsync_api", movie_id);
 
-                                                    ContentResolver.requestSync(mAccount, AUTHORITY_1, settingsBundle);
+                                                    ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY_R, settingsBundle);
 
                                                     Log.v("Gavin", movie_id);
                                                     Log.v("Gavin", database_id);

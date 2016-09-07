@@ -17,8 +17,8 @@
     <string name="title_activity_settings">Settings</string>
     <string name="sync_account_type"> popularmovie2b.nabigeto.com </string>
     <string name="sync_account_settings">  </string>
-    <string name="content_authority_movie"> com.nabigeto.gavin.popularmovie2b </string>
-    <string name="content_authority_review"> com.nabigeto.gavin.popularmovie2b </string>
+    <string name="content_authority_movie"> com.nabigeto.gavin.popularmovie2b.Sync.MovieSyncAdapter</string>
+    <string name="content_authority_review"> com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter </string>
 
 
 </resources>
