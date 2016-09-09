@@ -12,11 +12,11 @@ import android.util.Log;
 /**
  * Created by Gavin on 3/29/2016.
  */
-public class reviewContentProvider extends ContentProvider {
+public class trailerContentProvider extends ContentProvider {
 
     public static final UriMatcher sUriMatcher = buildUriMatcher();
 
-    private Movie_db_Helper rOpenHelper;
+    private Movie_db_Helper mOpenHelper;
 
     static final int MOVIE_INFO = 101;
 
@@ -50,7 +50,7 @@ public class reviewContentProvider extends ContentProvider {
 
         Log.v("Gavin", "in the provider");
 
-        return sMovie_InfoQueryBuilder.query(rOpenHelper.getReadableDatabase(),
+        return sMovie_InfoQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
                 selection,
                 selectionArgs,
@@ -75,7 +75,7 @@ public class reviewContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate(){
-        rOpenHelper = new Movie_db_Helper(getContext());
+        mOpenHelper = new Movie_db_Helper(getContext());
         return true;
     }
 
@@ -104,7 +104,7 @@ public class reviewContentProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
 
             case MOVIE_INFO:
-                retCursor = rOpenHelper.getReadableDatabase().query(
+                retCursor = mOpenHelper.getReadableDatabase().query(
                         Movie_Contract.MovieInfo.TABLE_NAME,
                         projection,
                         selection,
@@ -128,7 +128,7 @@ public class reviewContentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues contentValues){
 
-        final SQLiteDatabase db = rOpenHelper.getWritableDatabase();
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         Uri returnUri;
         Log.v("Gavin", "Tester 1");
@@ -158,7 +158,7 @@ public class reviewContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues contentvalues, String selection , String[] selectionArgs){
-        final SQLiteDatabase db = rOpenHelper.getWritableDatabase();
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         int rowsUpdated;
 
@@ -182,7 +182,7 @@ public class reviewContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String [] selectionArgs){
-        final SQLiteDatabase db = rOpenHelper.getWritableDatabase();
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         int rowsDeleted;
 
@@ -210,7 +210,7 @@ public class reviewContentProvider extends ContentProvider {
     public int bulkInsert(Uri uri, ContentValues[] values){
 
         Log.v("Gavin", "Bulk insert underway");
-        final SQLiteDatabase db = rOpenHelper.getWritableDatabase();
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         Log.v("Gavin", "Bulk insert completed");
         final int match = sUriMatcher.match(uri);
         String smatch = Integer.toString(match);
@@ -243,7 +243,7 @@ public class reviewContentProvider extends ContentProvider {
 
     @Override
     public void shutdown() {
-        rOpenHelper.close();
+        mOpenHelper.close();
         super.shutdown();
     }
     }

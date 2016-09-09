@@ -19,6 +19,6 @@
     <string name="sync_account_settings">  </string>
     <string name="content_authority_movie"> com.nabigeto.gavin.popularmovie2b.Sync.MovieSyncAdapter</string>
     <string name="content_authority_review"> com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter </string>
-
+    <string name="content_authority_trailer"> com.nabigeto.gavin.popularmovie2b.Sync.TrailerSyncAdapter </string>
 
 </resources>

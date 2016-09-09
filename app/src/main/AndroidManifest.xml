@@ -60,7 +60,12 @@
             android:exported="true"
             android:syncable="true" />
 
-
+        <provider
+            android:authorities="com.nabigeto.gavin.popularmovie2b.Sync.TrailerSyncAdapter"
+            android:name=".UtilitiesDB.trailerContentProvider"
+            android:permission="true"
+            android:exported="true"
+            android:syncable="true" />
 
         <!-- SyncAdapter's dummy authentication service -->
         <service android:name=".Sync.MovieAuthenticatorService">
@@ -104,6 +109,27 @@
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter_review" />
+        </service>
+
+        <service android:name=".Sync.TrailerAuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator_t" />
+        </service>
+        <!-- The Review SyncAdapter Service-->
+        <service
+            android:name=".Sync.TrailerSyncService"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter_trailer" />
         </service>
     </application>
 

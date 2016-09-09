@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -383,37 +384,82 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     data_d.moveToFirst();
 
                     String movieReview1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW1);
-                    dReview1.setText(movieReview1);
+                    if (movieReview1 != "b"){
+                        dReview1.setVisibility(View.VISIBLE);
+                        dReview1.setText(movieReview1);
+                    }
 
                     String movieReviewAuthor1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR1);
-                    dReviewauthor1.setText(movieReviewAuthor1);
+                    if (movieReviewAuthor1 != "b"){
+                        dReviewauthor1.setVisibility(View.VISIBLE);
+                        dReviewauthor1.setText(movieReviewAuthor1);
+                    }
 
                     String movieReview2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW2);
-                    dReview2.setText(movieReview2);
+                    if (movieReview2 != "b"){
+                        dReview2.setVisibility(View.VISIBLE);
+                        dReview2.setText(movieReview2);
+                    }
 
                     String movieReviewAuthor2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR2);
-                    dReviewauthor2.setText(movieReviewAuthor2);
+                    if (movieReviewAuthor2 != "b"){
+                        dReviewauthor2.setVisibility(View.VISIBLE);
+                        dReviewauthor2.setText(movieReviewAuthor2);
+                    }
 
                     String movieReview3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW3);
-                    dReview3.setText(movieReview3);
+                    if (movieReview3 != "b"){
+                        dReview3.setVisibility(View.VISIBLE);
+                        dReview3.setText(movieReview3);
+                    }
 
                     String movieReviewAuthor3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR3);
-                    dReviewauthor3.setText(movieReviewAuthor3);
+                    if (movieReviewAuthor3 != "b"){
+                        dReviewauthor3.setVisibility(View.VISIBLE);
+                        dReviewauthor3.setText(movieReviewAuthor3);
+                    }
 
                 break;
 
                 case TRAILER_LOADER:
 
+                    String url_youtube;
+
                     data_d.moveToFirst();
 
                     String movieTrailer1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER1);
-                    dReview1.setText(movieTrailer1);
+                    if (movieTrailer1 != "b"){
+                        dTrailer1.setVisibility(View.VISIBLE);
+                        url_youtube = "http://img.youtube.com/vi/" + movieTrailer1 + "/1.jpg";
+                        Log.v("Gavin", url_youtube);
+                        Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer1);
+            /**            dTrailer1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Log.v("Gavin", "Youtube video launched");
+                            }
+                        });
+             **/
+                    }
+
 
                     String movieTrailer2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER2);
-                    dReview2.setText(movieTrailer2);
+                    if (movieTrailer2 != "b"){
+                        dTrailer2.setVisibility(View.VISIBLE);
+                        url_youtube = "http://img.youtube.com/vi/" + movieTrailer2 + "/1.jpg";
+                        Log.v("Gavin", url_youtube);
+                        Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer2);
+
+                    }
 
                     String movieTrailer3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER3);
-                    dReview3.setText(movieTrailer3);
+                    if (movieTrailer3 != "b"){
+                        dTrailer3.setVisibility(View.VISIBLE);
+                        url_youtube = "http://img.youtube.com/vi/" + movieTrailer3 + "/1.jpg";
+                        Log.v("Gavin", url_youtube);
+                        Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer3);
+
+                    }
         }
         ;
 

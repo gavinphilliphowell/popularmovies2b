@@ -233,6 +233,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                                                     ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY_R, settingsBundle);
 
+                                                    Bundle settingsBundlet = new Bundle();
+                                                    settingsBundlet.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+                                                    settingsBundlet.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+                                                    settingsBundlet.putString("trailersync_database", database_id);
+                                                    settingsBundlet.putString("trailersync_api", movie_id);
+
+                                                    ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY_T, settingsBundlet);
+
                                                     Log.v("Gavin", movie_id);
                                                     Log.v("Gavin", database_id);
 

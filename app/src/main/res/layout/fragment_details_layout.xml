@@ -70,6 +70,7 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:id="@+id/movie_review1_author"
+        android:visibility="invisible"
         />
 
     <TextView
@@ -77,6 +78,7 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:id="@+id/movie_review1"
+        android:visibility="invisible"
         />
 
     <TextView
@@ -84,6 +86,7 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:id="@+id/movie_review2_author"
+        android:visibility="invisible"
         />
 
     <TextView
@@ -91,6 +94,7 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:id="@+id/movie_review2"
+        android:visibility="invisible"
         />
 
     <TextView
@@ -98,6 +102,7 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:id="@+id/movie_review3_author"
+        android:visibility="invisible"
         />
 
     <TextView
@@ -105,30 +110,34 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:id="@+id/movie_review3"
+        android:visibility="invisible"
         />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/movie_Trailer1"
+            android:visibility="invisible"
             />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/movie_Trailer2"
+            android:visibility="invisible"
             />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/movie_Trailer3"
+            android:visibility="invisible"
             />
 
     </LinearLayout>
