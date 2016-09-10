@@ -3,9 +3,11 @@ package com.nabigeto.gavin.popularmovie2b;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -15,12 +17,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter;
+import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Favourite_Contract;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
+import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_db_Helper;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -72,6 +77,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     private static final int DETAIL_LOADER = 1;
     private static final  int REVIEW_LOADER = 2;
     private static final int TRAILER_LOADER = 3;
+    private static final int FAVOURITE_LOADER = 4;
 
 
     private static final String [] DETAIL_COLUMNS = {
@@ -144,6 +150,8 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public ImageView dTrailer1;
     public ImageView dTrailer2;
     public ImageView dTrailer3;
+
+    public ImageButton favouriteButton;
 
 
     private static final String [] REVIEW_COLUMNS ={
@@ -229,10 +237,48 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         dTrailer2 = (ImageView) rootView.findViewById(R.id.movie_Trailer2);
         dTrailer3 = (ImageView) rootView.findViewById(R.id.movie_Trailer3);
 
+        favouriteButton = (ImageButton) rootView.findViewById(R.id.favourite_button);
+
+        favouriteButton.setOnClickListener(new View.OnClickListener() {
+
+                                               @Override
+                                               public void onClick(View v) {
+
+                                                   boolean favourite_state = readState();
+
+                                                   if (favourite_state = true) {
+
+                                                       favouriteButton.setBackgroundResource(android.R.drawable.btn_star_big_off);
+                                                       setState(false);
+
+                                                   } else {
+
+                                                       favouriteButton.setBackgroundResource(android.R.drawable.btn_star_big_on);
+                                                       setState(true);
+                                                   }
+                                               }
+
+                                           });
+
         Log.v("Gavin", "About to load rootview");
         return rootView;
     }
 
+    public boolean readState(){
+
+        boolean favourite_State;
+
+
+        return favourite_State;
+    }
+
+    private void setState(boolean s_state){
+
+        boolean favourite_State = s_state;
+
+        getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
+
+    }
 
 
     @Override
@@ -317,6 +363,29 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                 Log.v("Gavin", "Loader cursor finished" + dUri);
                 return null;
 
+            case FAVOURITE_LOADER:
+
+                position = " _ID = " + dUri;
+                /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
+                 **/
+                row_Pref = dUri;
+                Log.v("Gavin", "dUuri" + row_Pref);
+                if (null != dUri) {
+                    Log.v("Gavin", "Favourite Loader cursor created");
+                    return new CursorLoader(
+                            getActivity(),
+                            Movie_Contract.MovieInfo.CONTENT_URI_R,
+                            DETAIL_COLUMNS,
+                            position,
+                            null,
+                            null
+
+                    );
+
+                }
+                Log.v("Gavin", "Loader cursor finished" + "Favourite_Loader");
+                Log.v("Gavin", "Loader cursor finished" + dUri);
+                return null;
         }
 
         return null;
@@ -461,6 +530,8 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     }
         }
+
+
         ;
 
     }
