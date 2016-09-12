@@ -10,11 +10,11 @@ import android.util.Log;
  */
 public class Favourite_Contract {
 
-
+    public static final String CONTENT_AUTHORITY = ("com.nabigeto.gavin.popularmovie2b.Sync.MovieSyncAdapter");
     public static final String CONTENT_AUTHORITY_R = ("com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter");
     public static final String CONTENT_AUTHORITY_T = ("com.nabigeto.gavin.popularmovie2b.Sync.TrailerSyncAdapter");
 
-
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final Uri BASE_CONTENT_URI_R = Uri.parse("content://" + CONTENT_AUTHORITY_R);
     public static final Uri BASE_CONTENT_URI_T = Uri.parse("content://" + CONTENT_AUTHORITY_T);
 
@@ -24,7 +24,7 @@ public class Favourite_Contract {
 
     public static final class FavouriteInfo implements BaseColumns {
 
-
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE).build();
         public static final Uri CONTENT_URI_R = BASE_CONTENT_URI_R.buildUpon().appendPath(PATH_MOVIE).build();
         public static final Uri CONTENT_URI_T = BASE_CONTENT_URI_T.buildUpon().appendPath(PATH_MOVIE).build();
 
@@ -37,7 +37,6 @@ public class Favourite_Contract {
         public static final String TABLE_NAME = "favourite";
 
         public static final String _ID = "_id";
-        public static final String COLUMN_NAME_ENTRY_ID = "entryid";
         public static final String COLUMN_NAME_MOVIE_ID = "id";
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_RELEASE_DATE = "release_date";
@@ -57,8 +56,14 @@ public class Favourite_Contract {
         public static final String COLUMN_NAME_TRAILER2 = "trailer2";
         public static final String COLUMN_NAME_TRAILER3 = "trailer3";
 
-        public static final String COLUMN_FAVOURITE = "favourite";
 
+
+        public static Uri buildMovie_InfoUri(long id) {
+            Log.v("Gavin", "Build MovieInfoURI");
+
+            return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
+
+        }
 
         public static Uri buildMovie_InfoUri_R(long id) {
             Log.v("Gavin", "Build MovieInfoURI");

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 
 import com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Favourite_Contract;
+import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Favourite_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_db_Helper;
 import com.squareup.picasso.Picasso;
@@ -197,7 +199,6 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         Log.v("Gavin", "uri " + dUri);
 
 
-
     }
 
     @Override
@@ -205,6 +206,15 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(false);
+
+        Favourite_db_Helper favourite_db_helper = new Favourite_db_Helper(getContext());
+
+        SQLiteDatabase db = favourite_db_helper.getWritableDatabase();
+
+        favourite_db_helper.onClear(db);
+        favourite_db_helper.onCreate(db);
+
+        Log.v("Gavin", "Favourite database and table created");
 /**
         rAccount = CreateSyncAccount(getContext());
 **/
@@ -266,7 +276,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     public boolean readState(){
 
-        boolean favourite_State;
+        boolean favourite_State = false;
 
 
         return favourite_State;
@@ -276,7 +286,13 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
         boolean favourite_State = s_state;
 
-        getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
+        if (s_state = true){
+
+            getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
+        }
+
+
+
 
     }
 
@@ -529,10 +545,78 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                         Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer3);
 
                     }
+
+            case FAVOURITE_LOADER:
+
+                data_d.moveToFirst();
+
+                String movie_id = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_ID_D);
+                String movie_TitleF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TITLE_D);
+                Log.v("Gavin", "Favourite_Loader" + movie_TitleF);
+                String movie_ReleaseF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RELEASE_DATE_D);
+                String movie_RatingF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RATING_D);
+                String movie_ImageF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_IMAGE_FILE_D);
+                String movie_InfoF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO_D);
+                String movie_Review1F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW1);
+                Log.v("Gavin", "Favourite_Loader" + movie_Review1F);
+                String movie_Review1_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR1);
+                String movie_Review2F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW2);
+                String movie_Review2_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR2);
+                String movie_Review3F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW3);
+                String movie_Review3_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR3);
+                String movie_Trailer1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER1);
+                String movie_Trailer2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER2);
+                String movie_Trailer3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER3);
+
+                Favourite_db_Helper fdbHelper = new Favourite_db_Helper(getContext());
+
+                SQLiteDatabase db = fdbHelper.getWritableDatabase();
+
+                ContentValues favouriteValues = new ContentValues();
+
+                Log.v("Gavin", "Favourite Loader upload ++" + movie_id);
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID, movie_id);
+
+                Log.v("Gavin", "Favourite Loader upload" + movie_TitleF);
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE, movie_TitleF);
+
+                Log.v("Gavin", "Favourite Loader upload" + movie_ReleaseF);
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE, movie_ReleaseF);
+
+                Log.v("Gavin", "Favourite Loader upload" + movie_RatingF);
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING, movie_RatingF);
+
+                Log.v("Gavin", "Favourite Loader upload" +  movie_ImageF);
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE, movie_ImageF);
+
+                Log.v("Gavin", "Favourite Loader upload" + movie_InfoF);
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_INFO, movie_InfoF);
+
+                Log.v("Gavin", "Favourite Loader upload" + movie_Review1F);
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1, movie_Review1F);
+
+                Log.v("Gavin", "Favourite Loader upload" + movie_Review1_AuthorF);
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR1, movie_Review1_AuthorF);
+
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW2, movie_Review2F);
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR2, movie_Review2_AuthorF);
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW3, movie_Review3F);
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3, movie_Review3_AuthorF);
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1, movie_Trailer1);
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2, movie_Trailer2);
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3, movie_Trailer3);
+
+
+                long id_insert = db.insert(Favourite_Contract.FavouriteInfo.TABLE_NAME, null, favouriteValues);
+
+                db.close();
+
         }
 
 
-        ;
+
+
+
 
     }
 

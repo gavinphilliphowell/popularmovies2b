@@ -165,6 +165,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
             case(R.id.movie_options_sort3):
                 movie_selection_type = "favourite";
+
+
                 break;
 
             case(R.id.movie_options_sort4):

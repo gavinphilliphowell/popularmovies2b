@@ -17,15 +17,18 @@ import android.widget.Switch;
  * Created by Gavin on 3/29/2016.
  */
 public class movieContentProvider extends ContentProvider {
-
+/**
     public static final UriMatcher sUriMatcher = buildUriMatcher();
-
+**/
     private Movie_db_Helper mOpenHelper;
 
+    private static final UriMatcher sUriMatcher;
+
     static final int MOVIE_INFO = 101;
+    static final int FAVOURITE_INFO = 102;
 
     private static final String AUTHORITY = Movie_Contract.CONTENT_AUTHORITY;
-
+    private static final String AUTHORITY_F = Favourite_Contract.CONTENT_AUTHORITY;
 
 
     private static final SQLiteQueryBuilder sMovie_InfoQueryBuilder;
@@ -64,6 +67,24 @@ public class movieContentProvider extends ContentProvider {
                 null,
                 sortOrder);
 
+
+    }
+
+    static {
+
+        sUriMatcher = new UriMatcher(0);
+
+        sUriMatcher.addURI(
+                movieContentProvider.AUTHORITY,
+                Movie_Contract.MovieInfo.TABLE_NAME,
+                MOVIE_INFO
+        );
+
+        sUriMatcher.addURI(
+                movieContentProvider.AUTHORITY_F,
+                Favourite_Contract.FavouriteInfo.TABLE_NAME,
+                FAVOURITE_INFO
+        );
 
     }
 
@@ -146,6 +167,17 @@ public class movieContentProvider extends ContentProvider {
                 Log.v("Gavin", "Inserting");
                 if (_id > 0)
                     returnUri = Movie_Contract.MovieInfo.buildMovie_InfoUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into" + uri);
+                break;
+            }
+
+            case FAVOURITE_INFO: {
+
+                long _id = db.insert(Favourite_Contract.FavouriteInfo.TABLE_NAME, null, contentValues);
+                Log.v("Gavin", "Inserting");
+                if (_id > 0)
+                    returnUri = Favourite_Contract.FavouriteInfo.buildMovie_InfoUri_R(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into" + uri);
                 break;
@@ -252,6 +284,13 @@ public class movieContentProvider extends ContentProvider {
         mOpenHelper.close();
         super.shutdown();
     }
+
+
+    public void close(){
+        mOpenHelper.close();
+    }
+
+
     }
 
 
