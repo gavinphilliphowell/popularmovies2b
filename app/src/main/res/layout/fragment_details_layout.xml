@@ -1,10 +1,11 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:andriod="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_details_layout"
     android:background="@color/material_blue_grey_900"
 
->
+    >
 
 
 <LinearLayout
@@ -51,6 +52,14 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#FFFFFF"
+        />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text= "Favourite"
+        android:id="@+id/checkbox_favourite"
+        android:onClick="onCheckboxClicked"
         />
 
     <ImageButton

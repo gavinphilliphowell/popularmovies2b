@@ -29,10 +29,14 @@ import android.widget.Toast;
 import com.nabigeto.gavin.popularmovie2b.Adapter.Custom_Movie_Adapter;
 import com.nabigeto.gavin.popularmovie2b.Sync.MovieSyncAdapter;
 import com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter;
+import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Favourite_Contract;
+import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Favourite_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_db_Helper;
+import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.movieContentProvider;
 
 import java.net.URI;
+import java.util.ArrayList;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -69,6 +73,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     private static final String SELECTED_KEY = "selected_position";
 
     private static final int MOVIE_LOADER = 0;
+    private static final int FAVOURITE_LOADER = 1;
 
     public static final String [] MOVIE_COLUMNS = {
             Movie_Contract.MovieInfo.TABLE_NAME + "." +
@@ -84,6 +89,18 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
 
     };
+
+
+    public static final String [] FAVOURITE_COLUMNS = {
+            Favourite_Contract.FavouriteInfo.TABLE_NAME + "." +
+            Favourite_Contract.FavouriteInfo._ID,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_INFO,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE
+            };
+
 
     public static final int _ID = 0;
     public static final int COL_MOVIE_ENTRY_ID = 1;
@@ -115,6 +132,15 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         setHasOptionsMenu(true);
 
         mAccount = CreateSyncAccount(getContext());
+
+        Favourite_db_Helper favourite_db_helper = new Favourite_db_Helper(getContext());
+
+        SQLiteDatabase db = favourite_db_helper.getWritableDatabase();
+
+        favourite_db_helper.onClear(db);
+        favourite_db_helper.onCreate(db);
+
+        Log.v("Gavin", "Favourite database and table created");
 
 
         if (isOnline() != true) {
@@ -166,6 +192,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             case(R.id.movie_options_sort3):
                 movie_selection_type = "favourite";
 
+                getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
 
                 break;
 
@@ -292,13 +319,20 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle){
-        String sortOrder = Movie_Contract.MovieInfo.COLUMN_NAME_RATING + " ASC";
-        Log.v("Gavin", sortOrder);
-        String view2 = Movie_Contract.MovieInfo.CONTENT_URI.toString();
-        Log.v("Gavin", "Main Activity_1" + view2);
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
-        Uri movie = Movie_Contract.MovieInfo.buildMovie_InfoUri(i);
+
+        switch (i) {
+
+
+            case MOVIE_LOADER:
+
+                String sortOrder = Movie_Contract.MovieInfo.COLUMN_NAME_RATING + " ASC";
+                Log.v("Gavin", sortOrder);
+                String view2 = Movie_Contract.MovieInfo.CONTENT_URI.toString();
+                Log.v("Gavin", "Main Activity_1" + view2);
+
+                Uri movie = Movie_Contract.MovieInfo.buildMovie_InfoUri(i);
 
                 return new CursorLoader(getActivity(),
                         Movie_Contract.MovieInfo.CONTENT_URI,
@@ -306,21 +340,103 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                         null,
                         null,
                         sortOrder);
+
+            case FAVOURITE_LOADER:
+
+                Favourite_db_Helper favourite_db_helper = new Favourite_db_Helper(getContext());
+
+                SQLiteDatabase db = favourite_db_helper.getReadableDatabase();
+
+                String favourite_table = Favourite_Contract.FavouriteInfo.TABLE_NAME;
+                String favouritesortOrder = Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
+
+
+                Cursor c = db.query(favourite_table, FAVOURITE_COLUMNS, null, null, null, null, favouritesortOrder);
+
+                mAdapter.changeCursor(c);
+
+                db.close();
+
+                /**
+
+                ArrayList favourites_Array = new ArrayList();
+                int c_length = c.getCount();
+
+
+                for (int a = 0; a < c_length; a++ ) {
+
+                    favourites_Array = c.move(a);
+
+                }
+
+
+
+
+
+
+                Uri favourite = Favourite_Contract.FavouriteInfo.CONTENT_URI_F;
+
+                String favourite_uri = favourite.toString();
+
+                Log.v("Gavin", "Loading favourites" + favourite_uri);
+
+                String favouritesortOrder = Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
+
+                Cursor cursorD;
+
+                return new CursorLoader(getActivity(), favourite, FAVOURITE_COLUMNS, null, null, favouritesortOrder);
+**/
+        }
+
+        return null;
     }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader){
-        mAdapter.swapCursor(null);
-    }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-       /** mAdapter.swapCursor(data); **/
-        mAdapter.changeCursor(data);
+
+        int loader_id;
+
+        loader_id = loader.getId();
+
+        switch (loader_id){
+
+            case MOVIE_LOADER:
+                mAdapter.changeCursor(data);
+            break;
+
+            case FAVOURITE_LOADER:
+                mAdapter.changeCursor(data);
+            break;
+
+        }
+
+
    /**     if (mPosition != GridView.INVALID_POSITION) {
             gridView.smoothScrollToPosition(mPosition);
         }  **/
     }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader){
+
+        int loader_id;
+
+        loader_id = loader.getId();
+
+        switch (loader_id){
+
+            case MOVIE_LOADER:
+                mAdapter.swapCursor(null);
+                break;
+
+            case FAVOURITE_LOADER:
+                mAdapter.swapCursor(null);
+                break;
+        }
+
+    }
+
 
     @Override
     public void onResume() {

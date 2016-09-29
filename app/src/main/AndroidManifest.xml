@@ -52,7 +52,13 @@
             android:exported="true"
             android:syncable="true" />
 
-
+        <provider
+            android:authorities="com.nabigeto.gavin.popularmovie2b.favourite.provider"
+            android:name=".UtilitiesDB.favouriteContentProvider"
+            android:permission="true"
+            android:exported="true"
+            android:syncable="true" />
+-----
         <provider
             android:authorities="com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter"
             android:name=".UtilitiesDB.reviewContentProvider"

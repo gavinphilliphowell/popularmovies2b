@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ShareActionProvider;
@@ -132,6 +133,24 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public static final int COL_MOVIE_TRAILER = 7;
 **/
 
+    public static final String [] Favourite_Columns = {
+            Favourite_Contract.FavouriteInfo.TABLE_NAME + "." +
+            Favourite_Contract.FavouriteInfo._ID,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_INFO,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID
+
+    };
+
+    public static final int _ID = 20;
+    public static final int COL_FAVOURITE_TITLE = 21;
+    public static final int COL_FAVOURITE_RATING = 22;
+    public static final int COL_FAVOURITE_RELEASE_DATE = 23;
+    public static final int COL_FAVOURITE_INFO = 24;
+    public static final int COL_FAVOURITE_MOVIE_ID = 25;
+
 
     public ImageView dImage_File;
     public TextView dID;
@@ -154,6 +173,23 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public ImageView dTrailer3;
 
     public ImageButton favouriteButton;
+
+    private String m_id;
+    private String movie_id;
+    private String movie_TitleF;
+    private String movie_ReleaseF;
+    private String movie_RatingF;
+    private String movie_ImageF;
+    private String movie_InfoF;
+    private String movie_Review1F;
+    private String movie_Review1_AuthorF;
+    private String movie_Review2F;
+    private String movie_Review2_AuthorF;
+    private String movie_Review3F;
+    private String movie_Review3_AuthorF;
+    private String movie_Trailer1;
+    private String movie_Trailer2;
+    private String movie_Trailer3;
 
 
     private static final String [] REVIEW_COLUMNS ={
@@ -207,14 +243,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         setRetainInstance(true);
         setHasOptionsMenu(false);
 
-        Favourite_db_Helper favourite_db_helper = new Favourite_db_Helper(getContext());
 
-        SQLiteDatabase db = favourite_db_helper.getWritableDatabase();
-
-        favourite_db_helper.onClear(db);
-        favourite_db_helper.onCreate(db);
-
-        Log.v("Gavin", "Favourite database and table created");
 /**
         rAccount = CreateSyncAccount(getContext());
 **/
@@ -247,7 +276,87 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         dTrailer2 = (ImageView) rootView.findViewById(R.id.movie_Trailer2);
         dTrailer3 = (ImageView) rootView.findViewById(R.id.movie_Trailer3);
 
-        favouriteButton = (ImageButton) rootView.findViewById(R.id.favourite_button);
+        final CheckBox favouritebutton = (CheckBox) rootView.findViewById(R.id.checkbox_favourite);
+
+        favouritebutton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view){
+                    boolean checked = ((CheckBox) view).isChecked();
+
+                    switch(view.getId()){
+                        case R.id.checkbox_favourite:
+                            if(checked){
+                    /**            Favourite_db_Helper fdbmovie = new Favourite_db_Helper(getContext());
+
+                                SQLiteDatabase db = fdbmovie.getWritableDatabase();
+
+                                String rSelectionClause = Favourite_Contract.FavouriteInfo._ID + " LIKE ?";
+                                String[] rSelectionArgs = {dUri};
+                                Log.v("Gavin","got to this bit loader 2");
+
+                                int num_rows = getContext().getContentResolver().query(
+                                        Favourite_Contract.FavouriteInfo.CONTENT_URI_F,
+                                        ?,
+                                        rSelectionClause,
+                                        rSelectionArgs
+                                );
+                                Log.v("Gavin", "got to this bit loader 3");
+                     **/
+
+
+                            Log.v("Gavin", "Checkbox checked");
+
+                                ContentValues favouriteValues = new ContentValues();
+
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo._ID, m_id);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE, movie_TitleF);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING, movie_RatingF);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE, movie_ReleaseF);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_INFO, movie_InfoF);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE, movie_ImageF);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID, movie_id);
+
+                                String rSelectionClause = Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID + " LIKE ?";
+                                String[] rSelectionArgs = {movie_id};
+                                Log.v("Gavin","got to this bit loader 2");
+
+                                int num_rows = getContext().getContentResolver().update(
+                                        Movie_Contract.MovieInfo.CONTENT_URI_R,
+                                        favouriteValues,
+                                        rSelectionClause,
+                                        rSelectionArgs);
+                            }
+
+                            else{
+                                Log.v("Gavin", "Checkbox unchecked");
+                        /**
+                                Favourite_db_Helper fdbmovie = new Favourite_db_Helper(getContext());
+
+                                SQLiteDatabase db = fdbmovie.getWritableDatabase();
+
+                                String rSelectionClause = Favourite_Contract.FavouriteInfo._ID + " LIKE ?";
+                                String[] rSelectionArgs = {dUri};
+                                Log.v("Gavin","got to this bit loader 2");
+
+                                int num_rows = getContext().getContentResolver().query(
+                                        Favourite_Contract.FavouriteInfo.CONTENT_URI_F,
+                                        ?,
+                                        rSelectionClause,
+                                        rSelectionArgs
+                                );
+                                Log.v("Gavin", "got to this bit loader 3");
+                        **/
+
+                            }
+                            break;
+                    }
+                }
+
+        });
+
+
+
+      /**  favouriteButton = (ImageButton) rootView.findViewById(R.id.favourite_button);
 
         favouriteButton.setOnClickListener(new View.OnClickListener() {
 
@@ -269,7 +378,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                                                }
 
                                            });
-
+**/
         Log.v("Gavin", "About to load rootview");
         return rootView;
     }
@@ -390,7 +499,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     Log.v("Gavin", "Favourite Loader cursor created");
                     return new CursorLoader(
                             getActivity(),
-                            Movie_Contract.MovieInfo.CONTENT_URI_R,
+                            Favourite_Contract.FavouriteInfo.CONTENT_URI_F,
                             DETAIL_COLUMNS,
                             position,
                             null,
@@ -550,23 +659,23 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                 data_d.moveToFirst();
 
-                String movie_id = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_ID_D);
-                String movie_TitleF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TITLE_D);
+                movie_id = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_ID_D);
+                movie_TitleF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TITLE_D);
                 Log.v("Gavin", "Favourite_Loader" + movie_TitleF);
-                String movie_ReleaseF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RELEASE_DATE_D);
-                String movie_RatingF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RATING_D);
-                String movie_ImageF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_IMAGE_FILE_D);
-                String movie_InfoF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO_D);
-                String movie_Review1F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW1);
+                movie_ReleaseF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RELEASE_DATE_D);
+                movie_RatingF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RATING_D);
+                movie_ImageF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_IMAGE_FILE_D);
+                movie_InfoF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO_D);
+                movie_Review1F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW1);
                 Log.v("Gavin", "Favourite_Loader" + movie_Review1F);
-                String movie_Review1_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR1);
-                String movie_Review2F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW2);
-                String movie_Review2_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR2);
-                String movie_Review3F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW3);
-                String movie_Review3_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR3);
-                String movie_Trailer1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER1);
-                String movie_Trailer2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER2);
-                String movie_Trailer3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER3);
+                movie_Review1_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR1);
+                movie_Review2F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW2);
+                movie_Review2_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR2);
+                movie_Review3F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW3);
+                movie_Review3_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR3);
+                movie_Trailer1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER1);
+                movie_Trailer2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER2);
+                movie_Trailer3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER3);
 
                 Favourite_db_Helper fdbHelper = new Favourite_db_Helper(getContext());
 
@@ -626,6 +735,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+
 
 /**
     public static Account CreateSyncAccount(Context context) {
