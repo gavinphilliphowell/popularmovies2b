@@ -24,7 +24,6 @@ public class Movie_Contract {
     public static final String PATH_MOVIE = "movie";
 
 
-
     public static final class MovieInfo implements BaseColumns {
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE).build();
@@ -96,4 +95,6 @@ public class Movie_Contract {
 
 
     }
+
+
 }

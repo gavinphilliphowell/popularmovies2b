@@ -315,20 +315,37 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                                 favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_INFO, movie_InfoF);
                                 favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE, movie_ImageF);
                                 favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID, movie_id);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1, movie_Review1F);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW2, movie_Review2F);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW3, movie_Review3F);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR1, movie_Review1_AuthorF);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR2, movie_Review2_AuthorF);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3, movie_Review3_AuthorF);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1, movie_Trailer1);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2, movie_Trailer2);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3, movie_Trailer3);
+
 
                                 String rSelectionClause = Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID + " LIKE ?";
                                 String[] rSelectionArgs = {movie_id};
                                 Log.v("Gavin","got to this bit loader 2");
 
-                                int num_rows = getContext().getContentResolver().update(
-                                        Movie_Contract.MovieInfo.CONTENT_URI_R,
-                                        favouriteValues,
-                                        rSelectionClause,
-                                        rSelectionArgs);
+                                getContext().getContentResolver().insert(
+                                        Favourite_Contract.FavouriteInfo.CONTENT_URI_F,
+                                        favouriteValues);
                             }
 
                             else{
                                 Log.v("Gavin", "Checkbox unchecked");
+
+                                String rSelectionClause = Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " LIKE ?";
+                                String[] rSelectionArgs = {movie_TitleF};
+                                Log.v("Gavin","got to this bit loader 2");
+
+                                getContext().getContentResolver().delete(
+                                        Favourite_Contract.FavouriteInfo.CONTENT_URI_F,
+                                        rSelectionClause,
+                                        rSelectionArgs);
                         /**
                                 Favourite_db_Helper fdbmovie = new Favourite_db_Helper(getContext());
 

@@ -22,7 +22,7 @@ public class favouriteContentProvider extends ContentProvider {
 
     static final int FAVOURITE_INFO = 102;
 
-    private static final String AUTHORITY = "com.nabigeto.gavin.popularmovie2b.favourite.provider";
+    private static final String AUTHORITY = Favourite_Contract.CONTENT_AUTHORITY_F;
 
 
     private static final SQLiteQueryBuilder sMovie_InfoQueryBuilder;
@@ -228,7 +228,7 @@ public class favouriteContentProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values){
                         Log.v("Gavin", "Trying to insert" + value);
-                        long _id = db.insert(Favourite_Contract.FavouriteInfo.TABLE_NAME, null, value);
+                        long _id = db.insert(Movie_Contract.MovieInfo.TABLE_NAME, null, value);
                         if(_id != -1) {
                             returnCount++;
                         }

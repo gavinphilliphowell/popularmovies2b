@@ -2,6 +2,8 @@ package com.nabigeto.gavin.popularmovie2b.Adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import com.nabigeto.gavin.popularmovie2b.MainActivityFragment;
 import com.nabigeto.gavin.popularmovie2b.R;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 
@@ -101,7 +104,16 @@ public class Custom_Movie_Adapter extends CursorAdapter {
 
             String url = cursor.getString(image_file_position);
 
-            Picasso.with(mContext).load(url).placeholder(R.drawable.worms_head).into(viewHolder.imagegridPoster);
+
+            if ( ) {
+                Picasso.with(mContext).load(url).placeholder(R.drawable.worms_head).into(viewHolder.imagegridPoster);
+
+            }
+            else {
+                Picasso.with(mContext).load(url).placeholder(R.drawable.worms_head).into(viewHolder.imagegridPoster);
+
+            }
+
                     String movieTitles = cursor.getString(MainActivityFragment.COL_MOVIE_TITLE) + " " + cursor.getString(MainActivityFragment.COL_MOVIE_RATING);
                     Log.v("Gavin", movieTitles + " loading this text");
                     viewHolder.movieTitle.setText(movieTitles);
@@ -109,7 +121,13 @@ public class Custom_Movie_Adapter extends CursorAdapter {
          **/
     }
 
-
+    public boolean isOnline() {
+        Context context;
+        context = get;
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnected();
+    }
 
 
 

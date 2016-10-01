@@ -35,6 +35,7 @@ import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.movieContentProvider;
 
+import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 
@@ -133,14 +134,29 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         mAccount = CreateSyncAccount(getContext());
 
-        Favourite_db_Helper favourite_db_helper = new Favourite_db_Helper(getContext());
+        boolean database_status = doesDatabaseExist(getContext(), "favourite_database_b.db");
 
-        SQLiteDatabase db = favourite_db_helper.getWritableDatabase();
+        if (database_status != true){
 
-        favourite_db_helper.onClear(db);
-        favourite_db_helper.onCreate(db);
+            Favourite_db_Helper favourite_db_helper = new Favourite_db_Helper(getContext());
 
-        Log.v("Gavin", "Favourite database and table created");
+            SQLiteDatabase db = favourite_db_helper.getWritableDatabase();
+
+            favourite_db_helper.onClear(db);
+            favourite_db_helper.onCreate(db);
+
+            Log.v("Gavin", "Favourite database and table created");
+
+        }
+
+        else {
+
+            Log.v("Gavin", "Favourite database and table already exist");
+
+        }
+
+
+
 
 
         if (isOnline() != true) {
@@ -152,6 +168,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
     }
+
+    private static boolean doesDatabaseExist(Context context, String dbName) {
+        File dbFile = context.getDatabasePath(dbName);
+        return dbFile.exists();
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -343,19 +365,31 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
             case FAVOURITE_LOADER:
 
+    /**
+
                 Favourite_db_Helper favourite_db_helper = new Favourite_db_Helper(getContext());
 
                 SQLiteDatabase db = favourite_db_helper.getReadableDatabase();
-
+**/
                 String favourite_table = Favourite_Contract.FavouriteInfo.TABLE_NAME;
                 String favouritesortOrder = Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
 
+                return new CursorLoader(getContext(),
+                        Favourite_Contract.FavouriteInfo.CONTENT_URI_F,
+                        FAVOURITE_COLUMNS,
+                        null,
+                        null,
+                        favouritesortOrder);
 
+
+/**
                 Cursor c = db.query(favourite_table, FAVOURITE_COLUMNS, null, null, null, null, favouritesortOrder);
 
                 mAdapter.changeCursor(c);
 
                 db.close();
+
+                **/
 
                 /**
 

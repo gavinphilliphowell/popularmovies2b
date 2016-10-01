@@ -26,14 +26,7 @@ public class Favourite_db_Helper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-/**
-        Cursor c = sqLiteDatabase.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+tablename+"'", null);
-        if (c != null){
-            Log.v("Gavin", "Favourites table exists");
-            c.close();
-        }
-        else {
-**/
+
             final String SQL_CREATE_FAVOURITE_TABLE = "CREATE TABLE " + Favourite_Contract.FavouriteInfo.TABLE_NAME + " (" +
 
                     Favourite_Contract.FavouriteInfo._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
