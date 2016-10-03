@@ -13,7 +13,7 @@ import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract.MovieInfo;
  */
 public class Favourite_db_Helper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 8;
+    public static final int DATABASE_VERSION = 9;
     public static final String DATABASE_NAME ="favourite_database_b.db";
 
 
@@ -32,6 +32,7 @@ public class Favourite_db_Helper extends SQLiteOpenHelper {
                     Favourite_Contract.FavouriteInfo._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 
                     Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID + " INT NOT NULL, " +
+                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID + " INT NOT NULL, " +
                     Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " TEXT NOT NULL, " +
                     Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE + " TEXT NOT NULL, " +
                     Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING + " TEXT NOT NULL, " +
@@ -45,8 +46,8 @@ public class Favourite_db_Helper extends SQLiteOpenHelper {
                     Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3 + " TEXT NOT NULL, " +
                     Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1 + " TEXT NOT NULL, " +
                     Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2 + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3 + " TEXT NOT NULL " + ");";
-
+                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3 + " TEXT NOT NULL, " +
+                    Favourite_Contract.FavouriteInfo.COLUMN_FAVOURITE + " TEXT NOT NULL " + ");";
 
             Log.v("Gavin", "Got to this bit in db Helper 2");
 

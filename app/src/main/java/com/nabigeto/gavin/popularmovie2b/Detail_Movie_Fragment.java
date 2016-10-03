@@ -136,11 +136,13 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public static final String [] Favourite_Columns = {
             Favourite_Contract.FavouriteInfo.TABLE_NAME + "." +
             Favourite_Contract.FavouriteInfo._ID,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID,
             Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE,
             Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING,
             Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE,
             Favourite_Contract.FavouriteInfo.COLUMN_NAME_INFO,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID,
+            Favourite_Contract.FavouriteInfo.COLUMN_FAVOURITE
 
     };
 
@@ -176,6 +178,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     private String m_id;
     private String movie_id;
+    private String movie_EntryID;
     private String movie_TitleF;
     private String movie_ReleaseF;
     private String movie_RatingF;
@@ -190,6 +193,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     private String movie_Trailer1;
     private String movie_Trailer2;
     private String movie_Trailer3;
+    private String movie_Favourite;
 
 
     private static final String [] REVIEW_COLUMNS ={
@@ -309,6 +313,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                                 ContentValues favouriteValues = new ContentValues();
 
                                 favouriteValues.put(Favourite_Contract.FavouriteInfo._ID, m_id);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID, movie_EntryID);
                                 favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE, movie_TitleF);
                                 favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING, movie_RatingF);
                                 favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE, movie_ReleaseF);
@@ -324,6 +329,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                                 favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1, movie_Trailer1);
                                 favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2, movie_Trailer2);
                                 favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3, movie_Trailer3);
+                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_FAVOURITE, movie_Favourite);
 
 
                                 String rSelectionClause = Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID + " LIKE ?";

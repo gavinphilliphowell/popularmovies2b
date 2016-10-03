@@ -95,11 +95,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public static final String [] FAVOURITE_COLUMNS = {
             Favourite_Contract.FavouriteInfo.TABLE_NAME + "." +
             Favourite_Contract.FavouriteInfo._ID,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID,
             Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE,
             Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE,
             Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING,
             Favourite_Contract.FavouriteInfo.COLUMN_NAME_INFO,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE,
+            Favourite_Contract.FavouriteInfo.COLUMN_FAVOURITE
             };
 
 
@@ -113,7 +116,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public static final int COL_MOVIE_IMAGE_FILE = 7;
     public static final int COL_FAVOURITE = 8;
 
-
+    public static final int _ID_F = 0;
+    public static final int COLUMN_NAME_TITLE_F = 1;
+    public static final int COLUMN_NAME_RELEASE_DATE_F = 2;
+    public static final int COLUMN_NAME_RATING_F = 3;
+    public static final int COLUMN_NAME_INFO_F = 4;
+    public static final int COLUMN_NAME_IMAGE_FILE_F = 5;
 
 
 

@@ -105,8 +105,10 @@ public class Custom_Movie_Adapter extends CursorAdapter {
             String url = cursor.getString(image_file_position);
 
 
-            if ( ) {
-                Picasso.with(mContext).load(url).placeholder(R.drawable.worms_head).into(viewHolder.imagegridPoster);
+            if (isOnline() != true) {
+
+
+                Picasso.with(mContext).load(url).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.worms_head).into(viewHolder.imagegridPoster);
 
             }
             else {
@@ -122,9 +124,7 @@ public class Custom_Movie_Adapter extends CursorAdapter {
     }
 
     public boolean isOnline() {
-        Context context;
-        context = get;
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnected();
     }
