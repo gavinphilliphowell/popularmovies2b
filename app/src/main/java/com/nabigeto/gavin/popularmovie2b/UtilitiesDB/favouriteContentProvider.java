@@ -23,6 +23,7 @@ public class favouriteContentProvider extends ContentProvider {
     static final int FAVOURITE_INFO = 102;
 
     private static final String AUTHORITY = Favourite_Contract.CONTENT_AUTHORITY_F;
+    private static final String TABLE_NAME = "favourite";
 
 
     private static final SQLiteQueryBuilder sMovie_InfoQueryBuilder;
@@ -70,7 +71,7 @@ public class favouriteContentProvider extends ContentProvider {
 
         sUriMatcher.addURI(
                 favouriteContentProvider.AUTHORITY,
-                "favourite",
+                Favourite_Contract.FavouriteInfo.TABLE_NAME,
                 FAVOURITE_INFO
         );
 

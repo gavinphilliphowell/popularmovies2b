@@ -13,8 +13,8 @@ import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract.MovieInfo;
  */
 public class Favourite_db_Helper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 9;
-    public static final String DATABASE_NAME ="favourite_database_b.db";
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME ="favourite_database_a.db";
 
 
     public Favourite_db_Helper(Context context) {
@@ -22,17 +22,19 @@ public class Favourite_db_Helper extends SQLiteOpenHelper {
 
     }
 
-    String tablename = Favourite_Contract.FavouriteInfo.TABLE_NAME;
+
+
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-            final String SQL_CREATE_FAVOURITE_TABLE = "CREATE TABLE " + Favourite_Contract.FavouriteInfo.TABLE_NAME + " (" +
+
+        final String SQL_CREATE_FAVOURITE_TABLE = "CREATE TABLE " + Favourite_Contract.FavouriteInfo.TABLE_NAME + " (" +
 
                     Favourite_Contract.FavouriteInfo._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID + " INT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID + " INT NOT NULL, " +
+                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID + " TEXT NOT NULL, " +
+                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID + " TEXT NOT NULL, " +
                     Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " TEXT NOT NULL, " +
                     Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE + " TEXT NOT NULL, " +
                     Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING + " TEXT NOT NULL, " +

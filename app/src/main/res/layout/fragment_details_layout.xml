@@ -5,6 +5,7 @@
     android:id="@+id/fragment_details_layout"
     android:background="@color/material_blue_grey_900"
 
+
     >
 
 
@@ -17,6 +18,23 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#FFFFFF"
+        android:layout_marginBottom="10dp"
+        />
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:id="@+id/detail_movie_poster"
+        android:elevation="2dp"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FFFFFF"
+        android:elevation="2dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         />
 
     <TextView
@@ -24,6 +42,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/movie_title_d"
         android:textColor="#FFFFFF"
+        android:elevation="2dp"
 
         />
 
@@ -32,6 +51,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/movie_info_d"
         android:textColor="@color/colorText"
+        android:elevation="2dp"
         />
 
     <TextView
@@ -39,6 +59,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/movie_user_rating_d"
         android:textColor="@color/colorText"
+        android:elevation="2dp"
         />
 
     <TextView
@@ -46,13 +67,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/movie_release_date_d"
         android:textColor="@color/colorText"
+        android:elevation="2dp"
         />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#FFFFFF"
-        />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -60,76 +77,67 @@
         android:text= "Favourite"
         android:id="@+id/checkbox_favourite"
         android:onClick="onCheckboxClicked"
+        android:elevation="2dp"
         />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/favourite_button"
-        android:src="@android:drawable/btn_star_big_off"
-        android:onClick="onClick"
-        android:clickable="true"
-
-        />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/detail_movie_poster"
-        />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#FFFFFF"
-        />
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:id="@+id/movie_review1_author"
         android:visibility="invisible"
+        android:elevation="2dp"
         />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
         android:id="@+id/movie_review1"
         android:visibility="invisible"
+        android:elevation="2dp"
+        android:background="@color/material_blue_grey_900"
         />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@color/material_blue_grey_900"
         android:id="@+id/movie_review2_author"
         android:visibility="invisible"
+        android:elevation="2dp"
         />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@color/material_blue_grey_900"
         android:id="@+id/movie_review2"
         android:visibility="invisible"
+        android:elevation="2dp"
         />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@color/material_blue_grey_900"
         android:id="@+id/movie_review3_author"
         android:visibility="invisible"
+        android:elevation="2dp"
         />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@color/material_blue_grey_900"
         android:id="@+id/movie_review3"
         android:visibility="invisible"
+        android:elevation="2dp"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FFFFFF"
+        android:elevation="2dp"
         />
 
     <LinearLayout
@@ -139,24 +147,30 @@
         >
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_marginLeft="5dp"
+            android:layout_height="150dp"
             android:id="@+id/movie_Trailer1"
             android:visibility="invisible"
+            android:elevation="10dp"
             />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_marginLeft="5dp"
+            android:layout_height="150dp"
             android:id="@+id/movie_Trailer2"
             android:visibility="invisible"
+            android:elevation="10dp"
             />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_marginLeft="5dp"
+            android:layout_height="150dp"
             android:id="@+id/movie_Trailer3"
             android:visibility="invisible"
+            android:elevation="10dp"
             />
 
     </LinearLayout>

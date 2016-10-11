@@ -30,7 +30,7 @@ public class Favourite_Contract {
         public static final String TABLE_NAME = "favourite";
 
         public static final String _ID = "_id";
-        public static final String COLUMN_NAME_ENTRY_ID = "entryid";
+        public static final String COLUMN_NAME_ENTRY_ID = "entry_id";
         public static final String COLUMN_NAME_MOVIE_ID = "id";
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_RELEASE_DATE = "release_date";
@@ -50,7 +50,7 @@ public class Favourite_Contract {
         public static final String COLUMN_NAME_TRAILER2 = "trailer2";
         public static final String COLUMN_NAME_TRAILER3 = "trailer3";
 
-        public static final String COLUMN_FAVOURITE = "favourite";
+        public static final String COLUMN_FAVOURITE = "favourites_selection";
 
         public static Uri buildMovie_InfoUri_F(long id) {
             Log.v("Gavin", "Build MovieInfoURI");

@@ -116,14 +116,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public static final int COL_MOVIE_IMAGE_FILE = 7;
     public static final int COL_FAVOURITE = 8;
 
-    public static final int _ID_F = 0;
-    public static final int COLUMN_NAME_TITLE_F = 1;
-    public static final int COLUMN_NAME_RELEASE_DATE_F = 2;
-    public static final int COLUMN_NAME_RATING_F = 3;
-    public static final int COLUMN_NAME_INFO_F = 4;
-    public static final int COLUMN_NAME_IMAGE_FILE_F = 5;
-
-
 
     public interface Callback {
 
@@ -158,6 +150,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         }
 
         else {
+
 
             Log.v("Gavin", "Favourite database and table already exist");
 
@@ -373,31 +366,25 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
             case FAVOURITE_LOADER:
 
-    /**
+/**
 
                 Favourite_db_Helper favourite_db_helper = new Favourite_db_Helper(getContext());
 
                 SQLiteDatabase db = favourite_db_helper.getReadableDatabase();
-**/
+
                 String favourite_table = Favourite_Contract.FavouriteInfo.TABLE_NAME;
+
+                Uri favourite_table_uri = Uri.parse(favourite_table);
                 String favouritesortOrder = Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
 
                 return new CursorLoader(getContext(),
-                        Favourite_Contract.FavouriteInfo.CONTENT_URI_F,
+                        favourite_table_uri,
                         FAVOURITE_COLUMNS,
                         null,
                         null,
                         favouritesortOrder);
 
-
-/**
-                Cursor c = db.query(favourite_table, FAVOURITE_COLUMNS, null, null, null, null, favouritesortOrder);
-
-                mAdapter.changeCursor(c);
-
-                db.close();
-
-                **/
+            **/
 
                 /**
 

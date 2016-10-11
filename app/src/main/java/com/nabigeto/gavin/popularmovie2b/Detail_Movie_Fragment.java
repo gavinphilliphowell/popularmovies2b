@@ -107,14 +107,14 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     };
 
-    public static final int _ID_D = 0;
-    public static final int COL_MOVIE_ENTRY_ID_D = 1;
-    public static final int COL_MOVIE_ID_D = 2;
+    public static final int _ID = 0;
+    public static final int COL_MOVIE_ENTRY_ID = 1;
+    public static final int COL_MOVIE_ID = 2;
     public static final int COL_MOVIE_TITLE_D = 3;
     public static final int COL_MOVIE_RELEASE_DATE_D = 4;
-    public static final int COL_MOVIE_RATING_D = 5;
-    public static final int COL_MOVIE_INFO_D = 6;
-    public static final int COL_MOVIE_IMAGE_FILE_D = 7;
+    public static final int COL_MOVIE_RATING = 5;
+    public static final int COL_MOVIE_INFO = 6;
+    public static final int COL_MOVIE_IMAGE_FILE = 7;
     public static final int COL_MOVIE_REVIEW1 = 8;
     public static final int COL_MOVIE_REVIEW2 = 9;
     public static final int COL_MOVIE_REVIEW3 = 10;
@@ -124,7 +124,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public static final int COL_MOVIE_TRAILER1 = 14;
     public static final int COL_MOVIE_TRAILER2 = 15;
     public static final int COL_MOVIE_TRAILER3 = 16;
-    public static final int COL_FAVOURITE_D = 17;
+    public static final int COL_FAVOURITE = 17;
 
 
 
@@ -135,23 +135,26 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     public static final String [] Favourite_Columns = {
             Favourite_Contract.FavouriteInfo.TABLE_NAME + "." +
-            Favourite_Contract.FavouriteInfo._ID,
+                    Favourite_Contract.FavouriteInfo._ID,
             Favourite_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_INFO,
             Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_INFO,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW2,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW3,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR1,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR2,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2,
+            Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3,
             Favourite_Contract.FavouriteInfo.COLUMN_FAVOURITE
 
     };
-
-    public static final int _ID = 20;
-    public static final int COL_FAVOURITE_TITLE = 21;
-    public static final int COL_FAVOURITE_RATING = 22;
-    public static final int COL_FAVOURITE_RELEASE_DATE = 23;
-    public static final int COL_FAVOURITE_INFO = 24;
-    public static final int COL_FAVOURITE_MOVIE_ID = 25;
 
 
     public ImageView dImage_File;
@@ -176,41 +179,25 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     public ImageButton favouriteButton;
 
-    private String m_id;
-    private String movie_id;
-    private String movie_EntryID;
-    private String movie_TitleF;
-    private String movie_ReleaseF;
-    private String movie_RatingF;
-    private String movie_ImageF;
-    private String movie_InfoF;
-    private String movie_Review1F;
-    private String movie_Review1_AuthorF;
-    private String movie_Review2F;
-    private String movie_Review2_AuthorF;
-    private String movie_Review3F;
-    private String movie_Review3_AuthorF;
-    private String movie_Trailer1;
-    private String movie_Trailer2;
-    private String movie_Trailer3;
-    private String movie_Favourite;
+    public String m_id;
+    public String movie_EntryID;
+    public String movie_id;
+    public String movie_TitleF;
+    public String movie_ReleaseF;
+    public String movie_RatingF;
+    public String movie_ImageF;
+    public String movie_InfoF;
+    public String movie_Review1F;
+    public String movie_Review1_AuthorF;
+    public String movie_Review2F;
+    public String movie_Review2_AuthorF;
+    public String movie_Review3F;
+    public String movie_Review3_AuthorF;
+    public String movie_Trailer1;
+    public String movie_Trailer2;
+    public String movie_Trailer3;
+    public String movie_Favourite;
 
-
-    private static final String [] REVIEW_COLUMNS ={
-        Movie_Contract.MovieInfo.TABLE_NAME + "." +
-                Movie_Contract.MovieInfo._ID,
-        Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1,
-        Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2,
-        Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3
-    };
-
-    private static final String [] TRAILER_COLUMNS ={
-            Movie_Contract.MovieInfo.TABLE_NAME + "." +
-                    Movie_Contract.MovieInfo._ID,
-            Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1,
-            Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2,
-            Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3
-    };
 
     public Detail_Movie_Fragment() {
         // Required empty public constructor
@@ -241,6 +228,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -248,10 +236,8 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         setHasOptionsMenu(false);
 
 
-/**
-        rAccount = CreateSyncAccount(getContext());
-**/
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -310,6 +296,15 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                             Log.v("Gavin", "Checkbox checked");
 
+                                Favourite_db_Helper favourite_db_helper = new Favourite_db_Helper(dContext);
+
+                                SQLiteDatabase db = favourite_db_helper.getWritableDatabase();
+
+                                movie_EntryID = "filler";
+                                movie_Favourite = "y";
+
+
+
                                 ContentValues favouriteValues = new ContentValues();
 
                                 favouriteValues.put(Favourite_Contract.FavouriteInfo._ID, m_id);
@@ -336,22 +331,41 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                                 String[] rSelectionArgs = {movie_id};
                                 Log.v("Gavin","got to this bit loader 2");
 
+                                long id = db.insert(Favourite_Contract.FavouriteInfo.TABLE_NAME, null, favouriteValues);
+
+                                db.close();
+/**
                                 getContext().getContentResolver().insert(
                                         Favourite_Contract.FavouriteInfo.CONTENT_URI_F,
                                         favouriteValues);
+   **/
+
                             }
 
                             else{
                                 Log.v("Gavin", "Checkbox unchecked");
 
+                                Favourite_db_Helper favourite_db_helper = new Favourite_db_Helper(dContext);
+
+                                SQLiteDatabase db = favourite_db_helper.getWritableDatabase();
+
+
                                 String rSelectionClause = Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " LIKE ?";
                                 String[] rSelectionArgs = {movie_TitleF};
                                 Log.v("Gavin","got to this bit loader 2");
 
+                                long id = db.delete(Favourite_Contract.FavouriteInfo.TABLE_NAME, rSelectionClause ,rSelectionArgs);
+
+                                db.close();
+/**
                                 getContext().getContentResolver().delete(
                                         Favourite_Contract.FavouriteInfo.CONTENT_URI_F,
                                         rSelectionClause,
                                         rSelectionArgs);
+
+ **/
+
+
                         /**
                                 Favourite_db_Helper fdbmovie = new Favourite_db_Helper(getContext());
 
@@ -567,32 +581,30 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                 int image_file_position = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_IMAGE_FILE);
 
 
-                String url = data_d.getString(image_file_position);
-                Log.v("Gavin", "DetailActivityFragment" + url);
+                movie_ImageF = data_d.getString(image_file_position);
+                Log.v("Gavin", "DetailActivityFragment" + movie_ImageF);
 
                 Log.v("Gavin", "Loading picasso in detail fragment");
 
-                Picasso.with(dContext).load(url).placeholder(R.drawable.worms_head).into(dImage_File);
+                Picasso.with(dContext).load(movie_ImageF).placeholder(R.drawable.worms_head).into(dImage_File);
 
                 int filmTitle = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TITLE);
-                String filmTitle_a = data_d.getString(filmTitle);
-                Log.v("Gavin", "DetailActivityFragment" + filmTitle_a);
+                movie_TitleF = data_d.getString(filmTitle);
+                Log.v("Gavin", "DetailActivityFragment" + movie_TitleF);
 
-                dTitle.setText(filmTitle_a);
+                dTitle.setText(movie_TitleF);
 
-                String filmInfo = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO_D);
-                dInfo.setText(filmInfo);
+                movie_InfoF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO);
+                dInfo.setText(movie_InfoF);
 
-                String filmRelease = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RELEASE_DATE_D);
-                Log.v("Gavin", filmRelease);
-                dRelease_Date.setText(filmRelease);
+                movie_ReleaseF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RELEASE_DATE_D);
+                Log.v("Gavin", movie_ReleaseF);
+                dRelease_Date.setText(movie_ReleaseF);
 
-                String filmRating = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RATING_D);
-                Log.v("Gavin", filmRating);
-                dRating.setText(filmRating);
+                movie_RatingF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RATING);
+                Log.v("Gavin", movie_RatingF);
+                dRating.setText(movie_RatingF);
 
-
-                Log.v("Gavin", filmInfo);
 
                 break;
 
@@ -600,40 +612,40 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     data_d.moveToFirst();
 
-                    String movieReview1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW1);
-                    if (movieReview1 != "b"){
+                    movie_Review1F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW1);
+                    if (movie_Review1F != "b"){
                         dReview1.setVisibility(View.VISIBLE);
-                        dReview1.setText(movieReview1);
+                        dReview1.setText(movie_Review1F);
                     }
 
-                    String movieReviewAuthor1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR1);
-                    if (movieReviewAuthor1 != "b"){
+                    movie_Review1_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR1);
+                    if (movie_Review1_AuthorF != "b"){
                         dReviewauthor1.setVisibility(View.VISIBLE);
-                        dReviewauthor1.setText(movieReviewAuthor1);
+                        dReviewauthor1.setText(movie_Review1_AuthorF);
                     }
 
-                    String movieReview2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW2);
-                    if (movieReview2 != "b"){
+                    movie_Review2F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW2);
+                    if (movie_Review2F != "b"){
                         dReview2.setVisibility(View.VISIBLE);
-                        dReview2.setText(movieReview2);
+                        dReview2.setText(movie_Review2F);
                     }
 
-                    String movieReviewAuthor2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR2);
-                    if (movieReviewAuthor2 != "b"){
+                    movie_Review2_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR2);
+                    if (movie_Review2_AuthorF != "b"){
                         dReviewauthor2.setVisibility(View.VISIBLE);
-                        dReviewauthor2.setText(movieReviewAuthor2);
+                        dReviewauthor2.setText(movie_Review2_AuthorF);
                     }
 
-                    String movieReview3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW3);
-                    if (movieReview3 != "b"){
+                    movie_Review3F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW3);
+                    if (movie_Review3F != "b"){
                         dReview3.setVisibility(View.VISIBLE);
-                        dReview3.setText(movieReview3);
+                        dReview3.setText(movie_Review3F);
                     }
 
-                    String movieReviewAuthor3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR3);
-                    if (movieReviewAuthor3 != "b"){
+                    movie_Review3_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR3);
+                    if (movie_Review3_AuthorF != "b"){
                         dReviewauthor3.setVisibility(View.VISIBLE);
-                        dReviewauthor3.setText(movieReviewAuthor3);
+                        dReviewauthor3.setText(movie_Review3_AuthorF);
                     }
 
                 break;
@@ -644,10 +656,10 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     data_d.moveToFirst();
 
-                    String movieTrailer1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER1);
-                    if (movieTrailer1 != "b"){
+                    movie_Trailer1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER1);
+                    if (movie_Trailer1 != "b"){
                         dTrailer1.setVisibility(View.VISIBLE);
-                        url_youtube = "http://img.youtube.com/vi/" + movieTrailer1 + "/1.jpg";
+                        url_youtube = "http://img.youtube.com/vi/" + movie_Trailer1 + "/1.jpg";
                         Log.v("Gavin", url_youtube);
                         Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer1);
             /**            dTrailer1.setOnClickListener(new View.OnClickListener() {
@@ -660,19 +672,19 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     }
 
 
-                    String movieTrailer2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER2);
-                    if (movieTrailer2 != "b"){
+                    movie_Trailer2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER2);
+                    if (movie_Trailer2 != "b"){
                         dTrailer2.setVisibility(View.VISIBLE);
-                        url_youtube = "http://img.youtube.com/vi/" + movieTrailer2 + "/1.jpg";
+                        url_youtube = "http://img.youtube.com/vi/" + movie_Trailer2 + "/1.jpg";
                         Log.v("Gavin", url_youtube);
                         Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer2);
 
                     }
 
-                    String movieTrailer3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER3);
-                    if (movieTrailer3 != "b"){
+                    movie_Trailer3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER3);
+                    if (movie_Trailer3 != "b"){
                         dTrailer3.setVisibility(View.VISIBLE);
-                        url_youtube = "http://img.youtube.com/vi/" + movieTrailer3 + "/1.jpg";
+                        url_youtube = "http://img.youtube.com/vi/" + movie_Trailer3 + "/1.jpg";
                         Log.v("Gavin", url_youtube);
                         Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer3);
 
@@ -682,13 +694,14 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                 data_d.moveToFirst();
 
-                movie_id = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_ID_D);
+                movie_id = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_ID);
+                movie_EntryID = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_ENTRY_ID);
                 movie_TitleF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TITLE_D);
                 Log.v("Gavin", "Favourite_Loader" + movie_TitleF);
                 movie_ReleaseF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RELEASE_DATE_D);
-                movie_RatingF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RATING_D);
-                movie_ImageF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_IMAGE_FILE_D);
-                movie_InfoF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO_D);
+                movie_RatingF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RATING);
+                movie_ImageF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_IMAGE_FILE);
+                movie_InfoF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO);
                 movie_Review1F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW1);
                 Log.v("Gavin", "Favourite_Loader" + movie_Review1F);
                 movie_Review1_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR1);
@@ -699,6 +712,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                 movie_Trailer1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER1);
                 movie_Trailer2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER2);
                 movie_Trailer3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER3);
+                movie_Favourite = data_d.getString(Detail_Movie_Fragment.COL_FAVOURITE);
 
                 Favourite_db_Helper fdbHelper = new Favourite_db_Helper(getContext());
 
@@ -706,8 +720,11 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                 ContentValues favouriteValues = new ContentValues();
 
-                Log.v("Gavin", "Favourite Loader upload ++" + movie_id);
+                Log.v("Gavin", "Favourite Loader upload ++" + movie_EntryID);
                 favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID, movie_id);
+
+                Log.v("Gavin", "Favourite Loader upload ++" + movie_id);
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID, "y");
 
                 Log.v("Gavin", "Favourite Loader upload" + movie_TitleF);
                 favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE, movie_TitleF);
@@ -738,6 +755,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                 favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2, movie_Trailer2);
                 favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3, movie_Trailer3);
 
+                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_FAVOURITE, "y");
 
                 long id_insert = db.insert(Favourite_Contract.FavouriteInfo.TABLE_NAME, null, favouriteValues);
 
