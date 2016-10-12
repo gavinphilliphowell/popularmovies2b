@@ -15,16 +15,22 @@
     android:orientation="vertical">
 
     <ImageView
+
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#FFFFFF"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         />
 
     <ImageView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         android:id="@+id/detail_movie_poster"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:elevation="2dp"
         />
 
@@ -37,20 +43,44 @@
         android:layout_marginBottom="10dp"
         />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:orientation="horizontal"
+        android:layout_marginBottom="4dp"
+        >
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/movie_title_d"
         android:textColor="#FFFFFF"
         android:elevation="2dp"
-
+        android:layout_weight="0.5"
+        android:layout_gravity="left"
+        android:gravity="left"
         />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text= "Favourite"
+            android:textColor="#FFFFFF"
+            android:id="@+id/checkbox_favourite"
+            android:onClick="onCheckboxClicked"
+            android:elevation="2dp"
+            android:layout_weight="0.5"
+            android:gravity="right"
+            />
+
+</LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/movie_info_d"
-        android:textColor="@color/colorText"
+        android:textColor="#FFFFFF"
         android:elevation="2dp"
         />
 
@@ -58,7 +88,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/movie_user_rating_d"
-        android:textColor="@color/colorText"
+        android:textColor="#FFFFFF"
         android:elevation="2dp"
         />
 
@@ -66,26 +96,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/movie_release_date_d"
-        android:textColor="@color/colorText"
+        android:textColor="#FFFFFF"
         android:elevation="2dp"
         />
 
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text= "Favourite"
-        android:id="@+id/checkbox_favourite"
-        android:onClick="onCheckboxClicked"
-        android:elevation="2dp"
-        />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
         android:id="@+id/movie_review1_author"
         android:visibility="invisible"
+        android:textColor="#FFFFFF"
         android:elevation="2dp"
+        android:background="@color/material_blue_grey_900"
         />
 
     <TextView
@@ -94,6 +118,7 @@
         android:id="@+id/movie_review1"
         android:visibility="invisible"
         android:elevation="2dp"
+        android:textColor="#FFFFFF"
         android:background="@color/material_blue_grey_900"
         />
 
@@ -103,6 +128,7 @@
         android:background="@color/material_blue_grey_900"
         android:id="@+id/movie_review2_author"
         android:visibility="invisible"
+        android:textColor="#FFFFFF"
         android:elevation="2dp"
         />
 
@@ -112,6 +138,7 @@
         android:background="@color/material_blue_grey_900"
         android:id="@+id/movie_review2"
         android:visibility="invisible"
+        android:textColor="#FFFFFF"
         android:elevation="2dp"
         />
 
@@ -121,6 +148,7 @@
         android:background="@color/material_blue_grey_900"
         android:id="@+id/movie_review3_author"
         android:visibility="invisible"
+        android:textColor="#FFFFFF"
         android:elevation="2dp"
         />
 
@@ -130,6 +158,7 @@
         android:background="@color/material_blue_grey_900"
         android:id="@+id/movie_review3"
         android:visibility="invisible"
+        android:textColor="#FFFFFF"
         android:elevation="2dp"
         />
 
@@ -147,30 +176,33 @@
         >
 
         <ImageView
-            android:layout_width="200dp"
-            android:layout_marginLeft="5dp"
+            android:layout_width="100dp"
+            android:layout_marginLeft="10dp"
             android:layout_height="150dp"
             android:id="@+id/movie_Trailer1"
             android:visibility="invisible"
-            android:elevation="10dp"
+            android:layout_marginTop="10dp"
+
             />
 
         <ImageView
-            android:layout_width="200dp"
-            android:layout_marginLeft="5dp"
+            android:layout_width="100dp"
+            android:layout_marginLeft="10dp"
             android:layout_height="150dp"
             android:id="@+id/movie_Trailer2"
             android:visibility="invisible"
-            android:elevation="10dp"
+            android:layout_marginTop="10dp"
+
             />
 
         <ImageView
-            android:layout_width="200dp"
-            android:layout_marginLeft="5dp"
+            android:layout_width="100dp"
+            android:layout_marginLeft="10dp"
             android:layout_height="150dp"
             android:id="@+id/movie_Trailer3"
             android:visibility="invisible"
-            android:elevation="10dp"
+            android:layout_marginTop="10dp"
+
             />
 
     </LinearLayout>
