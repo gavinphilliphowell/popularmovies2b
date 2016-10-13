@@ -57,31 +57,77 @@
         android:id="@+id/movie_title_d"
         android:textColor="#FFFFFF"
         android:elevation="2dp"
-        android:layout_weight="0.5"
-        android:layout_gravity="left"
-        android:gravity="left"
+        android:textSize="10pt"
+        android:layout_marginLeft="5dp"
+        android:textAllCaps="true"
         />
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text= "Favourite"
-            android:textColor="#FFFFFF"
-            android:id="@+id/checkbox_favourite"
-            android:onClick="onCheckboxClicked"
-            android:elevation="2dp"
-            android:layout_weight="0.5"
-            android:gravity="right"
-            />
-
 </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FFFFFF"
+        android:elevation="2dp"
+        />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text= "Favourite"
+        android:textColor="#FFFFFF"
+        android:id="@+id/checkbox_favourite"
+        android:onClick="onCheckboxClicked"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FFFFFF"
+        android:elevation="2dp"
+        />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/material_blue_grey_900"
+        android:visibility="visible"
+        android:text="Synopsis"
+        android:textStyle="italic"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/material_blue_grey_900"
         android:id="@+id/movie_info_d"
         android:textColor="#FFFFFF"
-        android:elevation="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/material_blue_grey_900"
+        android:visibility="visible"
+        android:text="Rating"
+        android:textStyle="italic"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
         />
 
     <TextView
@@ -89,7 +135,23 @@
         android:layout_height="wrap_content"
         android:id="@+id/movie_user_rating_d"
         android:textColor="#FFFFFF"
-        android:elevation="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/material_blue_grey_900"
+        android:visibility="visible"
+        android:text="Release"
+        android:textStyle="italic"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
         />
 
     <TextView
@@ -97,10 +159,32 @@
         android:layout_height="wrap_content"
         android:id="@+id/movie_release_date_d"
         android:textColor="#FFFFFF"
-        android:elevation="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FFFFFF"
+        android:layout_marginTop="5dp"
         />
 
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/material_blue_grey_900"
+        android:visibility="visible"
+        android:text="Reviews"
+        android:textStyle="italic"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="10dp"
+        />
 
     <TextView
         android:layout_width="match_parent"
@@ -108,7 +192,8 @@
         android:id="@+id/movie_review1_author"
         android:visibility="invisible"
         android:textColor="#FFFFFF"
-        android:elevation="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:background="@color/material_blue_grey_900"
         />
 
@@ -117,8 +202,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/movie_review1"
         android:visibility="invisible"
-        android:elevation="2dp"
         android:textColor="#FFFFFF"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:background="@color/material_blue_grey_900"
         />
 
@@ -129,7 +215,8 @@
         android:id="@+id/movie_review2_author"
         android:visibility="invisible"
         android:textColor="#FFFFFF"
-        android:elevation="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         />
 
     <TextView
@@ -139,6 +226,8 @@
         android:id="@+id/movie_review2"
         android:visibility="invisible"
         android:textColor="#FFFFFF"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:elevation="2dp"
         />
 
@@ -149,6 +238,8 @@
         android:id="@+id/movie_review3_author"
         android:visibility="invisible"
         android:textColor="#FFFFFF"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:elevation="2dp"
         />
 
@@ -159,6 +250,8 @@
         android:id="@+id/movie_review3"
         android:visibility="invisible"
         android:textColor="#FFFFFF"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:elevation="2dp"
         />
 
@@ -166,14 +259,30 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#FFFFFF"
+        android:layout_marginTop="5dp"
         android:elevation="2dp"
         />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/material_blue_grey_900"
+            android:visibility="visible"
+            android:text="Trailers"
+            android:textStyle="italic"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            />
 
         <ImageView
             android:layout_width="100dp"
@@ -203,6 +312,12 @@
             android:visibility="invisible"
             android:layout_marginTop="10dp"
 
+            />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FFFFFF"
             />
 
     </LinearLayout>

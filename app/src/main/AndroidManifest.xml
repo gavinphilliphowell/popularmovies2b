@@ -53,8 +53,8 @@
             android:syncable="true" />
 
         <provider
-            android:authorities="com.nabigeto.gavin.popularmovie2b.favourite.provider"
-            android:name=".UtilitiesDB.favouriteContentProvider"
+            android:authorities="com.nabigeto.gavin.popularmovie2b.movie_favourite.provider"
+            android:name=".UtilitiesDB.movie_favouriteContentProvider"
             android:permission="true"
             android:exported="true"
             android:syncable="true" />

@@ -32,6 +32,7 @@ import com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Favourite_Contract;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Favourite_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
+import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Favourite_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.movieContentProvider;
 
@@ -138,12 +139,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         if (database_status != true){
 
-            Favourite_db_Helper favourite_db_helper = new Favourite_db_Helper(getContext());
+            Movie_Favourite_db_Helper movie_favourite_db_helper = new Movie_Favourite_db_Helper(getContext());
 
-            SQLiteDatabase db = favourite_db_helper.getWritableDatabase();
+            SQLiteDatabase db = movie_favourite_db_helper.getWritableDatabase();
 
-            favourite_db_helper.onClear(db);
-            favourite_db_helper.onCreate(db);
+            movie_favourite_db_helper.onClear(db);
+            movie_favourite_db_helper.onCreate(db);
 
             Log.v("Gavin", "Favourite database and table created");
 
@@ -156,7 +157,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         }
 
+        Bundle settingsBundlem = new Bundle();
 
+        settingsBundlem.putString("gridview_load", movie_selection_type);
+        settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlem);
 
 
 
