@@ -33,6 +33,7 @@ import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Favourite_Contract;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Favourite_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Favourite_db_Helper;
+import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Favourites_Contract;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.movieContentProvider;
 
@@ -54,23 +55,17 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     public int position;
 
+    private boolean mUseCaseLayout;
+
     public String movie_selection_type;
 
-
-    public static final String AUTHORITY = "com.nabigeto.gavin.popularmovie2b.UtilitiesDB.movieContent.provider";
-    public static final String AUTHORITY_1 = "com.nabigeto.gavin.popularmovie2b.UtilitiesDB.reviewContent.provider";
     public static final String ACCOUNT_TYPE = "popularmovie2b.nabigeto.com";
     public static final String ACCOUNT = "dummyaccount";
     public static final String ACCOUNT_R = "dummyaccount_r";
 
     Account mAccount;
-    Account rAccount;
 
-    private GridView gridView;
-    private boolean ismUseCaseLayout;
     private int mPosition = GridView.INVALID_POSITION;
-
-    private boolean mUseCaseLayout;
 
     private static final String SELECTED_KEY = "selected_position";
 
@@ -135,7 +130,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         mAccount = CreateSyncAccount(getContext());
 
-        boolean database_status = doesDatabaseExist(getContext(), "favourite_database_b.db");
+        boolean database_status = doesDatabaseExist(getContext(), "movie_favourite_database_a.db");
 
         if (database_status != true){
 
@@ -157,13 +152,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         }
 
+        String start_bundle = "popular";
         Bundle settingsBundlem = new Bundle();
 
-        settingsBundlem.putString("gridview_load", movie_selection_type);
+        settingsBundlem.putString("gridview_default load", start_bundle);
         settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlem);
 
+        ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlem);
 
 
         if (isOnline() != true) {
@@ -181,6 +177,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         return dbFile.exists();
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        getLoaderManager().initLoader(MOVIE_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -239,15 +240,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                              final Bundle savedInstanceState) {
         Log.v("Gavin", "Got to this part - launching view");
 
-        String start_bundle = "popular";
-        Bundle settingsBundlem = new Bundle();
-
-        settingsBundlem.putString("gridview_default load", start_bundle);
-        settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-
-        ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlem);
-
 
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
 
@@ -258,7 +250,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         gridView.setAdapter(mAdapter);
         Log.e("Gavin", "Got to this bit in mainactivityfragment");
 
-        getLoaderManager().initLoader(MOVIE_LOADER, null, this);
+
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -319,8 +311,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         if (savedInstanceState !=null && savedInstanceState.containsKey(SELECTED_KEY)){
             mPosition = savedInstanceState.getInt(SELECTED_KEY);
         }
-  /**      mAdapter.setuseCaseLayout(mUseCaseLayout);
-     **/
+
         return view;
     }
 
@@ -336,12 +327,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(MOVIE_LOADER, null, this);
-        super.onActivityCreated(savedInstanceState);
 
-        }
 
     private void updateMovieSelection() {
         MovieSyncAdapter.syncImmediately(getActivity());
@@ -372,16 +358,27 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
             case FAVOURITE_LOADER:
 
+
+                String favourite_table = Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME;
+
+                Uri favourite_table_uri = Uri.parse(favourite_table);
+                String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo._ID + " LIKE ?";
+                String favouritesortOrder = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
+
+                Cursor favourite_data = getContext().getContentResolver().query(
+                        favourite_table_uri,
+                        FAVOURITE_COLUMNS,
+                        rSelectionClause,
+                        null,
+                        favouritesortOrder
+                );
+
 /**
 
                 Favourite_db_Helper favourite_db_helper = new Favourite_db_Helper(getContext());
 
                 SQLiteDatabase db = favourite_db_helper.getReadableDatabase();
 
-                String favourite_table = Favourite_Contract.FavouriteInfo.TABLE_NAME;
-
-                Uri favourite_table_uri = Uri.parse(favourite_table);
-                String favouritesortOrder = Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
 
                 return new CursorLoader(getContext(),
                         favourite_table_uri,
@@ -472,7 +469,19 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     }
 
+    public void setuseCaseLayout(boolean useCaseLayout){
 
+        mUseCaseLayout = useCaseLayout;
+
+        /**      if(mAdapter != null) {
+
+         mAdapter.setuseCaseLayout(mUseCaseLayout);
+
+         }
+
+         **/
+
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -486,14 +495,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnected();
     }
-
-    public void setuseCaseLayout(boolean useCaseLayout){
-        mUseCaseLayout = useCaseLayout;
-  /**      if(mAdapter != null) {
-            mAdapter.setuseCaseLayout(mUseCaseLayout);
-        }
-**/
-        }
 
 
     public static Account CreateSyncAccount(Context context) {

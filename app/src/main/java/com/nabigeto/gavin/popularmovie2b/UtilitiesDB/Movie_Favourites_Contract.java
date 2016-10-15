@@ -15,7 +15,7 @@ public class Movie_Favourites_Contract {
 
     public static final Uri BASE_CONTENT_URI_F = Uri.parse("content://" + CONTENT_AUTHORITY_F);
 
-    public static final String PATH_MOVIE = "favourite";
+    public static final String PATH_MOVIE = "movie_favourite";
 
 
 
@@ -27,7 +27,7 @@ public class Movie_Favourites_Contract {
 
         public static final String CONTENT_ITEM_TYPE_F = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY_F + "/" + PATH_MOVIE;
 
-        public static final String TABLE_NAME = "favourite";
+        public static final String TABLE_NAME = "movie_favourite";
 
         public static final String _ID = "_id";
         public static final String COLUMN_NAME_ENTRY_ID = "entry_id";

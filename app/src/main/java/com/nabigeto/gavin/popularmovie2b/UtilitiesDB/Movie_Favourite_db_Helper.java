@@ -11,7 +11,7 @@ import android.util.Log;
 public class Movie_Favourite_db_Helper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME ="movie_favourite_database.db";
+    public static final String DATABASE_NAME ="movie_favourite_database_a.db";
 
 
     public Movie_Favourite_db_Helper(Context context) {
@@ -26,7 +26,7 @@ public class Movie_Favourite_db_Helper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
 
-        final String SQL_CREATE_FAVOURITE_TABLE = "CREATE TABLE " + Favourite_Contract.FavouriteInfo.TABLE_NAME + " (" +
+        final String SQL_CREATE_FAVOURITE_TABLE = "CREATE TABLE " + Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME + " (" +
 
                     Favourite_Contract.FavouriteInfo._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 
@@ -65,14 +65,14 @@ public class Movie_Favourite_db_Helper extends SQLiteOpenHelper {
 
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion){
 
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Favourite_Contract.FavouriteInfo.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME);
 
         onCreate(sqLiteDatabase);
     }
 
     public void onClear(SQLiteDatabase sqLiteDatabase){
 
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Favourite_Contract.FavouriteInfo.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME);
     }
 
 }

@@ -3,6 +3,7 @@ package com.nabigeto.gavin.popularmovie2b;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -177,7 +178,9 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public ImageView dTrailer2;
     public ImageView dTrailer3;
 
-    public ImageButton favouriteButton;
+    public ImageView movie_intent_button1;
+    public ImageView movie_intent_button2;
+    public ImageView movie_intent_button3;
 
     public String m_id;
     public String movie_EntryID;
@@ -391,8 +394,34 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
         });
 
+        movie_intent_button1 = (ImageView) rootView.findViewById(R.id.movie_Trailer1);
+
+        movie_intent_button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+                    public void onClick(View v){
+                watchYoutubeVideo(movie_Trailer1);
+            }
+        });
 
 
+
+        movie_intent_button2 = (ImageView) rootView.findViewById(R.id.movie_Trailer2);
+
+        movie_intent_button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                watchYoutubeVideo(movie_Trailer2);
+            }
+        });
+
+        movie_intent_button3 = (ImageView) rootView.findViewById(R.id.movie_Trailer3);
+
+        movie_intent_button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                watchYoutubeVideo(movie_Trailer3);
+            }
+        });
       /**  favouriteButton = (ImageButton) rootView.findViewById(R.id.favourite_button);
 
         favouriteButton.setOnClickListener(new View.OnClickListener() {
@@ -778,6 +807,16 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     }
 
 
+    public void watchYoutubeVideo(String id){
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.youtube.com/watch?v=" + id));
+        try {
+            startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            startActivity(webIntent);
+        }
+    }
 /**
     public static Account CreateSyncAccount(Context context) {
         Account newAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
