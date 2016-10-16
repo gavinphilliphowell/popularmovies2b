@@ -179,7 +179,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
+        /**
         getLoaderManager().initLoader(MOVIE_LOADER, null, this);
+         **/
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -349,29 +351,49 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                 Uri movie = Movie_Contract.MovieInfo.buildMovie_InfoUri(i);
 
+                String movie_table = Movie_Contract.MovieInfo.TABLE_NAME;
+
+                Uri movie_table_uri = Uri.parse(movie_table);
+                String rSelectionClause = Movie_Contract.MovieInfo._ID + " LIKE ?";
+                String moviesortOrder = Movie_Contract.MovieInfo.COLUMN_NAME_RATING + " ASC";
+/**
+                getContext().getContentResolver().query(
+                        movie_table_uri,
+                        MOVIE_COLUMNS,
+                        rSelectionClause,
+                        null,
+                        moviesortOrder
+                );
+
+
+
+**/
+
+/**
                 return new CursorLoader(getActivity(),
                         Movie_Contract.MovieInfo.CONTENT_URI,
                         MOVIE_COLUMNS,
                         null,
                         null,
                         sortOrder);
-
+**/
             case FAVOURITE_LOADER:
 
 
                 String favourite_table = Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME;
 
                 Uri favourite_table_uri = Uri.parse(favourite_table);
-                String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo._ID + " LIKE ?";
+                String fSelectionClause = Movie_Favourites_Contract.FavouriteInfo._ID + " LIKE ?";
                 String favouritesortOrder = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
 
                 Cursor favourite_data = getContext().getContentResolver().query(
                         favourite_table_uri,
                         FAVOURITE_COLUMNS,
-                        rSelectionClause,
+                        fSelectionClause,
                         null,
                         favouritesortOrder
                 );
+
 
 /**
 
@@ -484,8 +506,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
     @Override
     public void onResume() {
-        super.onResume();
         getLoaderManager().restartLoader(MOVIE_LOADER, null, this);
+        super.onResume();
     }
 
     public boolean isOnline() {

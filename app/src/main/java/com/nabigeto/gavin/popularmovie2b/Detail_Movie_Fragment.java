@@ -29,6 +29,7 @@ import com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Favourite_Contract;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Favourite_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
+import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Favourites_Contract;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_db_Helper;
 import com.squareup.picasso.Picasso;
 
@@ -333,15 +334,15 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                                 String rSelectionClause = Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID + " LIKE ?";
                                 String[] rSelectionArgs = {movie_id};
                                 Log.v("Gavin","got to this bit loader 2");
-
+/**
                                 long id = db.insert(Favourite_Contract.FavouriteInfo.TABLE_NAME, null, favouriteValues);
 
                                 db.close();
-/**
+ **/
                                 getContext().getContentResolver().insert(
-                                        Favourite_Contract.FavouriteInfo.CONTENT_URI_F,
+                                        Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
                                         favouriteValues);
-   **/
+
 
                             }
 
@@ -356,17 +357,17 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                                 String rSelectionClause = Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " LIKE ?";
                                 String[] rSelectionArgs = {movie_TitleF};
                                 Log.v("Gavin","got to this bit loader 2");
-
+/**
                                 long id = db.delete(Favourite_Contract.FavouriteInfo.TABLE_NAME, rSelectionClause ,rSelectionArgs);
 
                                 db.close();
-/**
+ **/
                                 getContext().getContentResolver().delete(
-                                        Favourite_Contract.FavouriteInfo.CONTENT_URI_F,
+                                        Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
                                         rSelectionClause,
                                         rSelectionArgs);
 
- **/
+
 
 
                         /**
@@ -394,57 +395,28 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
         });
 
-        movie_intent_button1 = (ImageView) rootView.findViewById(R.id.movie_Trailer1);
-
-        movie_intent_button1.setOnClickListener(new View.OnClickListener() {
+        dTrailer1.setOnClickListener(new View.OnClickListener() {
             @Override
                     public void onClick(View v){
                 watchYoutubeVideo(movie_Trailer1);
             }
         });
 
-
-
-        movie_intent_button2 = (ImageView) rootView.findViewById(R.id.movie_Trailer2);
-
-        movie_intent_button2.setOnClickListener(new View.OnClickListener() {
+        dTrailer2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 watchYoutubeVideo(movie_Trailer2);
             }
         });
 
-        movie_intent_button3 = (ImageView) rootView.findViewById(R.id.movie_Trailer3);
-
-        movie_intent_button3.setOnClickListener(new View.OnClickListener() {
+        dTrailer3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 watchYoutubeVideo(movie_Trailer3);
             }
         });
-      /**  favouriteButton = (ImageButton) rootView.findViewById(R.id.favourite_button);
 
-        favouriteButton.setOnClickListener(new View.OnClickListener() {
 
-                                               @Override
-                                               public void onClick(View v) {
-
-                                                   boolean favourite_state = readState();
-
-                                                   if (favourite_state = true) {
-
-                                                       favouriteButton.setBackgroundResource(android.R.drawable.btn_star_big_off);
-                                                       setState(false);
-
-                                                   } else {
-
-                                                       favouriteButton.setBackgroundResource(android.R.drawable.btn_star_big_on);
-                                                       setState(true);
-                                                   }
-                                               }
-
-                                           });
-**/
         Log.v("Gavin", "About to load rootview");
         return rootView;
     }
@@ -466,11 +438,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
             getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
         }
 
-
-
-
     }
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -570,7 +538,6 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                             position,
                             null,
                             null
-
                     );
 
                 }
