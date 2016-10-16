@@ -1,8 +1,5 @@
 package com.nabigeto.gavin.popularmovie2b;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,17 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
-import com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter;
-import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Favourite_Contract;
-import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Favourite_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
+import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Favourite_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Favourites_Contract;
-import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_db_Helper;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -136,25 +129,25 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 **/
 
     public static final String [] Favourite_Columns = {
-            Favourite_Contract.FavouriteInfo.TABLE_NAME + "." +
-                    Favourite_Contract.FavouriteInfo._ID,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_INFO,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW2,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW3,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR1,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR2,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3,
-            Favourite_Contract.FavouriteInfo.COLUMN_FAVOURITE
+            Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME + "." +
+            Movie_Favourites_Contract.FavouriteInfo._ID,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_INFO,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW2,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW3,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR1,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR2,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_FAVOURITE
 
     };
 
@@ -300,7 +293,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                             Log.v("Gavin", "Checkbox checked");
 
-                                Favourite_db_Helper favourite_db_helper = new Favourite_db_Helper(dContext);
+                                Movie_Favourite_db_Helper favourite_db_helper = new Movie_Favourite_db_Helper(dContext);
 
                                 SQLiteDatabase db = favourite_db_helper.getWritableDatabase();
 
@@ -311,31 +304,31 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                                 ContentValues favouriteValues = new ContentValues();
 
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo._ID, m_id);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID, movie_EntryID);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE, movie_TitleF);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING, movie_RatingF);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE, movie_ReleaseF);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_INFO, movie_InfoF);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE, movie_ImageF);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID, movie_id);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1, movie_Review1F);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW2, movie_Review2F);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW3, movie_Review3F);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR1, movie_Review1_AuthorF);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR2, movie_Review2_AuthorF);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3, movie_Review3_AuthorF);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1, movie_Trailer1);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2, movie_Trailer2);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3, movie_Trailer3);
-                                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_FAVOURITE, movie_Favourite);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo._ID, m_id);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID, movie_EntryID);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE, movie_TitleF);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING, movie_RatingF);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE, movie_ReleaseF);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_INFO, movie_InfoF);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE, movie_ImageF);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID, movie_id);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1, movie_Review1F);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW2, movie_Review2F);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW3, movie_Review3F);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR1, movie_Review1_AuthorF);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR2, movie_Review2_AuthorF);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3, movie_Review3_AuthorF);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1, movie_Trailer1);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2, movie_Trailer2);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3, movie_Trailer3);
+                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_FAVOURITE, movie_Favourite);
 
 
-                                String rSelectionClause = Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID + " LIKE ?";
+                                String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID + " LIKE ?";
                                 String[] rSelectionArgs = {movie_id};
                                 Log.v("Gavin","got to this bit loader 2");
 /**
-                                long id = db.insert(Favourite_Contract.FavouriteInfo.TABLE_NAME, null, favouriteValues);
+                                long id = db.insert(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME, null, favouriteValues);
 
                                 db.close();
  **/
@@ -349,16 +342,16 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                             else{
                                 Log.v("Gavin", "Checkbox unchecked");
 
-                                Favourite_db_Helper favourite_db_helper = new Favourite_db_Helper(dContext);
+                                Movie_Favourite_db_Helper favourite_db_helper = new Movie_Favourite_db_Helper(dContext);
 
                                 SQLiteDatabase db = favourite_db_helper.getWritableDatabase();
 
 
-                                String rSelectionClause = Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " LIKE ?";
+                                String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " LIKE ?";
                                 String[] rSelectionArgs = {movie_TitleF};
                                 Log.v("Gavin","got to this bit loader 2");
 /**
-                                long id = db.delete(Favourite_Contract.FavouriteInfo.TABLE_NAME, rSelectionClause ,rSelectionArgs);
+                                long id = db.delete(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME, rSelectionClause ,rSelectionArgs);
 
                                 db.close();
  **/
@@ -375,12 +368,12 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                                 SQLiteDatabase db = fdbmovie.getWritableDatabase();
 
-                                String rSelectionClause = Favourite_Contract.FavouriteInfo._ID + " LIKE ?";
+                                String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo._ID + " LIKE ?";
                                 String[] rSelectionArgs = {dUri};
                                 Log.v("Gavin","got to this bit loader 2");
 
                                 int num_rows = getContext().getContentResolver().query(
-                                        Favourite_Contract.FavouriteInfo.CONTENT_URI_F,
+                                        Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
                                         ?,
                                         rSelectionClause,
                                         rSelectionArgs
@@ -533,7 +526,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     Log.v("Gavin", "Favourite Loader cursor created");
                     return new CursorLoader(
                             getActivity(),
-                            Favourite_Contract.FavouriteInfo.CONTENT_URI_F,
+                            Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
                             DETAIL_COLUMNS,
                             position,
                             null,
@@ -710,50 +703,50 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                 movie_Trailer3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER3);
                 movie_Favourite = data_d.getString(Detail_Movie_Fragment.COL_FAVOURITE);
 
-                Favourite_db_Helper fdbHelper = new Favourite_db_Helper(getContext());
+                Movie_Favourite_db_Helper fdbHelper = new Movie_Favourite_db_Helper(getContext());
 
                 SQLiteDatabase db = fdbHelper.getWritableDatabase();
 
                 ContentValues favouriteValues = new ContentValues();
 
                 Log.v("Gavin", "Favourite Loader upload ++" + movie_EntryID);
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID, movie_id);
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID, movie_id);
 
                 Log.v("Gavin", "Favourite Loader upload ++" + movie_id);
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID, "y");
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID, "y");
 
                 Log.v("Gavin", "Favourite Loader upload" + movie_TitleF);
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE, movie_TitleF);
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE, movie_TitleF);
 
                 Log.v("Gavin", "Favourite Loader upload" + movie_ReleaseF);
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE, movie_ReleaseF);
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE, movie_ReleaseF);
 
                 Log.v("Gavin", "Favourite Loader upload" + movie_RatingF);
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING, movie_RatingF);
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING, movie_RatingF);
 
                 Log.v("Gavin", "Favourite Loader upload" +  movie_ImageF);
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE, movie_ImageF);
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE, movie_ImageF);
 
                 Log.v("Gavin", "Favourite Loader upload" + movie_InfoF);
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_INFO, movie_InfoF);
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_INFO, movie_InfoF);
 
                 Log.v("Gavin", "Favourite Loader upload" + movie_Review1F);
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1, movie_Review1F);
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1, movie_Review1F);
 
                 Log.v("Gavin", "Favourite Loader upload" + movie_Review1_AuthorF);
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR1, movie_Review1_AuthorF);
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR1, movie_Review1_AuthorF);
 
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW2, movie_Review2F);
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR2, movie_Review2_AuthorF);
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW3, movie_Review3F);
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3, movie_Review3_AuthorF);
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1, movie_Trailer1);
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2, movie_Trailer2);
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3, movie_Trailer3);
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW2, movie_Review2F);
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR2, movie_Review2_AuthorF);
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW3, movie_Review3F);
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3, movie_Review3_AuthorF);
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1, movie_Trailer1);
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2, movie_Trailer2);
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3, movie_Trailer3);
 
-                favouriteValues.put(Favourite_Contract.FavouriteInfo.COLUMN_FAVOURITE, "y");
+                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_FAVOURITE, "y");
 
-                long id_insert = db.insert(Favourite_Contract.FavouriteInfo.TABLE_NAME, null, favouriteValues);
+                long id_insert = db.insert(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME, null, favouriteValues);
 
                 db.close();
 

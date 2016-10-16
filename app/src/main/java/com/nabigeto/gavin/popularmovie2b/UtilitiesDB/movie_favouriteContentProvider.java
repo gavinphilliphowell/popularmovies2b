@@ -33,7 +33,7 @@ public class movie_favouriteContentProvider extends ContentProvider {
         sMovie_InfoQueryBuilder = new SQLiteQueryBuilder();
 
         sMovie_InfoQueryBuilder.setTables(
-                Favourite_Contract.FavouriteInfo.TABLE_NAME);
+                Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME);
 
 
     }
@@ -43,7 +43,7 @@ public class movie_favouriteContentProvider extends ContentProvider {
     
     private Cursor getMovie_Info(Uri uri, String[] projection, String sortOrder) {
 
-        String Favourite_Info_Setting = Favourite_Contract.FavouriteInfo.getMovieNameFromUri(uri);
+        String Favourite_Info_Setting = Movie_Favourites_Contract.FavouriteInfo.getMovieNameFromUri(uri);
 
 
         String[] selectionArgs;

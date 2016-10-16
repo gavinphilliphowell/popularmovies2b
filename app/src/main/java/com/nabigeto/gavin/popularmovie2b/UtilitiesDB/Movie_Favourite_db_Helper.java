@@ -28,25 +28,25 @@ public class Movie_Favourite_db_Helper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_FAVOURITE_TABLE = "CREATE TABLE " + Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME + " (" +
 
-                    Favourite_Contract.FavouriteInfo._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    Movie_Favourites_Contract.FavouriteInfo._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_INFO + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1 + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW2 + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW3 + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR1 + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR2 + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3 + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1 + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2 + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3 + " TEXT NOT NULL, " +
-                    Favourite_Contract.FavouriteInfo.COLUMN_FAVOURITE + " TEXT NOT NULL " + ");";
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_INFO + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1 + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW2 + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW3 + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR1 + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR2 + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3 + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1 + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2 + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3 + " TEXT NOT NULL, " +
+                    Movie_Favourites_Contract.FavouriteInfo.COLUMN_FAVOURITE + " TEXT NOT NULL " + ");";
 
             Log.v("Gavin", "Got to this bit in db Helper 2");
 

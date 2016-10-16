@@ -4,7 +4,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
@@ -28,18 +27,12 @@ import android.widget.Toast;
 
 import com.nabigeto.gavin.popularmovie2b.Adapter.Custom_Movie_Adapter;
 import com.nabigeto.gavin.popularmovie2b.Sync.MovieSyncAdapter;
-import com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter;
-import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Favourite_Contract;
-import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Favourite_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Favourite_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Favourites_Contract;
-import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_db_Helper;
-import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.movieContentProvider;
+import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.movie_favouriteContentProvider;
 
 import java.io.File;
-import java.net.URI;
-import java.util.ArrayList;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -89,16 +82,16 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
 
     public static final String [] FAVOURITE_COLUMNS = {
-            Favourite_Contract.FavouriteInfo.TABLE_NAME + "." +
-            Favourite_Contract.FavouriteInfo._ID,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_TITLE,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_INFO,
-            Favourite_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE,
-            Favourite_Contract.FavouriteInfo.COLUMN_FAVOURITE
+            Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME + "." +
+            Movie_Favourites_Contract.FavouriteInfo._ID,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_INFO,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE,
+            Movie_Favourites_Contract.FavouriteInfo.COLUMN_FAVOURITE
             };
 
 
@@ -152,15 +145,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         }
 
-        String start_bundle = "popular";
-        Bundle settingsBundlem = new Bundle();
-
-        settingsBundlem.putString("gridview_default load", start_bundle);
-        settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-
-        ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlem);
-
+        getLoaderManager().initLoader(MOVIE_LOADER, null, this);
 
         if (isOnline() != true) {
     Toast.makeText(getActivity(), "No network detected", Toast.LENGTH_LONG).show();
@@ -179,9 +164,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
-        /**
+/**
         getLoaderManager().initLoader(MOVIE_LOADER, null, this);
-         **/
+**/
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -242,7 +227,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                              final Bundle savedInstanceState) {
         Log.v("Gavin", "Got to this part - launching view");
 
-
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
 
         final GridView gridView = (GridView) view.findViewById(R.id.grid_view_movie);
@@ -252,7 +236,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         gridView.setAdapter(mAdapter);
         Log.e("Gavin", "Got to this bit in mainactivityfragment");
 
+        movie_selection_type = "popular";
 
+        Bundle settingsBundlem = new Bundle();
+
+        settingsBundlem.putString("gridview_load", movie_selection_type);
+        settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlem);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -356,29 +347,17 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 Uri movie_table_uri = Uri.parse(movie_table);
                 String rSelectionClause = Movie_Contract.MovieInfo._ID + " LIKE ?";
                 String moviesortOrder = Movie_Contract.MovieInfo.COLUMN_NAME_RATING + " ASC";
-/**
-                getContext().getContentResolver().query(
-                        movie_table_uri,
-                        MOVIE_COLUMNS,
-                        rSelectionClause,
-                        null,
-                        moviesortOrder
-                );
 
-
-
-**/
-
-/**
-                return new CursorLoader(getActivity(),
+                CursorLoader movie_loader =  new CursorLoader(getContext(),
                         Movie_Contract.MovieInfo.CONTENT_URI,
                         MOVIE_COLUMNS,
                         null,
                         null,
                         sortOrder);
-**/
-            case FAVOURITE_LOADER:
 
+                return movie_loader;
+
+            case FAVOURITE_LOADER:
 
                 String favourite_table = Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME;
 
@@ -386,60 +365,15 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 String fSelectionClause = Movie_Favourites_Contract.FavouriteInfo._ID + " LIKE ?";
                 String favouritesortOrder = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
 
-                Cursor favourite_data = getContext().getContentResolver().query(
-                        favourite_table_uri,
-                        FAVOURITE_COLUMNS,
-                        fSelectionClause,
-                        null,
-                        favouritesortOrder
-                );
-
-
-/**
-
-                Favourite_db_Helper favourite_db_helper = new Favourite_db_Helper(getContext());
-
-                SQLiteDatabase db = favourite_db_helper.getReadableDatabase();
-
-
-                return new CursorLoader(getContext(),
+                CursorLoader favourite_loader = new CursorLoader(getContext(),
                         favourite_table_uri,
                         FAVOURITE_COLUMNS,
                         null,
                         null,
                         favouritesortOrder);
 
-            **/
+                return favourite_loader;
 
-                /**
-
-                ArrayList favourites_Array = new ArrayList();
-                int c_length = c.getCount();
-
-
-                for (int a = 0; a < c_length; a++ ) {
-
-                    favourites_Array = c.move(a);
-
-                }
-
-
-
-
-
-
-                Uri favourite = Favourite_Contract.FavouriteInfo.CONTENT_URI_F;
-
-                String favourite_uri = favourite.toString();
-
-                Log.v("Gavin", "Loading favourites" + favourite_uri);
-
-                String favouritesortOrder = Favourite_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
-
-                Cursor cursorD;
-
-                return new CursorLoader(getActivity(), favourite, FAVOURITE_COLUMNS, null, null, favouritesortOrder);
-**/
         }
 
         return null;
