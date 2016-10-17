@@ -272,41 +272,45 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     switch(view.getId()){
                         case R.id.checkbox_favourite:
+
+
                             if(checked){
-                    /**            Favourite_db_Helper fdbmovie = new Favourite_db_Helper(getContext());
+ /**                             String favouritesortOrder = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
 
-                                SQLiteDatabase db = fdbmovie.getWritableDatabase();
-
-                                String rSelectionClause = Favourite_Contract.FavouriteInfo._ID + " LIKE ?";
+                                String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo._ID + " LIKE ?";
                                 String[] rSelectionArgs = {dUri};
                                 Log.v("Gavin","got to this bit loader 2");
 
-                                int num_rows = getContext().getContentResolver().query(
-                                        Favourite_Contract.FavouriteInfo.CONTENT_URI_F,
-                                        ?,
+                                Log.v("Gavin", "Checkbox checked");
+
+                                Cursor favourite_details = getContext().getContentResolver().query(
+                                        Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
+                                        Favourite_Columns,
                                         rSelectionClause,
-                                        rSelectionArgs
+                                        rSelectionArgs,
+                                        favouritesortOrder
                                 );
                                 Log.v("Gavin", "got to this bit loader 3");
-                     **/
 
+                                if (favourite_details != null){
+                                    favourite_details.close();
 
-                            Log.v("Gavin", "Checkbox checked");
+                                    int favourite_details_update = getContext().getContentResolver().update(
+                                            Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
+                                            favouriteValues,
+                                            rSelectionClause,
+                                            rSelectionArgs
+                                    );
+                                }
 
-                                Movie_Favourite_db_Helper favourite_db_helper = new Movie_Favourite_db_Helper(dContext);
-
-                                SQLiteDatabase db = favourite_db_helper.getWritableDatabase();
-
-                                movie_EntryID = "filler";
-                                movie_Favourite = "y";
-
-
-
+                                else {
+**/
                                 ContentValues favouriteValues = new ContentValues();
 
                                 favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo._ID, m_id);
                                 favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID, movie_EntryID);
                                 favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE, movie_TitleF);
+                                Log.v("Gavin", "Detail Movie Fragment" + movie_TitleF);
                                 favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING, movie_RatingF);
                                 favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE, movie_ReleaseF);
                                 favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_INFO, movie_InfoF);
@@ -324,62 +328,26 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                                 favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_FAVOURITE, movie_Favourite);
 
 
-                                String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID + " LIKE ?";
-                                String[] rSelectionArgs = {movie_id};
-                                Log.v("Gavin","got to this bit loader 2");
-/**
-                                long id = db.insert(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME, null, favouriteValues);
+                                Uri favourite_details_update = getContext().getContentResolver().insert(
+                                            Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
+                                            favouriteValues);
 
-                                db.close();
- **/
-                                getContext().getContentResolver().insert(
-                                        Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
-                                        favouriteValues);
-
+                                break;
 
                             }
 
                             else{
-                                Log.v("Gavin", "Checkbox unchecked");
-
-                                Movie_Favourite_db_Helper favourite_db_helper = new Movie_Favourite_db_Helper(dContext);
-
-                                SQLiteDatabase db = favourite_db_helper.getWritableDatabase();
 
 
                                 String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " LIKE ?";
                                 String[] rSelectionArgs = {movie_TitleF};
                                 Log.v("Gavin","got to this bit loader 2");
-/**
-                                long id = db.delete(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME, rSelectionClause ,rSelectionArgs);
 
-                                db.close();
- **/
-                                getContext().getContentResolver().delete(
+                                int favourite_details_delete = getContext().getContentResolver().delete(
                                         Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
                                         rSelectionClause,
                                         rSelectionArgs);
 
-
-
-
-                        /**
-                                Favourite_db_Helper fdbmovie = new Favourite_db_Helper(getContext());
-
-                                SQLiteDatabase db = fdbmovie.getWritableDatabase();
-
-                                String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo._ID + " LIKE ?";
-                                String[] rSelectionArgs = {dUri};
-                                Log.v("Gavin","got to this bit loader 2");
-
-                                int num_rows = getContext().getContentResolver().query(
-                                        Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
-                                        ?,
-                                        rSelectionClause,
-                                        rSelectionArgs
-                                );
-                                Log.v("Gavin", "got to this bit loader 3");
-                        **/
 
                             }
                             break;

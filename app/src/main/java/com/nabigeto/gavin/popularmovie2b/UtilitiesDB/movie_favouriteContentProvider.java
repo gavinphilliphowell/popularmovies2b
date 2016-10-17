@@ -16,7 +16,7 @@ public class movie_favouriteContentProvider extends ContentProvider {
 /**
     public static final UriMatcher sUriMatcher = buildUriMatcher();
 **/
-    private Movie_db_Helper mOpenHelper;
+    private Movie_Favourite_db_Helper mOpenHelper;
 
     private static final UriMatcher sUriMatcher;
 
@@ -81,7 +81,7 @@ public class movie_favouriteContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate(){
-        mOpenHelper = new Movie_db_Helper(getContext());
+        mOpenHelper = new Movie_Favourite_db_Helper(getContext());
         return true;
     }
 
@@ -107,11 +107,11 @@ public class movie_favouriteContentProvider extends ContentProvider {
         String suri = uri.toString();
         Log.v("Gavin", "movieContentProvider" + suri);
 
-        switch (sUriMatcher.match(uri)) {
 
-            case FAVOURITE_INFO:
+
+
                 retCursor = mOpenHelper.getReadableDatabase().query(
-                        Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME,
+                        suri,
                         projection,
                         selection,
                         selectionArgs,
@@ -120,12 +120,8 @@ public class movie_favouriteContentProvider extends ContentProvider {
                         sortOrder
 
                 );
-                break;
 
-            default:
-                throw new UnsupportedOperationException("Unknown URI: + 2" + uri);
-
-        }
+            retCursor.moveToFirst();
 
         retCursor.setNotificationUri(getContext().getContentResolver(),uri);
         return retCursor;
