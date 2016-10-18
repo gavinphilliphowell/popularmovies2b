@@ -1,6 +1,7 @@
 package com.nabigeto.gavin.popularmovie2b;
 
 import android.content.ActivityNotFoundException;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -129,7 +130,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 **/
 
     public static final String [] Favourite_Columns = {
-            Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME + "." +
+            Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F + "." +
             Movie_Favourites_Contract.FavouriteInfo._ID,
             Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID,
             Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID,
@@ -194,6 +195,8 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public String movie_Trailer2;
     public String movie_Trailer3;
     public String movie_Favourite;
+
+    public String movie_id_holder;
 
 
     public Detail_Movie_Fragment() {
@@ -275,10 +278,10 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
 
                             if(checked){
- /**                             String favouritesortOrder = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
+                             String favouritesortOrder = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
 
                                 String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo._ID + " LIKE ?";
-                                String[] rSelectionArgs = {dUri};
+                                String[] rSelectionArgs = new String[]{dUri};
                                 Log.v("Gavin","got to this bit loader 2");
 
                                 Log.v("Gavin", "Checkbox checked");
@@ -290,21 +293,13 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                                         rSelectionArgs,
                                         favouritesortOrder
                                 );
+
+                                int favourite_count = favourite_details.getCount();
+
+                                Log.v("Gavin", "Details Movie Fragment On Click" + favourite_count);
+
                                 Log.v("Gavin", "got to this bit loader 3");
 
-                                if (favourite_details != null){
-                                    favourite_details.close();
-
-                                    int favourite_details_update = getContext().getContentResolver().update(
-                                            Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
-                                            favouriteValues,
-                                            rSelectionClause,
-                                            rSelectionArgs
-                                    );
-                                }
-
-                                else {
-**/
                                 ContentValues favouriteValues = new ContentValues();
 
                                 favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo._ID, m_id);
@@ -327,12 +322,38 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                                 favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3, movie_Trailer3);
                                 favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_FAVOURITE, movie_Favourite);
 
+                                if (favourite_count != 0){
+                                    String favourite_update_name;
+                                    long favourite_update_id;
 
-                                Uri favourite_details_update = getContext().getContentResolver().insert(
+                                    favourite_update_name = favourite_details.getString(COL_MOVIE_TITLE_D);
+
+
+                                    favourite_update_id = Long.parseLong(favourite_details.getString(COL_MOVIE_ENTRY_ID));
+
+                                    movie_id_holder = favourite_details.getString(COL_MOVIE_ENTRY_ID);
+
+                                    Log.v("Gavin", "Detail_Movie_Fragment" + favourite_update_name);
+                                    favourite_details.close();
+
+                                    Uri favourite_movie_update = ContentUris.withAppendedId(Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,favourite_update_id);
+
+                                    int favourite_details_update = getContext().getContentResolver().update(
+                                            favourite_movie_update,
+                                            favouriteValues,
+                                            null,
+                                            null
+                                    );
+                                }
+
+                                else {
+
+                                     Uri movie_insert = getContext().getContentResolver().insert(
                                             Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
                                             favouriteValues);
+                                }
 
-                                break;
+                                    break;
 
                             }
 
@@ -340,13 +361,18 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
 
                                 String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " LIKE ?";
-                                String[] rSelectionArgs = {movie_TitleF};
+                                long favourite_delete = Long.parseLong(movie_id_holder);
+
+
                                 Log.v("Gavin","got to this bit loader 2");
 
+                                Uri favourite_movie_delete = ContentUris.withAppendedId(Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F, favourite_delete);
+
+
                                 int favourite_details_delete = getContext().getContentResolver().delete(
-                                        Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
-                                        rSelectionClause,
-                                        rSelectionArgs);
+                                        favourite_movie_delete,
+                                        null,
+                                        null);
 
 
                             }
@@ -714,7 +740,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                 favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_FAVOURITE, "y");
 
-                long id_insert = db.insert(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME, null, favouriteValues);
+                long id_insert = db.insert(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F, null, favouriteValues);
 
                 db.close();
 

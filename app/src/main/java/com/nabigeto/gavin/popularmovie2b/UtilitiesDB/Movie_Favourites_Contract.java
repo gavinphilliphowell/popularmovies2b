@@ -15,19 +15,19 @@ public class Movie_Favourites_Contract {
 
     public static final Uri BASE_CONTENT_URI_F = Uri.parse("content://" + CONTENT_AUTHORITY_F);
 
-    public static final String PATH_MOVIE = "movie_favourite";
+    public static final String PATH_MOVIE_F = "movie_favourite";
 
 
 
     public static final class FavouriteInfo implements BaseColumns {
 
-        public static final Uri CONTENT_URI_F = BASE_CONTENT_URI_F.buildUpon().appendPath(PATH_MOVIE).build();
+        public static final Uri CONTENT_URI_F = BASE_CONTENT_URI_F.buildUpon().appendPath(PATH_MOVIE_F).build();
 
-        public static final String CONTENT_TYPE_F = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY_F + "/" + PATH_MOVIE;
+        public static final String CONTENT_TYPE_F = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY_F + "/" + PATH_MOVIE_F;
 
-        public static final String CONTENT_ITEM_TYPE_F = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY_F + "/" + PATH_MOVIE;
+        public static final String CONTENT_ITEM_TYPE_F = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY_F + "/" + PATH_MOVIE_F;
 
-        public static final String TABLE_NAME = "movie_favourite";
+        public static final String TABLE_NAME_F = "movie_favourite";
 
         public static final String _ID = "_id";
         public static final String COLUMN_NAME_ENTRY_ID = "entry_id";

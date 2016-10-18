@@ -82,7 +82,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
 
     public static final String [] FAVOURITE_COLUMNS = {
-            Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME + "." +
+            Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F + "." +
             Movie_Favourites_Contract.FavouriteInfo._ID,
             Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID,
             Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID,
@@ -359,7 +359,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
             case FAVOURITE_LOADER:
 
-                String favourite_table = Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME;
+                String favourite_table = Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F;
 
                 Uri favourite_table_uri = Uri.parse(favourite_table);
                 String fSelectionClause = Movie_Favourites_Contract.FavouriteInfo._ID + " LIKE ?";
@@ -372,9 +372,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                         null,
                         favouritesortOrder);
 
+
                 return favourite_loader;
 
         }
+
 
         return null;
     }

@@ -33,12 +33,12 @@ public class movie_favouriteContentProvider extends ContentProvider {
         sMovie_InfoQueryBuilder = new SQLiteQueryBuilder();
 
         sMovie_InfoQueryBuilder.setTables(
-                Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME);
+                Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F);
 
 
     }
 
-    private static final String sMovie_InfoSettingSelection = Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME + " = ? ";
+    private static final String sMovie_InfoSettingSelection = Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F + " = ? ";
 
     
     private Cursor getMovie_Info(Uri uri, String[] projection, String sortOrder) {
@@ -71,7 +71,7 @@ public class movie_favouriteContentProvider extends ContentProvider {
 
         sUriMatcher.addURI(
                 movie_favouriteContentProvider.AUTHORITY,
-                Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME,
+                Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F,
                 FAVOURITE_INFO
         );
 
@@ -100,32 +100,40 @@ public class movie_favouriteContentProvider extends ContentProvider {
     }
 
         @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder){
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
-        Cursor retCursor;
+            Cursor retCursor;
 
-        String suri = uri.toString();
-        Log.v("Gavin", "movieContentProvider" + suri);
+            String suri = uri.toString();
+            Log.v("Gavin", "movieContentProvider" + suri);
 
+            final int typeUri = sUriMatcher.match(uri);
 
+            switch (typeUri) {
 
+                case FAVOURITE_INFO: {
 
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        suri,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
+                    retCursor = mOpenHelper.getReadableDatabase().query(
+                            suri,
+                            projection,
+                            selection,
+                            selectionArgs,
+                            null,
+                            null,
+                            sortOrder
 
-                );
+                    );
 
-            retCursor.moveToFirst();
+                    break;
+                }
 
-        retCursor.setNotificationUri(getContext().getContentResolver(),uri);
-        return retCursor;
-    }
+                default:
+                    throw new UnsupportedOperationException("Unknown uri + 2b" + uri);
+            }
+
+            retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+            return retCursor;
+        }
 
     @Override
     public Uri insert(Uri uri, ContentValues contentValues){
@@ -138,7 +146,7 @@ public class movie_favouriteContentProvider extends ContentProvider {
 
             case FAVOURITE_INFO: {
 
-                long _id = db.insert(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME, null, contentValues);
+                long _id = db.insert(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F, null, contentValues);
                 Log.v("Gavin", "Inserting");
                 if (_id > 0)
                     returnUri = Movie_Favourites_Contract.FavouriteInfo.buildMovie_InfoUri_F(_id);
@@ -167,7 +175,7 @@ public class movie_favouriteContentProvider extends ContentProvider {
         switch(match){
 
             case FAVOURITE_INFO:{
-                rowsUpdated = db.update(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME, contentvalues, selection, selectionArgs);
+                rowsUpdated = db.update(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F, contentvalues, selection, selectionArgs);
                 break;
             }
 
@@ -193,7 +201,7 @@ public class movie_favouriteContentProvider extends ContentProvider {
         switch(match){
 
             case FAVOURITE_INFO:{
-                rowsDeleted = db.delete(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = db.delete(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F, selection, selectionArgs);
                 break;
             }
 
@@ -225,7 +233,7 @@ public class movie_favouriteContentProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values){
                         Log.v("Gavin", "Trying to insert" + value);
-                        long _id = db.insert(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME, null, value);
+                        long _id = db.insert(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F, null, value);
                         if(_id != -1) {
                             returnCount++;
                         }
