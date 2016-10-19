@@ -145,7 +145,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         }
 
-        getLoaderManager().initLoader(MOVIE_LOADER, null, this);
+        getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
 
         if (isOnline() != true) {
     Toast.makeText(getActivity(), "No network detected", Toast.LENGTH_LONG).show();
@@ -209,7 +209,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             case(R.id.movie_options_sort3):
                 movie_selection_type = "favourite";
 
-                getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
+                getLoaderManager().restartLoader(FAVOURITE_LOADER,null,this);
 
                 break;
 
@@ -252,6 +252,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                                                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                                                 if (cursor != null) {
+
+
                                                     cursor.moveToPosition(position);
 
                                                     String database_id = cursor.getString(_ID);
@@ -366,11 +368,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 String favouritesortOrder = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
 
                 CursorLoader favourite_loader = new CursorLoader(getContext(),
-                        favourite_table_uri,
-                        FAVOURITE_COLUMNS,
+                        Movie_Contract.MovieInfo.CONTENT_URI,
+                        MOVIE_COLUMNS,
                         null,
                         null,
-                        favouritesortOrder);
+                        Movie_Contract.MovieInfo.COLUMN_NAME_RATING + " ASC");
 
 
                 return favourite_loader;

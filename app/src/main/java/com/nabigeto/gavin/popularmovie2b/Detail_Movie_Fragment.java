@@ -210,6 +210,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         getLoaderManager().initLoader(REVIEW_LOADER, null, this);
         getLoaderManager().initLoader(TRAILER_LOADER, null, this);
+        getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
 
         super.onActivityCreated(savedInstanceState);
 
@@ -278,27 +279,11 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
 
                             if(checked){
-                             String favouritesortOrder = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
 
-                                String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo._ID + " LIKE ?";
-                                String[] rSelectionArgs = new String[]{dUri};
                                 Log.v("Gavin","got to this bit loader 2");
 
                                 Log.v("Gavin", "Checkbox checked");
 
-                                Cursor favourite_details = getContext().getContentResolver().query(
-                                        Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
-                                        Favourite_Columns,
-                                        rSelectionClause,
-                                        rSelectionArgs,
-                                        favouritesortOrder
-                                );
-
-                                int favourite_count = favourite_details.getCount();
-
-                                Log.v("Gavin", "Details Movie Fragment On Click" + favourite_count);
-
-                                Log.v("Gavin", "got to this bit loader 3");
 
                                 ContentValues favouriteValues = new ContentValues();
 
@@ -322,57 +307,31 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                                 favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3, movie_Trailer3);
                                 favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_FAVOURITE, movie_Favourite);
 
-                                if (favourite_count != 0){
-                                    String favourite_update_name;
-                                    long favourite_update_id;
-
-                                    favourite_update_name = favourite_details.getString(COL_MOVIE_TITLE_D);
-
-
-                                    favourite_update_id = Long.parseLong(favourite_details.getString(COL_MOVIE_ENTRY_ID));
-
-                                    movie_id_holder = favourite_details.getString(COL_MOVIE_ENTRY_ID);
-
-                                    Log.v("Gavin", "Detail_Movie_Fragment" + favourite_update_name);
-                                    favourite_details.close();
-
-                                    Uri favourite_movie_update = ContentUris.withAppendedId(Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,favourite_update_id);
-
-                                    int favourite_details_update = getContext().getContentResolver().update(
-                                            favourite_movie_update,
-                                            favouriteValues,
-                                            null,
-                                            null
-                                    );
-                                }
-
-                                else {
 
                                      Uri movie_insert = getContext().getContentResolver().insert(
                                             Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
                                             favouriteValues);
                                 }
 
-                                    break;
-
-                            }
 
                             else{
 
 
                                 String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " LIKE ?";
-                                long favourite_delete = Long.parseLong(movie_id_holder);
+                                String[] rSelectionArgs = {movie_TitleF};
+
 
 
                                 Log.v("Gavin","got to this bit loader 2");
 
-                                Uri favourite_movie_delete = ContentUris.withAppendedId(Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F, favourite_delete);
+
+
 
 
                                 int favourite_details_delete = getContext().getContentResolver().delete(
-                                        favourite_movie_delete,
-                                        null,
-                                        null);
+                                        Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
+                                        rSelectionClause,
+                                        rSelectionArgs);
 
 
                             }
@@ -422,7 +381,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
         if (s_state = true){
 
-            getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
+
         }
 
     }
@@ -645,13 +604,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                         url_youtube = "http://img.youtube.com/vi/" + movie_Trailer1 + "/1.jpg";
                         Log.v("Gavin", url_youtube);
                         Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer1);
-            /**            dTrailer1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Log.v("Gavin", "Youtube video launched");
-                            }
-                        });
-             **/
+
                     }
 
 
@@ -771,19 +724,6 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
             startActivity(webIntent);
         }
     }
-/**
-    public static Account CreateSyncAccount(Context context) {
-        Account newAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
 
-        AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
-
-        if (accountManager.addAccountExplicitly(newAccount, null, null)) {
-
-        } else {
-
-        }
-        return newAccount;
-    }
-**/
 
 }
