@@ -27,6 +27,8 @@ import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Favourite_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Favourites_Contract;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -173,9 +175,9 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public ImageView dTrailer2;
     public ImageView dTrailer3;
 
-    public ImageView movie_intent_button1;
-    public ImageView movie_intent_button2;
-    public ImageView movie_intent_button3;
+    public TextView movie_details_offline;
+    public TextView movie_reviews_offline;
+    public TextView movie_trailer_offline;
 
     public String m_id;
     public String movie_EntryID;
@@ -196,6 +198,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public String movie_Trailer3;
     public String movie_Favourite;
 
+
     public String movie_id_holder;
 
 
@@ -207,10 +210,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.v("Gavin", "onActivityCreated");
-        getLoaderManager().initLoader(DETAIL_LOADER, null, this);
-        getLoaderManager().initLoader(REVIEW_LOADER, null, this);
-        getLoaderManager().initLoader(TRAILER_LOADER, null, this);
-        getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
+
 
         super.onActivityCreated(savedInstanceState);
 
@@ -225,6 +225,19 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
             dUri = "3";
         }
         Log.v("Gavin", "uri " + dUri);
+
+        if () {
+
+        }
+
+        else {
+
+            getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+            getLoaderManager().initLoader(REVIEW_LOADER, null, this);
+            getLoaderManager().initLoader(TRAILER_LOADER, null, this);
+
+        }
+
 
 
     }
@@ -248,6 +261,9 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         View rootView = inflater.inflate(R.layout.fragment_details_layout, container, false);
         Log.v("Gavin", "Got to the bit in the detail fragment");
 
+        movie_details_offline = (TextView) rootView.findViewById(R.id.movie_details_offline);
+        movie_reviews_offline = (TextView) rootView.findViewById(R.id.movie_review_offline);
+        movie_trailer_offline = (TextView) rootView.findViewById(R.id.movie_trailer_offline);
 
         dImage_File = (ImageView) rootView.findViewById(R.id.detail_movie_poster);
         dRating = (TextView) rootView.findViewById(R.id.movie_user_rating_d);
@@ -320,13 +336,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                                 String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " LIKE ?";
                                 String[] rSelectionArgs = {movie_TitleF};
 
-
-
                                 Log.v("Gavin","got to this bit loader 2");
-
-
-
-
 
                                 int favourite_details_delete = getContext().getContentResolver().delete(
                                         Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
@@ -367,24 +377,6 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         return rootView;
     }
 
-    public boolean readState(){
-
-        boolean favourite_State = false;
-
-
-        return favourite_State;
-    }
-
-    private void setState(boolean s_state){
-
-        boolean favourite_State = s_state;
-
-        if (s_state = true){
-
-
-        }
-
-    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -468,28 +460,6 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                 Log.v("Gavin", "Loader cursor finished" + dUri);
                 return null;
 
-            case FAVOURITE_LOADER:
-
-                position = " _ID = " + dUri;
-                /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
-                 **/
-                row_Pref = dUri;
-                Log.v("Gavin", "dUuri" + row_Pref);
-                if (null != dUri) {
-                    Log.v("Gavin", "Favourite Loader cursor created");
-                    return new CursorLoader(
-                            getActivity(),
-                            Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
-                            DETAIL_COLUMNS,
-                            position,
-                            null,
-                            null
-                    );
-
-                }
-                Log.v("Gavin", "Loader cursor finished" + "Favourite_Loader");
-                Log.v("Gavin", "Loader cursor finished" + dUri);
-                return null;
         }
 
         return null;
@@ -510,84 +480,134 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
             case DETAIL_LOADER:
 
-                data_d.moveToFirst();
-                Log.v("Gavin", "Position passed to loader");
-                position = data_d.getPosition();
-                positions = Integer.toString(position);
-                Log.v("Gavin", "Cursor position in detail fragment" + positions);
+                int cursor_check_detail = data_d.getCount();
+                String check_detail = Integer.toString(cursor_check_detail);
+                Log.v("Gavin", "cursor_check_detail" + check_detail);
 
-                int movie_api_id = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_MOVIE_ID);
-                String movie_api_id_s = data_d.getString(movie_api_id);
+                if (cursor_check_detail == 0) {
+
+                    String detail_check = "Sorry - no reviews available :)";
+                    movie_details_offline.setText(detail_check);
+
+                }
+
+                else
+
+                {
+                    data_d.moveToFirst();
+                    Log.v("Gavin", "Position passed to loader");
+                    position = data_d.getPosition();
+                    positions = Integer.toString(position);
+                    Log.v("Gavin", "Cursor position in detail fragment" + positions);
 
 
-                int image_file_position = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_IMAGE_FILE);
+                    int movie_IDd = data_d.getColumnIndex(Movie_Contract.MovieInfo._ID);
+                    m_id = data_d.getString(movie_IDd);
+
+                    int movie_EntryIDd = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_ENTRY_ID);
+                    movie_EntryID = data_d.getString(movie_EntryIDd);
+
+                    int movie_Titled = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TITLE);
+                    movie_TitleF = data_d.getString(movie_Titled);
 
 
-                movie_ImageF = data_d.getString(image_file_position);
-                Log.v("Gavin", "DetailActivityFragment" + movie_ImageF);
+                    int movie_api_id = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_MOVIE_ID);
+                    String movie_api_id_s = data_d.getString(movie_api_id);
 
-                Log.v("Gavin", "Loading picasso in detail fragment");
 
-                Picasso.with(dContext).load(movie_ImageF).placeholder(R.drawable.worms_head).into(dImage_File);
+                    int image_file_position = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_IMAGE_FILE);
 
-                int filmTitle = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TITLE);
-                movie_TitleF = data_d.getString(filmTitle);
-                Log.v("Gavin", "DetailActivityFragment" + movie_TitleF);
 
-                dTitle.setText(movie_TitleF);
+                    movie_ImageF = data_d.getString(image_file_position);
+                    Log.v("Gavin", "DetailActivityFragment" + movie_ImageF);
 
-                movie_InfoF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO);
-                dInfo.setText(movie_InfoF);
+                    Log.v("Gavin", "Loading picasso in detail fragment");
 
-                movie_ReleaseF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RELEASE_DATE_D);
-                Log.v("Gavin", movie_ReleaseF);
-                dRelease_Date.setText(movie_ReleaseF);
+                    Picasso.with(dContext).load(movie_ImageF).placeholder(R.drawable.worms_head).into(dImage_File);
 
-                movie_RatingF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RATING);
-                Log.v("Gavin", movie_RatingF);
-                dRating.setText(movie_RatingF);
+                    int filmTitle = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TITLE);
+                    movie_TitleF = data_d.getString(filmTitle);
+                    Log.v("Gavin", "DetailActivityFragment" + movie_TitleF);
 
+                    dTitle.setText(movie_TitleF);
+
+                    movie_InfoF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO);
+                    dInfo.setText(movie_InfoF);
+
+                    movie_ReleaseF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RELEASE_DATE_D);
+                    Log.v("Gavin", movie_ReleaseF);
+                    dRelease_Date.setText(movie_ReleaseF);
+
+                    movie_RatingF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RATING);
+                    Log.v("Gavin", movie_RatingF);
+                    dRating.setText(movie_RatingF);
+
+                }
 
                 break;
 
                 case REVIEW_LOADER:
 
-                    data_d.moveToFirst();
+                    int cursor_check_review = data_d.getCount();
 
-                    movie_Review1F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW1);
-                    if (movie_Review1F != "b"){
+                    String check_review = Integer.toString(cursor_check_review);
+                    Log.v("Gavin", "cursor_check_detail" + check_review);
+
+                    if (cursor_check_review == 0) {
+
+                        String review_status = "Sorry - no reviews available :)";
                         dReview1.setVisibility(View.VISIBLE);
-                        dReview1.setText(movie_Review1F);
+                        dReview1.setText(review_status);
+
                     }
 
-                    movie_Review1_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR1);
-                    if (movie_Review1_AuthorF != "b"){
-                        dReviewauthor1.setVisibility(View.VISIBLE);
-                        dReviewauthor1.setText(movie_Review1_AuthorF);
-                    }
+                    else{
 
-                    movie_Review2F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW2);
-                    if (movie_Review2F != "b"){
-                        dReview2.setVisibility(View.VISIBLE);
-                        dReview2.setText(movie_Review2F);
-                    }
+                        data_d.moveToFirst();
 
-                    movie_Review2_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR2);
-                    if (movie_Review2_AuthorF != "b"){
-                        dReviewauthor2.setVisibility(View.VISIBLE);
-                        dReviewauthor2.setText(movie_Review2_AuthorF);
-                    }
+                        int movie_R1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1);
+                        movie_Review1F = data_d.getString(movie_R1);
+                        Log.v("Gavin", "Review Loader" + movie_Review1F);
+                        if (movie_Review1F != "b"){
+                            dReview1.setVisibility(View.VISIBLE);
+                            dReview1.setText(movie_Review1F);
+                        }
 
-                    movie_Review3F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW3);
-                    if (movie_Review3F != "b"){
-                        dReview3.setVisibility(View.VISIBLE);
-                        dReview3.setText(movie_Review3F);
-                    }
+                        int movie_A1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1);
+                        movie_Review1_AuthorF = data_d.getString(movie_A1);
+                        if (movie_Review1_AuthorF != "b"){
+                            dReviewauthor1.setVisibility(View.VISIBLE);
+                            dReviewauthor1.setText(movie_Review1_AuthorF);
+                        }
 
-                    movie_Review3_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR3);
-                    if (movie_Review3_AuthorF != "b"){
-                        dReviewauthor3.setVisibility(View.VISIBLE);
-                        dReviewauthor3.setText(movie_Review3_AuthorF);
+                        int movie_R2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2);
+                        movie_Review2F = data_d.getString(movie_R2);
+                        if (movie_Review2F != "b"){
+                            dReview2.setVisibility(View.VISIBLE);
+                            dReview2.setText(movie_Review2F);
+                        }
+
+                        int movie_A2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR2);
+                        movie_Review2_AuthorF = data_d.getString(movie_A2);
+                        if (movie_Review2_AuthorF != "b"){
+                            dReviewauthor2.setVisibility(View.VISIBLE);
+                            dReviewauthor2.setText(movie_Review2_AuthorF);
+                        }
+
+                        int movie_R3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3);
+                        movie_Review3F = data_d.getString(movie_R3);
+                        if (movie_Review3F != "b"){
+                            dReview3.setVisibility(View.VISIBLE);
+                            dReview3.setText(movie_Review3F);
+                        }
+
+                        int movie_A3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR3);
+                        movie_Review3_AuthorF = data_d.getString(movie_A3);
+                        if (movie_Review3_AuthorF != "b"){
+                            dReviewauthor3.setVisibility(View.VISIBLE);
+                            dReviewauthor3.setText(movie_Review3_AuthorF);
+                        }
+
                     }
 
                 break;
@@ -596,9 +616,25 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     String url_youtube;
 
+                    int cursor_check_trailer = data_d.getCount();
+                    String check_trailer = Integer.toString(cursor_check_trailer);
+                    Log.v("Gavin", "cursor_check_detail" + check_trailer);
+
+                    if (cursor_check_trailer == 0){
+
+                        String trailer_status = "Sorry - no trailers available :)";
+                        movie_trailer_offline.setVisibility(View.VISIBLE);
+                        movie_trailer_offline.setText(trailer_status);
+
+                    }
+
+                    else{
+
+
                     data_d.moveToFirst();
 
-                    movie_Trailer1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER1);
+                    int trailer_A1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1);
+                    movie_Trailer1 = data_d.getString(trailer_A1);
                     if (movie_Trailer1 != "b"){
                         dTrailer1.setVisibility(View.VISIBLE);
                         url_youtube = "http://img.youtube.com/vi/" + movie_Trailer1 + "/1.jpg";
@@ -607,9 +643,9 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     }
 
-
-                    movie_Trailer2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER2);
-                    if (movie_Trailer2 != "b"){
+                    int trailer_A2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2);
+                    movie_Trailer2 = data_d.getString(trailer_A2);
+                    if (movie_Trailer2 == "b"){
                         dTrailer2.setVisibility(View.VISIBLE);
                         url_youtube = "http://img.youtube.com/vi/" + movie_Trailer2 + "/1.jpg";
                         Log.v("Gavin", url_youtube);
@@ -617,7 +653,8 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     }
 
-                    movie_Trailer3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER3);
+                    int trailer_A3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3);
+                    movie_Trailer3 = data_d.getString(trailer_A3);
                     if (movie_Trailer3 != "b"){
                         dTrailer3.setVisibility(View.VISIBLE);
                         url_youtube = "http://img.youtube.com/vi/" + movie_Trailer3 + "/1.jpg";
@@ -625,87 +662,10 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                         Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer3);
 
                     }
-
-            case FAVOURITE_LOADER:
-
-                data_d.moveToFirst();
-
-                movie_id = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_ID);
-                movie_EntryID = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_ENTRY_ID);
-                movie_TitleF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TITLE_D);
-                Log.v("Gavin", "Favourite_Loader" + movie_TitleF);
-                movie_ReleaseF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RELEASE_DATE_D);
-                movie_RatingF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RATING);
-                movie_ImageF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_IMAGE_FILE);
-                movie_InfoF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO);
-                movie_Review1F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW1);
-                Log.v("Gavin", "Favourite_Loader" + movie_Review1F);
-                movie_Review1_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR1);
-                movie_Review2F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW2);
-                movie_Review2_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR2);
-                movie_Review3F = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW3);
-                movie_Review3_AuthorF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_REVIEW_AUTHOR3);
-                movie_Trailer1 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER1);
-                movie_Trailer2 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER2);
-                movie_Trailer3 = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_TRAILER3);
-                movie_Favourite = data_d.getString(Detail_Movie_Fragment.COL_FAVOURITE);
-
-                Movie_Favourite_db_Helper fdbHelper = new Movie_Favourite_db_Helper(getContext());
-
-                SQLiteDatabase db = fdbHelper.getWritableDatabase();
-
-                ContentValues favouriteValues = new ContentValues();
-
-                Log.v("Gavin", "Favourite Loader upload ++" + movie_EntryID);
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID, movie_id);
-
-                Log.v("Gavin", "Favourite Loader upload ++" + movie_id);
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID, "y");
-
-                Log.v("Gavin", "Favourite Loader upload" + movie_TitleF);
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE, movie_TitleF);
-
-                Log.v("Gavin", "Favourite Loader upload" + movie_ReleaseF);
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE, movie_ReleaseF);
-
-                Log.v("Gavin", "Favourite Loader upload" + movie_RatingF);
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING, movie_RatingF);
-
-                Log.v("Gavin", "Favourite Loader upload" +  movie_ImageF);
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE, movie_ImageF);
-
-                Log.v("Gavin", "Favourite Loader upload" + movie_InfoF);
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_INFO, movie_InfoF);
-
-                Log.v("Gavin", "Favourite Loader upload" + movie_Review1F);
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1, movie_Review1F);
-
-                Log.v("Gavin", "Favourite Loader upload" + movie_Review1_AuthorF);
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR1, movie_Review1_AuthorF);
-
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW2, movie_Review2F);
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR2, movie_Review2_AuthorF);
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW3, movie_Review3F);
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3, movie_Review3_AuthorF);
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1, movie_Trailer1);
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2, movie_Trailer2);
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3, movie_Trailer3);
-
-                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_FAVOURITE, "y");
-
-                long id_insert = db.insert(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F, null, favouriteValues);
-
-                db.close();
-
+        }
         }
 
-
-
-
-
-
     }
-
 
 
     @Override

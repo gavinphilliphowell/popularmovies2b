@@ -49,8 +49,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public int position;
 
     private boolean mUseCaseLayout;
+    public boolean favourite = false;
 
     public String movie_selection_type;
+
+    public static String database_id;
 
     public static final String ACCOUNT_TYPE = "popularmovie2b.nabigeto.com";
     public static final String ACCOUNT = "dummyaccount";
@@ -145,7 +148,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         }
 
-        getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
+        getLoaderManager().initLoader(MOVIE_LOADER, null, this);
 
         if (isOnline() != true) {
     Toast.makeText(getActivity(), "No network detected", Toast.LENGTH_LONG).show();
@@ -194,6 +197,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
                 settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
                 ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlem);
+                favourite = false;
                 break;
 
             case(R.id.movie_options_sort2):
@@ -204,12 +208,35 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 settingsBundlen.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
                 settingsBundlen.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
                 ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlen);
+                favourite = false;
                 break;
 
             case(R.id.movie_options_sort3):
                 movie_selection_type = "favourite";
 
-                getLoaderManager().restartLoader(FAVOURITE_LOADER,null,this);
+                Movie_Favourite_db_Helper movie_favourite_db_helper = new Movie_Favourite_db_Helper(getContext());
+
+                SQLiteDatabase db = movie_favourite_db_helper.getWritableDatabase();
+
+                Cursor mCursor;
+
+                String sortOrder = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
+
+                mCursor = db.query(
+                        Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F,
+                        FAVOURITE_COLUMNS,
+                        null,
+                        null,
+                        null,
+                        null,
+                        sortOrder
+                        );
+
+                mAdapter.changeCursor(mCursor);
+
+                db.close();
+
+                favourite = true;
 
                 break;
 
@@ -253,10 +280,19 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                                                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                                                 if (cursor != null) {
 
+                                                    if (favourite = true) {
+                                                        cursor.moveToPosition(position);
+
+                                                        database_id = cursor.getString(_ID);
+
+                                                    }
+
+                                                    else {
+
 
                                                     cursor.moveToPosition(position);
 
-                                                    String database_id = cursor.getString(_ID);
+                                                    database_id = cursor.getString(_ID);
                                                     String movie_id = cursor.getString(COL_MOVIE_ID);
                                                     String image = cursor.getString(COL_MOVIE_IMAGE_FILE);
                                                     String info = cursor.getString(COL_MOVIE_INFO);
@@ -289,7 +325,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                                                     Log.v("Gavin", movie_id);
                                                     Log.v("Gavin", database_id);
 
-
+                                                    }
 
                                                     ((Callback) getActivity()).onItemSelected(database_id);
 
@@ -368,9 +404,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 String favouritesortOrder = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
 
                 CursorLoader favourite_loader = new CursorLoader(getContext(),
-                        Movie_Contract.MovieInfo.CONTENT_URI,
-                        MOVIE_COLUMNS,
-                        null,
+                        Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
+                        FAVOURITE_COLUMNS,
+                        fSelectionClause,
                         null,
                         Movie_Contract.MovieInfo.COLUMN_NAME_RATING + " ASC");
 

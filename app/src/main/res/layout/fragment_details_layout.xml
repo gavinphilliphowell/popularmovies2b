@@ -94,6 +94,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/material_blue_grey_900"
+        android:visibility="invisible"
+        android:id="@+id/movie_details_offline"
+        android:text="Sorry offline- not details about the film available"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/material_blue_grey_900"
         android:visibility="visible"
         android:text="Synopsis"
         android:textStyle="italic"
@@ -189,6 +204,21 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/material_blue_grey_900"
+        android:visibility="invisible"
+        android:id="@+id/movie_review_offline"
+        android:text="Sorry offline- no reviews available"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/movie_review1_author"
         android:visibility="invisible"
         android:textColor="#FFFFFF"
@@ -228,7 +258,7 @@
         android:textColor="#FFFFFF"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:elevation="2dp"
+
         />
 
     <TextView
@@ -240,7 +270,7 @@
         android:textColor="#FFFFFF"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:elevation="2dp"
+
         />
 
     <TextView
@@ -252,7 +282,7 @@
         android:textColor="#FFFFFF"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:elevation="2dp"
+
         />
 
     <ImageView
@@ -260,13 +290,13 @@
         android:layout_height="1dp"
         android:background="#FFFFFF"
         android:layout_marginTop="5dp"
-        android:elevation="2dp"
+
         />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         >
 
         <TextView
@@ -303,7 +333,6 @@
             android:visibility="invisible"
             android:clickable="true"
             android:layout_marginTop="10dp"
-
             />
 
         <ImageView
@@ -314,17 +343,27 @@
             android:visibility="invisible"
             android:clickable="true"
             android:layout_marginTop="10dp"
-
             />
 
-        <ImageView
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#FFFFFF"
+            android:layout_height="wrap_content"
+            android:id="@+id/movie_trailer_offline"
+            android:visibility="invisible"
+            android:textColor="#FFFFFF"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/material_blue_grey_900"
             />
 
     </LinearLayout>
 
-</LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FFFFFF"
+        />
 
-    </ScrollView>
+    </LinearLayout>
+
+</ScrollView>
