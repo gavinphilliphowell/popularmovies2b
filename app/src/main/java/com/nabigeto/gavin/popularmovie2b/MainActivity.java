@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity  implements MainActivityFrag
     public static final String KEY_FILE = "Shared_Preference_KEY_FILE_Detail";
     public static final String KEY_FILE2 = "movie";
     public static final String KEY_FILE3 = "startmovie";
+    public static final String KEY_FILE4 = "n";
 
     public Movie_Adapter loaddata;
     public Bundle onStartData_Bundle;

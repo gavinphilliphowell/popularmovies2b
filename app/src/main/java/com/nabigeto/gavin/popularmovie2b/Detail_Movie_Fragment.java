@@ -46,6 +46,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     public String sduri;
 
+    public Boolean mFavourite_Status;
 
     View view = null;
 /**
@@ -226,17 +227,13 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         }
         Log.v("Gavin", "uri " + dUri);
 
-        if () {
 
-        }
-
-        else {
 
             getLoaderManager().initLoader(DETAIL_LOADER, null, this);
             getLoaderManager().initLoader(REVIEW_LOADER, null, this);
             getLoaderManager().initLoader(TRAILER_LOADER, null, this);
 
-        }
+
 
 
 
@@ -285,6 +282,11 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
         final CheckBox favouritebutton = (CheckBox) rootView.findViewById(R.id.checkbox_favourite);
 
+        mFavourite_Status = true;
+
+        favouritebutton.setChecked(mFavourite_Status);
+
+
         favouritebutton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view){
@@ -300,6 +302,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                                 Log.v("Gavin", "Checkbox checked");
 
+                                movie_Favourite = "y";
 
                                 ContentValues favouriteValues = new ContentValues();
 
@@ -500,47 +503,69 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     positions = Integer.toString(position);
                     Log.v("Gavin", "Cursor position in detail fragment" + positions);
 
-
-                    int movie_IDd = data_d.getColumnIndex(Movie_Contract.MovieInfo._ID);
-                    m_id = data_d.getString(movie_IDd);
-
                     int movie_EntryIDd = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_ENTRY_ID);
                     movie_EntryID = data_d.getString(movie_EntryIDd);
 
                     int movie_Titled = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TITLE);
                     movie_TitleF = data_d.getString(movie_Titled);
 
+                    int movie_IDd = data_d.getColumnIndex(Movie_Contract.MovieInfo._ID);
+                    m_id = data_d.getString(movie_IDd);
 
-                    int movie_api_id = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_MOVIE_ID);
-                    String movie_api_id_s = data_d.getString(movie_api_id);
-
-
-                    int image_file_position = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_IMAGE_FILE);
-
-
-                    movie_ImageF = data_d.getString(image_file_position);
-                    Log.v("Gavin", "DetailActivityFragment" + movie_ImageF);
-
-                    Log.v("Gavin", "Loading picasso in detail fragment");
-
-                    Picasso.with(dContext).load(movie_ImageF).placeholder(R.drawable.worms_head).into(dImage_File);
-
-                    int filmTitle = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TITLE);
-                    movie_TitleF = data_d.getString(filmTitle);
-                    Log.v("Gavin", "DetailActivityFragment" + movie_TitleF);
-
-                    dTitle.setText(movie_TitleF);
-
-                    movie_InfoF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO);
-                    dInfo.setText(movie_InfoF);
+                    movie_RatingF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RATING);
+                    Log.v("Gavin", movie_RatingF);
+                    dRating.setText(movie_RatingF);
 
                     movie_ReleaseF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RELEASE_DATE_D);
                     Log.v("Gavin", movie_ReleaseF);
                     dRelease_Date.setText(movie_ReleaseF);
 
-                    movie_RatingF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_RATING);
-                    Log.v("Gavin", movie_RatingF);
-                    dRating.setText(movie_RatingF);
+                    movie_InfoF = data_d.getString(Detail_Movie_Fragment.COL_MOVIE_INFO);
+                    dInfo.setText(movie_InfoF);
+
+                    int image_file_position = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_IMAGE_FILE);
+                    movie_ImageF = data_d.getString(image_file_position);
+                    Log.v("Gavin", "DetailActivityFragment" + movie_ImageF);
+
+                    int filmTitle = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TITLE);
+                    movie_TitleF = data_d.getString(filmTitle);
+                    Log.v("Gavin", "DetailActivityFragment" + movie_TitleF);
+                    Picasso.with(dContext).load(movie_ImageF).placeholder(R.drawable.worms_head).into(dImage_File);
+                    Log.v("Gavin", "Loading picasso in detail fragment");
+
+                    int filmID = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_MOVIE_ID);
+                    movie_id = data_d.getString(filmID);
+                    Log.v("Gavin", "DetailActivityFragment" + movie_id);
+
+                    int filmreview1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1);
+                    movie_Review1F = data_d.getString(filmreview1);
+
+                    int filmreview2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2);
+                    movie_Review2F = data_d.getString(filmreview2);
+
+                    int filmreview3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3);
+                    movie_Review3F = data_d.getString(filmreview3);
+
+                    int filmreviewauthor1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1);
+                    movie_Review1_AuthorF = data_d.getString(filmreviewauthor1);
+
+                    int filmreviewauthor2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR2);
+                    movie_Review2_AuthorF = data_d.getString(filmreviewauthor2);
+
+                    int filmreviewauthor3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR3);
+                    movie_Review3_AuthorF = data_d.getString(filmreviewauthor3);
+
+                    int filmtrailer1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1);
+                    movie_Trailer1 = data_d.getString(filmtrailer1);
+
+                    int filmtrailer2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2);
+                    movie_Trailer2 = data_d.getString(filmtrailer2);
+
+                    int filmtrailer3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3);
+                    movie_Trailer3 = data_d.getString(filmtrailer3);
+
+                    dTitle.setText(movie_TitleF);
+
 
                 }
 
