@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Favourite_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Favourites_Contract;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -38,7 +41,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     Context dContext;
     public static final String KEY_FILE = "Shared_Preference_KEY_FILE_Detail";
-    public static final String KEY_FILE2 = "movies";
+    public static final String KEY_FILE2 = "movie_id";
     public static final String KEY_FILE3 = "startmovie";
 
     public int position;
@@ -243,9 +246,17 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        setHasOptionsMenu(false);
 
+        if(savedInstanceState != null){
+
+            dUri = savedInstanceState.getString(KEY_FILE2);
+        }
+        else{
+
+        }
+
+    /**    setRetainInstance(true);  **/
+        setHasOptionsMenu(false);
 
     }
 
@@ -469,6 +480,11 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putString(KEY_FILE2, dUri);
+    }
+
+    @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data_d) {
 
         int loader_ID;
@@ -530,8 +546,16 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     int filmTitle = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TITLE);
                     movie_TitleF = data_d.getString(filmTitle);
                     Log.v("Gavin", "DetailActivityFragment" + movie_TitleF);
-                    Picasso.with(dContext).load(movie_ImageF).placeholder(R.drawable.worms_head).into(dImage_File);
-                    Log.v("Gavin", "Loading picasso in detail fragment");
+
+                    if (isOnline() != true) {
+                        Picasso.with(dContext).load(movie_ImageF).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.worms_head).into(dImage_File);
+                        Log.v("Gavin", "Loading picasso in detail fragment");
+                    }
+                    else
+                    {
+                        Picasso.with(dContext).load(movie_ImageF).placeholder(R.drawable.worms_head).into(dImage_File);
+                        Log.v("Gavin", "Loading picasso in detail fragment - cache");
+                    }
 
                     int filmID = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_MOVIE_ID);
                     movie_id = data_d.getString(filmID);
@@ -593,15 +617,15 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                         int movie_R1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1);
                         movie_Review1F = data_d.getString(movie_R1);
                         Log.v("Gavin", "Review Loader" + movie_Review1F);
-                        if (movie_Review1F != "b"){
-                            dReview1.setVisibility(View.VISIBLE);
+                        if (movie_Review1F == "b"){
+                            dReview1.setVisibility(View.INVISIBLE);
                             dReview1.setText(movie_Review1F);
                         }
 
                         int movie_A1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1);
                         movie_Review1_AuthorF = data_d.getString(movie_A1);
-                        if (movie_Review1_AuthorF != "b"){
-                            dReviewauthor1.setVisibility(View.VISIBLE);
+                        if (movie_Review1_AuthorF == "b"){
+                            dReviewauthor1.setVisibility(View.INVISIBLE);
                             dReviewauthor1.setText(movie_Review1_AuthorF);
                         }
 
@@ -696,6 +720,15 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+
+    public boolean isOnline() {
+        Context context;
+        context = getActivity();
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnected();
     }
 
 

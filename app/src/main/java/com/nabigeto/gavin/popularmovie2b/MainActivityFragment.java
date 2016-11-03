@@ -353,6 +353,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public void onSaveInstanceState(Bundle savedInstanceState) {
         if (mPosition != GridView.INVALID_POSITION)
             savedInstanceState.putInt(SELECTED_KEY,mPosition);
+            savedInstanceState.putBoolean(SELECTED_KEY, favourite);
  /**       savedInstanceState.putParcelableArrayList(KEY_FILE, movieList);  **/
         super.onSaveInstanceState(savedInstanceState);
     }
