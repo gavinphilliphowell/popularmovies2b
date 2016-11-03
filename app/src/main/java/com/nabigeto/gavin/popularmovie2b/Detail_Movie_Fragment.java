@@ -617,15 +617,15 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                         int movie_R1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1);
                         movie_Review1F = data_d.getString(movie_R1);
                         Log.v("Gavin", "Review Loader" + movie_Review1F);
-                        if (movie_Review1F == "b"){
-                            dReview1.setVisibility(View.INVISIBLE);
+                        if (movie_Review1F != "b"){
+                            dReview1.setVisibility(View.VISIBLE);
                             dReview1.setText(movie_Review1F);
                         }
 
                         int movie_A1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1);
                         movie_Review1_AuthorF = data_d.getString(movie_A1);
-                        if (movie_Review1_AuthorF == "b"){
-                            dReviewauthor1.setVisibility(View.INVISIBLE);
+                        if (movie_Review1_AuthorF != "b"){
+                            dReviewauthor1.setVisibility(View.VISIBLE);
                             dReviewauthor1.setText(movie_Review1_AuthorF);
                         }
 
@@ -694,7 +694,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     int trailer_A2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2);
                     movie_Trailer2 = data_d.getString(trailer_A2);
-                    if (movie_Trailer2 == "b"){
+                    if (movie_Trailer2 != "b"){
                         dTrailer2.setVisibility(View.VISIBLE);
                         url_youtube = "http://img.youtube.com/vi/" + movie_Trailer2 + "/1.jpg";
                         Log.v("Gavin", url_youtube);
@@ -736,6 +736,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("http://www.youtube.com/watch?v=" + id));
+
         try {
             startActivity(appIntent);
         } catch (ActivityNotFoundException ex) {

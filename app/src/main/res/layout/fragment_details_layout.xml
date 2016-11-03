@@ -178,28 +178,6 @@
         android:layout_marginRight="5dp"
         />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/movie_review1_author"
-        android:visibility="invisible"
-        android:textColor="#FFFFFF"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/material_blue_grey_900"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/movie_review1"
-        android:visibility="invisible"
-        android:textColor="#FFFFFF"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/material_blue_grey_900"
-        />
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -238,14 +216,34 @@
         android:layout_marginBottom="5dp"
         />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/movie_review1_author"
+        android:visibility="visible"
+        android:textColor="#FFFFFF"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/material_blue_grey_900"
+        />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/movie_review1"
+        android:visibility="visible"
+        android:textColor="#FFFFFF"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/material_blue_grey_900"
+        />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/material_blue_grey_900"
         android:id="@+id/movie_review2_author"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:textColor="#FFFFFF"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -256,7 +254,7 @@
         android:layout_height="wrap_content"
         android:background="@color/material_blue_grey_900"
         android:id="@+id/movie_review2"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:textColor="#FFFFFF"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -268,7 +266,7 @@
         android:layout_height="wrap_content"
         android:background="@color/material_blue_grey_900"
         android:id="@+id/movie_review3_author"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:textColor="#FFFFFF"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -280,7 +278,7 @@
         android:layout_height="wrap_content"
         android:background="@color/material_blue_grey_900"
         android:id="@+id/movie_review3"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:textColor="#FFFFFF"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"

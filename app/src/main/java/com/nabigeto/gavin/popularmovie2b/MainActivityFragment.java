@@ -279,7 +279,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                                                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                                                 if (cursor != null) {
-
+/**
                                                     if (favourite = true) {
                                                         cursor.moveToPosition(position);
 
@@ -288,7 +288,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                                                     }
 
                                                     else {
-
+**/
 
                                                     cursor.moveToPosition(position);
 
@@ -324,9 +324,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                                                     Log.v("Gavin", movie_id);
                                                     Log.v("Gavin", database_id);
-
+/**
                                                     }
-
+**/
                                                     ((Callback) getActivity()).onItemSelected(database_id);
 
 
