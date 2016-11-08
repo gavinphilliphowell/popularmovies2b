@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity  implements MainActivityFrag
 
 
         setContentView(R.layout.activity_main);
+
         if (findViewById(R.id.fragment_detail_container) != null) {
             mTwoPane = true;
             Log.v("Gavin", "Got this far activity");

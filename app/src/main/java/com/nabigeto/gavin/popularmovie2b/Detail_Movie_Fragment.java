@@ -200,8 +200,12 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public String movie_Trailer1;
     public String movie_Trailer2;
     public String movie_Trailer3;
+
     public String movie_Favourite;
 
+    public boolean movie_fav;
+
+    public CheckBox favouritebutton;
 
     public String movie_id_holder;
 
@@ -291,7 +295,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         dTrailer2 = (ImageView) rootView.findViewById(R.id.movie_Trailer2);
         dTrailer3 = (ImageView) rootView.findViewById(R.id.movie_Trailer3);
 
-        final CheckBox favouritebutton = (CheckBox) rootView.findViewById(R.id.checkbox_favourite);
+        favouritebutton = (CheckBox) rootView.findViewById(R.id.checkbox_favourite);
 
         mFavourite_Status = true;
 
@@ -590,6 +594,18 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     dTitle.setText(movie_TitleF);
 
+                    int favourite_position = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_FAVOURITE);
+                    movie_Favourite = data_d.getString(favourite_position);
+                    Log.v("Gavin", "Favourite Status" + movie_Favourite);
+
+                    if(movie_Favourite.equals("y")) {
+                        favouritebutton.setChecked(true);
+                    }
+                    else{
+                        favouritebutton.setChecked(false);
+                    }
+
+
 
                 }
 
@@ -611,50 +627,69 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     }
 
                     else{
-
                         data_d.moveToFirst();
 
                         int movie_R1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1);
                         movie_Review1F = data_d.getString(movie_R1);
-                        Log.v("Gavin", "Review Loader" + movie_Review1F);
-                        if (movie_Review1F != "b"){
+                        Log.v("Gavin", "Review Loader " + movie_Review1F);
+                        if (movie_Review1F.equals("b")){
                             dReview1.setVisibility(View.VISIBLE);
                             dReview1.setText(movie_Review1F);
+                        }
+                        else{
+                            dReview1.setVisibility(View.GONE);
                         }
 
                         int movie_A1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1);
                         movie_Review1_AuthorF = data_d.getString(movie_A1);
-                        if (movie_Review1_AuthorF != "b"){
+                        if (movie_Review1_AuthorF.equals("b")){
                             dReviewauthor1.setVisibility(View.VISIBLE);
                             dReviewauthor1.setText(movie_Review1_AuthorF);
+                        }
+                        else{
+                            dReviewauthor1.setVisibility(View.GONE);
                         }
 
                         int movie_R2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2);
                         movie_Review2F = data_d.getString(movie_R2);
-                        if (movie_Review2F != "b"){
+                        if (movie_Review2F.equals("b")){
                             dReview2.setVisibility(View.VISIBLE);
                             dReview2.setText(movie_Review2F);
+
+                        }
+                        else {
+                            dReview2.setVisibility(View.GONE);
                         }
 
                         int movie_A2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR2);
                         movie_Review2_AuthorF = data_d.getString(movie_A2);
-                        if (movie_Review2_AuthorF != "b"){
+                        if (movie_Review2_AuthorF.equals("b")){
                             dReviewauthor2.setVisibility(View.VISIBLE);
+                            dReviewauthor2.setText(movie_Review2_AuthorF);
+                        }
+                        else{
+                            dReviewauthor2.setVisibility(View.GONE);
                             dReviewauthor2.setText(movie_Review2_AuthorF);
                         }
 
                         int movie_R3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3);
                         movie_Review3F = data_d.getString(movie_R3);
-                        if (movie_Review3F != "b"){
+                        if (movie_Review3F.equals("b")){
                             dReview3.setVisibility(View.VISIBLE);
                             dReview3.setText(movie_Review3F);
+                        }
+                        else{
+                            dReview3.setVisibility(View.GONE);
                         }
 
                         int movie_A3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR3);
                         movie_Review3_AuthorF = data_d.getString(movie_A3);
-                        if (movie_Review3_AuthorF != "b"){
+                        if (movie_Review3_AuthorF.equals("b")){
                             dReviewauthor3.setVisibility(View.VISIBLE);
                             dReviewauthor3.setText(movie_Review3_AuthorF);
+                        }
+                        else{
+                            dReviewauthor3.setVisibility(View.GONE);
                         }
 
                     }
@@ -684,7 +719,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     int trailer_A1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1);
                     movie_Trailer1 = data_d.getString(trailer_A1);
-                    if (movie_Trailer1 != "b"){
+                    if (movie_Trailer1.equals("b")){
                         dTrailer1.setVisibility(View.VISIBLE);
                         url_youtube = "http://img.youtube.com/vi/" + movie_Trailer1 + "/1.jpg";
                         Log.v("Gavin", url_youtube);
@@ -694,7 +729,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     int trailer_A2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2);
                     movie_Trailer2 = data_d.getString(trailer_A2);
-                    if (movie_Trailer2 != "b"){
+                    if (movie_Trailer2.equals("b")){
                         dTrailer2.setVisibility(View.VISIBLE);
                         url_youtube = "http://img.youtube.com/vi/" + movie_Trailer2 + "/1.jpg";
                         Log.v("Gavin", url_youtube);
@@ -704,7 +739,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     int trailer_A3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3);
                     movie_Trailer3 = data_d.getString(trailer_A3);
-                    if (movie_Trailer3 != "b"){
+                    if (movie_Trailer3.equals("b")){
                         dTrailer3.setVisibility(View.VISIBLE);
                         url_youtube = "http://img.youtube.com/vi/" + movie_Trailer3 + "/1.jpg";
                         Log.v("Gavin", url_youtube);
