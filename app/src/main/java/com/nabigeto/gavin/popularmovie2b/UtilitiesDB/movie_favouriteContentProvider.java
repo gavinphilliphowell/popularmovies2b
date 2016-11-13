@@ -114,7 +114,7 @@ public class movie_favouriteContentProvider extends ContentProvider {
                 case FAVOURITE_INFO: {
 
                     retCursor = mOpenHelper.getReadableDatabase().query(
-                            suri,
+                            Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F,
                             projection,
                             selection,
                             selectionArgs,

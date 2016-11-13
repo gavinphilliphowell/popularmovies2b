@@ -150,6 +150,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         getLoaderManager().initLoader(MOVIE_LOADER, null, this);
 
+
+
         if (isOnline() != true) {
     Toast.makeText(getActivity(), "No network detected", Toast.LENGTH_LONG).show();
 
@@ -214,6 +216,16 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             case(R.id.movie_options_sort3):
                 movie_selection_type = "favourite";
 
+
+                getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
+
+                Bundle settingsBundleo = new Bundle();
+                settingsBundleo.putString("gridview_load", movie_selection_type);
+                settingsBundleo.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+                settingsBundleo.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+                ContentResolver.requestSync(mAccount, Movie_Favourites_Contract.CONTENT_AUTHORITY_F, settingsBundleo);
+
+                /**
                 Movie_Favourite_db_Helper movie_favourite_db_helper = new Movie_Favourite_db_Helper(getContext());
 
                 SQLiteDatabase db = movie_favourite_db_helper.getWritableDatabase();
@@ -236,6 +248,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                 db.close();
 
+                mCursor.close();
+**/
                 favourite = true;
 
                 break;
@@ -279,7 +293,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                                                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                                                 if (cursor != null) {
-/**
+
                                                     if (favourite = true) {
                                                         cursor.moveToPosition(position);
 
@@ -288,7 +302,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                                                     }
 
                                                     else {
-**/
+
 
                                                     cursor.moveToPosition(position);
 
@@ -324,9 +338,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                                                     Log.v("Gavin", movie_id);
                                                     Log.v("Gavin", database_id);
-/**
+
                                                     }
-**/
+
                                                     ((Callback) getActivity()).onItemSelected(database_id);
 
 
@@ -407,9 +421,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 CursorLoader favourite_loader = new CursorLoader(getContext(),
                         Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
                         FAVOURITE_COLUMNS,
-                        fSelectionClause,
                         null,
-                        Movie_Contract.MovieInfo.COLUMN_NAME_RATING + " ASC");
+                        null,
+                        favouritesortOrder);
 
 
                 return favourite_loader;

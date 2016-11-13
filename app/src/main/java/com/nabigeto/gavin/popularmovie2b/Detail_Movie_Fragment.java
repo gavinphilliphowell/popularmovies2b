@@ -24,11 +24,22 @@ import android.widget.ImageView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
+import com.google.android.youtube.player.YouTubeIntents;
+import com.google.api.services.youtube.YouTube;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubeStandalonePlayer;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.android.youtube.player.YouTubePlayer.Provider;
+
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Contract;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Favourite_db_Helper;
 import com.nabigeto.gavin.popularmovie2b.UtilitiesDB.Movie_Favourites_Contract;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+
 
 import org.w3c.dom.Text;
 
@@ -43,6 +54,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public static final String KEY_FILE = "Shared_Preference_KEY_FILE_Detail";
     public static final String KEY_FILE2 = "movie_id";
     public static final String KEY_FILE3 = "startmovie";
+    public static final String dKEY_FILE2 = "movie_id";
 
     public int position;
     public String mSw;
@@ -50,6 +62,8 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public String sduri;
 
     public Boolean mFavourite_Status;
+
+
 
     View view = null;
 /**
@@ -253,7 +267,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
         if(savedInstanceState != null){
 
-            dUri = savedInstanceState.getString(KEY_FILE2);
+            dUri = savedInstanceState.getString(dKEY_FILE2);
         }
         else{
 
@@ -294,6 +308,8 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
         dTrailer1 = (ImageView) rootView.findViewById(R.id.movie_Trailer1);
         dTrailer2 = (ImageView) rootView.findViewById(R.id.movie_Trailer2);
         dTrailer3 = (ImageView) rootView.findViewById(R.id.movie_Trailer3);
+
+
 
         favouritebutton = (CheckBox) rootView.findViewById(R.id.checkbox_favourite);
 
@@ -485,7 +501,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
-        savedInstanceState.putString(KEY_FILE2, dUri);
+        savedInstanceState.putString(dKEY_FILE2, dUri);
     }
 
     @Override
@@ -522,6 +538,8 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     position = data_d.getPosition();
                     positions = Integer.toString(position);
                     Log.v("Gavin", "Cursor position in detail fragment" + positions);
+
+                    movie_details_offline.setVisibility(View.GONE);
 
                     int movie_EntryIDd = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_ENTRY_ID);
                     movie_EntryID = data_d.getString(movie_EntryIDd);
@@ -629,67 +647,67 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     else{
                         data_d.moveToFirst();
 
+                        dReview1.setVisibility(View.GONE);
+                        
                         int movie_R1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1);
                         movie_Review1F = data_d.getString(movie_R1);
                         Log.v("Gavin", "Review Loader " + movie_Review1F);
                         if (movie_Review1F.equals("b")){
-                            dReview1.setVisibility(View.VISIBLE);
-                            dReview1.setText(movie_Review1F);
+                            dReview1.setVisibility(View.GONE);
                         }
                         else{
-                            dReview1.setVisibility(View.GONE);
+                            dReview1.setVisibility(View.VISIBLE);
+                            dReview1.setText(movie_Review1F);
                         }
 
                         int movie_A1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1);
                         movie_Review1_AuthorF = data_d.getString(movie_A1);
                         if (movie_Review1_AuthorF.equals("b")){
-                            dReviewauthor1.setVisibility(View.VISIBLE);
-                            dReviewauthor1.setText(movie_Review1_AuthorF);
+                            dReviewauthor1.setVisibility(View.GONE);
                         }
                         else{
-                            dReviewauthor1.setVisibility(View.GONE);
+                            dReviewauthor1.setVisibility(View.VISIBLE);
+                            dReviewauthor1.setText(movie_Review1_AuthorF);
                         }
 
                         int movie_R2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2);
                         movie_Review2F = data_d.getString(movie_R2);
                         if (movie_Review2F.equals("b")){
-                            dReview2.setVisibility(View.VISIBLE);
-                            dReview2.setText(movie_Review2F);
-
+                            dReview2.setVisibility(View.GONE);
                         }
                         else {
-                            dReview2.setVisibility(View.GONE);
+                            dReview2.setVisibility(View.VISIBLE);
+                            dReview2.setText(movie_Review2F);
                         }
 
                         int movie_A2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR2);
                         movie_Review2_AuthorF = data_d.getString(movie_A2);
                         if (movie_Review2_AuthorF.equals("b")){
-                            dReviewauthor2.setVisibility(View.VISIBLE);
-                            dReviewauthor2.setText(movie_Review2_AuthorF);
+                            dReviewauthor2.setVisibility(View.GONE);
                         }
                         else{
-                            dReviewauthor2.setVisibility(View.GONE);
+                            dReviewauthor2.setVisibility(View.VISIBLE);
                             dReviewauthor2.setText(movie_Review2_AuthorF);
                         }
 
                         int movie_R3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3);
                         movie_Review3F = data_d.getString(movie_R3);
                         if (movie_Review3F.equals("b")){
-                            dReview3.setVisibility(View.VISIBLE);
-                            dReview3.setText(movie_Review3F);
+                            dReview3.setVisibility(View.GONE);
                         }
                         else{
-                            dReview3.setVisibility(View.GONE);
+                            dReview3.setVisibility(View.VISIBLE);
+                            dReview3.setText(movie_Review3F);
                         }
 
                         int movie_A3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR3);
                         movie_Review3_AuthorF = data_d.getString(movie_A3);
                         if (movie_Review3_AuthorF.equals("b")){
-                            dReviewauthor3.setVisibility(View.VISIBLE);
-                            dReviewauthor3.setText(movie_Review3_AuthorF);
+                            dReviewauthor3.setVisibility(View.GONE);
                         }
                         else{
-                            dReviewauthor3.setVisibility(View.GONE);
+                            dReviewauthor3.setVisibility(View.VISIBLE);
+                            dReviewauthor3.setText(movie_Review3_AuthorF);
                         }
 
                     }
@@ -717,19 +735,26 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     data_d.moveToFirst();
 
+                    movie_trailer_offline.setVisibility(View.GONE);
+
                     int trailer_A1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1);
                     movie_Trailer1 = data_d.getString(trailer_A1);
                     if (movie_Trailer1.equals("b")){
+                        dTrailer1.setVisibility(View.GONE);
+                   }
+                    else {
                         dTrailer1.setVisibility(View.VISIBLE);
                         url_youtube = "http://img.youtube.com/vi/" + movie_Trailer1 + "/1.jpg";
                         Log.v("Gavin", url_youtube);
                         Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer1);
-
-                    }
+                     }
 
                     int trailer_A2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2);
                     movie_Trailer2 = data_d.getString(trailer_A2);
                     if (movie_Trailer2.equals("b")){
+                        dTrailer2.setVisibility(View.GONE);
+                    }
+                        else {
                         dTrailer2.setVisibility(View.VISIBLE);
                         url_youtube = "http://img.youtube.com/vi/" + movie_Trailer2 + "/1.jpg";
                         Log.v("Gavin", url_youtube);
@@ -740,6 +765,9 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     int trailer_A3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3);
                     movie_Trailer3 = data_d.getString(trailer_A3);
                     if (movie_Trailer3.equals("b")){
+                        dTrailer3.setVisibility(View.GONE);
+                    }
+                        else {
                         dTrailer3.setVisibility(View.VISIBLE);
                         url_youtube = "http://img.youtube.com/vi/" + movie_Trailer3 + "/1.jpg";
                         Log.v("Gavin", url_youtube);
@@ -768,7 +796,16 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
 
     public void watchYoutubeVideo(String id){
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+
+       /**
+        Intent appIntent = YouTubeStandalonePlayer.createVideoIntent(getContext(), Youtube_KEY, id);
+**/
+
+        Intent appIntent = YouTubeIntents.createPlayVideoIntentWithOptions(getContext(), id, true, false);
+        startActivity(appIntent);
+
+        Log.v("Gavin", "Detail Movie Trailer " + id);
+
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("http://www.youtube.com/watch?v=" + id));
 

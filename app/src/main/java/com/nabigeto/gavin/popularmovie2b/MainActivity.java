@@ -28,12 +28,18 @@ public class MainActivity extends AppCompatActivity  implements MainActivityFrag
     private int movie_index;
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.v("Gavin", "Checking start of app");
 
         setContentView(R.layout.activity_main);
+
+        Log.v("Gavin", "Checking this one");
 
         if (findViewById(R.id.fragment_detail_container) != null) {
             mTwoPane = true;

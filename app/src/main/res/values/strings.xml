@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PopularMovie2b</string>
+    <string name="app_name">Awesome Movie App</string>
     <string name="action_settings">Settings</string>
 
 
@@ -10,9 +10,9 @@
 
     <string name="movie_sort_most_popular">Most Popular </string>
     <string name="movie_sort_highest_rating">Highest Rating</string>
-    <string name="title_activity_detail__movies__info">Detail_Movies_Info</string>
+    <string name="title_activity_detail__movies__info">Movie Details</string>
     <string name="Shared_Preference_KEY_FILE">Shared_Preferences_KEY_FILE</string>
-    <string name="title_activity_detail__movie_">Detail_Movie_Activity</string>
+    <string name="title_activity_detail__movie_">Movie Details</string>
 
     <string name="title_activity_settings">Settings</string>
     <string name="sync_account_type"> popularmovie2b.nabigeto.com </string>

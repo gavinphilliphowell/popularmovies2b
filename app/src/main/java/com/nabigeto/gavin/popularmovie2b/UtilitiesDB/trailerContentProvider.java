@@ -122,6 +122,7 @@ public class trailerContentProvider extends ContentProvider {
         }
 
         retCursor.setNotificationUri(getContext().getContentResolver(),uri);
+
         return retCursor;
     }
 

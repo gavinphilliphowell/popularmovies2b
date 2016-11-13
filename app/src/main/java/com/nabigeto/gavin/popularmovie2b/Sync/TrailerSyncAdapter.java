@@ -191,7 +191,7 @@ public class TrailerSyncAdapter extends AbstractThreadedSyncAdapter {
         final String OWM_RESULTS_TOTAL = "total_results";
         final String OWM_RESULTS_RE = "results";
 
-        final String OWM_REVIEW_FILTER = "id";
+        final String OWM_REVIEW_FILTER = "key";
 
 
         final String OWM_ID = "id";
