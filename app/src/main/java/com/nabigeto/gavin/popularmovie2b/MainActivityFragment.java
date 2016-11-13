@@ -149,7 +149,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         }
 
         getLoaderManager().initLoader(MOVIE_LOADER, null, this);
-
+        getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
 
 
         if (isOnline() != true) {
@@ -217,7 +217,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 movie_selection_type = "favourite";
 
 
-                getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
+
 
                 Bundle settingsBundleo = new Bundle();
                 settingsBundleo.putString("gridview_load", movie_selection_type);
@@ -294,7 +294,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                                                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                                                 if (cursor != null) {
 
-                                                    if (favourite = true) {
+                                                    if (favourite) {
                                                         cursor.moveToPosition(position);
 
                                                         database_id = cursor.getString(_ID);
