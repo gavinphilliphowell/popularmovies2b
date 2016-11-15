@@ -111,6 +111,7 @@ Log.v("Gavin", "Test 1");
 
         } else {
             Intent intent = new Intent(this, Detail_Movie_Activity.class).putExtra(KEY_FILE2,table_ID);
+            intent.putExtra(KEY_FILE3, table_ID);
             startActivity(intent);
             Log.v("Gavin", "Main Activity" + table_ID);
         }
