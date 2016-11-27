@@ -49,7 +49,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public int position;
 
     private boolean mUseCaseLayout;
-    public boolean favourite = false;
+
+    public boolean favourite = true;
+
+    public int selector_id = 1;
+
 
     public String movie_selection_type;
 
@@ -112,6 +116,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public interface Callback {
 
         public void onItemSelected(String location_ID);
+        public void favourite_state(Boolean favourite_state_m);
+        public void favourite_finder(String movie_ID);
 
     }
 
@@ -169,9 +175,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
-/**
-        getLoaderManager().initLoader(MOVIE_LOADER, null, this);
-**/
+
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -200,6 +204,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
                 ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlem);
                 favourite = false;
+                ((Callback) getActivity()).favourite_state(favourite);
+                String boolean_Value = String.valueOf(favourite);
+                Log.v("Gavin", "MainActivity Fragment " + boolean_Value);
+
                 break;
 
             case(R.id.movie_options_sort2):
@@ -211,48 +219,30 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 settingsBundlen.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
                 ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlen);
                 favourite = false;
+                ((Callback) getActivity()).favourite_state(favourite);
+                boolean_Value = String.valueOf(favourite);
+                Log.v("Gavin", "MainActivity Fragment " + boolean_Value);
+
                 break;
 
             case(R.id.movie_options_sort3):
                 movie_selection_type = "favourite";
-
-
-
-
+/**
                 Bundle settingsBundleo = new Bundle();
                 settingsBundleo.putString("gridview_load", movie_selection_type);
                 settingsBundleo.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
                 settingsBundleo.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
                 ContentResolver.requestSync(mAccount, Movie_Favourites_Contract.CONTENT_AUTHORITY_F, settingsBundleo);
-
-                /**
-                Movie_Favourite_db_Helper movie_favourite_db_helper = new Movie_Favourite_db_Helper(getContext());
-
-                SQLiteDatabase db = movie_favourite_db_helper.getWritableDatabase();
-
-                Cursor mCursor;
-
-                String sortOrder = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
-
-                mCursor = db.query(
-                        Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F,
-                        FAVOURITE_COLUMNS,
-                        null,
-                        null,
-                        null,
-                        null,
-                        sortOrder
-                        );
-
-                mAdapter.changeCursor(mCursor);
-
-                db.close();
-
-                mCursor.close();
 **/
+                getLoaderManager().restartLoader(FAVOURITE_LOADER, null, this);
                 favourite = true;
+                ((Callback) getActivity()).favourite_state(favourite);
+                boolean_Value = String.valueOf(favourite);
+                Log.v("Gavin", "MainActivity Fragment " + boolean_Value);
 
                 break;
+
+
 
             case(R.id.movie_options_sort4):
 
@@ -286,59 +276,65 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlem);
 
+        favourite = false;
+        ((Callback) getActivity()).favourite_state(favourite);
+        String boolean_Value = String.valueOf(favourite);
+        Log.v("Gavin", "MainActivity Fragment " + boolean_Value);
+
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                                            @Override
-                                            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                                                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                                                if (cursor != null) {
-
-
-
-                                                    cursor.moveToPosition(position);
-
-                                                    database_id = cursor.getString(_ID);
-                                                    String movie_id = cursor.getString(COL_MOVIE_ID);
-                                                    String image = cursor.getString(COL_MOVIE_IMAGE_FILE);
-                                                    String info = cursor.getString(COL_MOVIE_INFO);
-                                                    Log.v("Gavin", "MainActivityFragement" + position);
-                                                    Log.v("Gavin", "MainActivityFragment" + movie_id);
-                                                    Log.v("Gavin", "MainActivityFragment" + image);
-                                                    Log.v("Gavin", "MainActivityFragment" + info);
-                                                    Uri puri = Movie_Contract.MovieInfo.CONTENT_URI_R;
-                                                    String ppuri = puri.toString();
-                                                    Log.v("Gavin", "MainActivityFragment" + ppuri);
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                if (cursor != null) {
 
 
 
-                                                    Bundle settingsBundle = new Bundle();
-                                                    settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-                                                    settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-                                                    settingsBundle.putString("reviewsync_database", database_id);
-                                                    settingsBundle.putString("reviewsync_api", movie_id);
+                    cursor.moveToPosition(position);
 
-                                                    ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY_R, settingsBundle);
-
-                                                    Bundle settingsBundlet = new Bundle();
-                                                    settingsBundlet.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-                                                    settingsBundlet.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-                                                    settingsBundlet.putString("trailersync_database", database_id);
-                                                    settingsBundlet.putString("trailersync_api", movie_id);
-
-                                                    ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY_T, settingsBundlet);
-
-                                                    Log.v("Gavin", movie_id);
-                                                    Log.v("Gavin", database_id);
+                    database_id = cursor.getString(_ID);
+                    String movie_id = cursor.getString(COL_MOVIE_ID);
+                    String image = cursor.getString(COL_MOVIE_IMAGE_FILE);
+                    String info = cursor.getString(COL_MOVIE_INFO);
+                    Log.v("Gavin", "MainActivityFragement" + position);
+                    Log.v("Gavin", "MainActivityFragment" + movie_id);
+                    Log.v("Gavin", "MainActivityFragment" + image);
+                    Log.v("Gavin", "MainActivityFragment" + info);
+                    Uri puri = Movie_Contract.MovieInfo.CONTENT_URI_R;
+                    String ppuri = puri.toString();
+                    Log.v("Gavin", "MainActivityFragment" + ppuri);
 
 
 
-                                                    ((Callback) getActivity()).onItemSelected(database_id);
+                    Bundle settingsBundle = new Bundle();
+                    settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+                    settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+                    settingsBundle.putString("reviewsync_database", database_id);
+                    settingsBundle.putString("reviewsync_api", movie_id);
+
+                    ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY_R, settingsBundle);
+
+                    Bundle settingsBundlet = new Bundle();
+                    settingsBundlet.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+                    settingsBundlet.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+                    settingsBundlet.putString("trailersync_database", database_id);
+                    settingsBundlet.putString("trailersync_api", movie_id);
+
+                    ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY_T, settingsBundlet);
+
+                    Log.v("Gavin", movie_id);
+                    Log.v("Gavin", database_id);
 
 
 
-                                                }
-                                                mPosition = position;
+                    ((Callback) getActivity()).onItemSelected(database_id);
+                    ((Callback) getActivity()).favourite_finder(movie_id);
+
+
+
+                }
+                mPosition = position;
 
                                             }
 
@@ -392,7 +388,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 Uri movie_table_uri = Uri.parse(movie_table);
                 String rSelectionClause = Movie_Contract.MovieInfo._ID + " LIKE ?";
                 String moviesortOrder = Movie_Contract.MovieInfo.COLUMN_NAME_RATING + " ASC";
-
+                Log.v("Gavin", "Main Activity Fragment - Movie Loader 1");
                 CursorLoader movie_loader =  new CursorLoader(getContext(),
                         Movie_Contract.MovieInfo.CONTENT_URI,
                         MOVIE_COLUMNS,
@@ -410,12 +406,16 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 String fSelectionClause = Movie_Favourites_Contract.FavouriteInfo._ID + " LIKE ?";
                 String favouritesortOrder = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
 
+                Log.v("Gavin", "Main Activity Fragment - Favourite Loader 1");
+
                 CursorLoader favourite_loader = new CursorLoader(getContext(),
                         Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
                         FAVOURITE_COLUMNS,
                         null,
                         null,
                         favouritesortOrder);
+
+                Log.v("Gavin", "Main Activity Fragment - Favourite Loader 2");
 
 
                 return favourite_loader;
@@ -437,11 +437,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         switch (loader_id){
 
             case MOVIE_LOADER:
-                mAdapter.changeCursor(data);
+                mAdapter.swapCursor(data);
             break;
 
             case FAVOURITE_LOADER:
-                mAdapter.changeCursor(data);
+                mAdapter.swapCursor(data);
             break;
 
         }
@@ -488,6 +488,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onResume() {
         getLoaderManager().restartLoader(MOVIE_LOADER, null, this);
+        getLoaderManager().restartLoader(FAVOURITE_LOADER, null, this);
         super.onResume();
     }
 

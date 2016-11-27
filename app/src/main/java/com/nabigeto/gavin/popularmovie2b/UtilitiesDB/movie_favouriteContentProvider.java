@@ -105,7 +105,7 @@ public class movie_favouriteContentProvider extends ContentProvider {
             Cursor retCursor;
 
             String suri = uri.toString();
-            Log.v("Gavin", "movieContentProvider" + suri);
+            Log.v("Gavin", "movie_favourite ContentProvider" + suri);
 
             final int typeUri = sUriMatcher.match(uri);
 

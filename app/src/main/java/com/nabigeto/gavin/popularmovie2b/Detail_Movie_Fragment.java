@@ -55,13 +55,17 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public static final String KEY_FILE2 = "movie_id";
     public static final String KEY_FILE3 = "startmovie";
     public static final String dKEY_FILE2 = "movie_id";
+    public static final String KEY_FAVOURITE = "favourite_state";
+    public static final String KEY_FINDER = "favourite_finder";
 
     public int position;
     public String mSw;
 
     public String sduri;
 
-    public Boolean mFavourite_Status;
+    public Boolean mFavourite_Status = false;
+
+    public String mfavourite_finder;
 
 
 
@@ -90,6 +94,10 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     Account rAccount;
     **/
     public String dUri;
+
+    public String dUri_favourite;
+
+    public int dUri_length;
 
     private static final String Youtube_KEY = "AIzaSyD4abokmDnidF1bBI2c5nrSMIb7Q73Tnnk";
 
@@ -240,19 +248,38 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
         if (arguments != null) {
             dUri = arguments.getString(KEY_FILE);
+            mFavourite_Status = arguments.getBoolean(KEY_FAVOURITE);
+            mfavourite_finder = arguments.getString(KEY_FINDER);
 
-            Log.v("Gavin", "uri " + "KEY_FILE" + dUri);
+            if (mFavourite_Status == true){
+                getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
+                String boolean_Value = String.valueOf(mFavourite_Status);
+                Log.v("Gavin", "Detail Activity Fragment " + boolean_Value);
+            }
+            else {
+                getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+                getLoaderManager().initLoader(REVIEW_LOADER, null, this);
+                getLoaderManager().initLoader(TRAILER_LOADER, null, this);
+            }
+            Log.v("Gavin", "Detail Movie Fragment" + dUri);
+
+
+
         }
-        else{
+        else {
             dUri = "3";
-        }
-        Log.v("Gavin", "uri " + dUri);
-
-
+            mFavourite_Status = false;
 
             getLoaderManager().initLoader(DETAIL_LOADER, null, this);
             getLoaderManager().initLoader(REVIEW_LOADER, null, this);
             getLoaderManager().initLoader(TRAILER_LOADER, null, this);
+
+        }
+
+
+        Log.v("Gavin", "uri " + dUri);
+
+
 
 
 
@@ -313,7 +340,6 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
         favouritebutton = (CheckBox) rootView.findViewById(R.id.checkbox_favourite);
 
-        mFavourite_Status = true;
 
         favouritebutton.setChecked(mFavourite_Status);
 
@@ -470,9 +496,38 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                 return null;
 
 
-            case TRAILER_LOADER:
 
-                position = " _ID = " + dUri;
+
+
+
+        case TRAILER_LOADER:
+
+        position = " _ID = " + dUri;
+        /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
+         **/
+        row_Pref = dUri;
+        Log.v("Gavin", "dUuri" + row_Pref);
+        if (null != dUri) {
+            Log.v("Gavin", "Trailer Loader cursor created");
+            return new CursorLoader(
+                    getActivity(),
+                    Movie_Contract.MovieInfo.CONTENT_URI_R,
+                    DETAIL_COLUMNS,
+                    position,
+                    null,
+                    null
+
+            );
+
+        }
+        Log.v("Gavin", "Loader cursor finished" + "Trailer Loader");
+        Log.v("Gavin", "Loader cursor finished" + dUri);
+        return null;
+
+
+            case FAVOURITE_LOADER:
+
+                position = " title = " + mfavourite_finder;
                 /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
                  **/
                 row_Pref = dUri;
@@ -481,7 +536,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     Log.v("Gavin", "Trailer Loader cursor created");
                     return new CursorLoader(
                             getActivity(),
-                            Movie_Contract.MovieInfo.CONTENT_URI_R,
+                            Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
                             DETAIL_COLUMNS,
                             position,
                             null,
@@ -490,11 +545,11 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     );
 
                 }
-                Log.v("Gavin", "Loader cursor finished" + "Trailer Loader");
+                Log.v("Gavin", "Loader cursor finished" + "Favourite Loader");
                 Log.v("Gavin", "Loader cursor finished" + dUri);
                 return null;
 
-        }
+    }
 
         return null;
     }
@@ -735,46 +790,193 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     data_d.moveToFirst();
 
-                    movie_trailer_offline.setVisibility(View.GONE);
+                        movie_trailer_offline.setVisibility(View.GONE);
 
-                    int trailer_A1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1);
-                    movie_Trailer1 = data_d.getString(trailer_A1);
-                    if (movie_Trailer1.equals("b")){
-                        dTrailer1.setVisibility(View.GONE);
-                   }
-                    else {
-                        dTrailer1.setVisibility(View.VISIBLE);
-                        url_youtube = "http://img.youtube.com/vi/" + movie_Trailer1 + "/1.jpg";
-                        Log.v("Gavin", url_youtube);
-                        Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer1);
-                     }
+                        int trailer_A1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1);
+                        movie_Trailer1 = data_d.getString(trailer_A1);
+                        if (movie_Trailer1.equals("b")){
+                            dTrailer1.setVisibility(View.GONE);
+                        }
+                        else{
+                            dTrailer1.setVisibility(View.VISIBLE);
+                            url_youtube = "http://img.youtube.com/vi/" + movie_Trailer1 + "/1.jpg";
+                            Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer1);
+                        }
 
-                    int trailer_A2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2);
-                    movie_Trailer2 = data_d.getString(trailer_A2);
-                    if (movie_Trailer2.equals("b")){
-                        dTrailer2.setVisibility(View.GONE);
-                    }
-                        else {
-                        dTrailer2.setVisibility(View.VISIBLE);
-                        url_youtube = "http://img.youtube.com/vi/" + movie_Trailer2 + "/1.jpg";
-                        Log.v("Gavin", url_youtube);
-                        Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer2);
+                        int trailer_A2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2);
+                        movie_Trailer2 = data_d.getString(trailer_A2);
+                        if (movie_Trailer2.equals("b")){
+                            dTrailer2.setVisibility(View.GONE);
+                        }
+                        else{
+                            dTrailer2.setVisibility(View.VISIBLE);
+                            url_youtube = "http://img.youtube.com/vi/" + movie_Trailer2 + "/1.jpg";
+                            Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer2);
+                        }
 
-                    }
-
-                    int trailer_A3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3);
-                    movie_Trailer3 = data_d.getString(trailer_A3);
-                    if (movie_Trailer3.equals("b")){
-                        dTrailer3.setVisibility(View.GONE);
-                    }
-                        else {
-                        dTrailer3.setVisibility(View.VISIBLE);
-                        url_youtube = "http://img.youtube.com/vi/" + movie_Trailer3 + "/1.jpg";
-                        Log.v("Gavin", url_youtube);
-                        Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer3);
-
-                    }
+                        int trailer_A3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3);
+                        movie_Trailer3 = data_d.getString(trailer_A3);
+                        if (movie_Trailer3.equals("b")){
+                            dTrailer3.setVisibility(View.GONE);
+                        }
+                        else{
+                            dTrailer3.setVisibility(View.VISIBLE);
+                            url_youtube = "http://img.youtube.com/vi/" + movie_Trailer3 + "/1.jpg";
+                            Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer3);
+                        }
         }
+                    break;
+
+            case FAVOURITE_LOADER:
+
+                int cursor_check_detail_f = data_d.getCount();
+                String check_detail_f = Integer.toString(cursor_check_detail_f);
+                Log.v("Gavin", "cursor_check_detail" + check_detail_f);
+
+                if (cursor_check_detail_f == 0) {
+
+                    String detail_check = "Sorry - no reviews available :)";
+                    movie_details_offline.setText(detail_check);
+
+                }
+
+                else
+
+                {
+                    data_d.moveToFirst();
+                    Log.v("Gavin", "Position passed to loader");
+                    position = data_d.getPosition();
+                    positions = Integer.toString(position);
+                    Log.v("Gavin", "Cursor position in detail fragment" + positions);
+
+                    movie_details_offline.setVisibility(View.GONE);
+
+                    int movie_EntryIDd = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID);
+                    movie_EntryID = data_d.getString(movie_EntryIDd);
+
+                    int movie_Titled = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE);
+                    movie_TitleF = data_d.getString(movie_Titled);
+                    dTitle.setText(movie_TitleF);
+
+                    int movie_IDd = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo._ID);
+                    m_id = data_d.getString(movie_IDd);
+                    dID.setText(m_id);
+
+                    int movie_Ratingd = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING);
+                    movie_RatingF = data_d.getString(movie_Ratingd);
+                    dRating.setText(movie_RatingF);
+                    Log.v("Gavin", movie_RatingF);
+
+
+                    int movie_Released = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE);
+                    movie_ReleaseF = data_d.getString(movie_Released);
+                    Log.v("Gavin", movie_ReleaseF);
+                    dRelease_Date.setText(movie_ReleaseF);
+
+                    int movie_Infod = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_INFO);
+                    movie_InfoF = data_d.getString(movie_Infod);
+                    dInfo.setText(movie_InfoF);
+
+                    int image_file_position = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE);
+                    movie_ImageF = data_d.getString(image_file_position);
+                    Log.v("Gavin", "DetailActivityFragment" + movie_ImageF);
+
+
+
+                    if (isOnline() != true) {
+                        Picasso.with(dContext).load(movie_ImageF).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.worms_head).into(dImage_File);
+                        Log.v("Gavin", "Loading picasso in detail fragment");
+                    }
+                    else
+                    {
+                        Picasso.with(dContext).load(movie_ImageF).placeholder(R.drawable.worms_head).into(dImage_File);
+                        Log.v("Gavin", "Loading picasso in detail fragment - cache");
+                    }
+
+
+
+                    int favourite_position = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_FAVOURITE);
+                    movie_Favourite = data_d.getString(favourite_position);
+                    Log.v("Gavin", "Favourite Status" + movie_Favourite);
+
+                    if(movie_Favourite.equals("y")) {
+                        favouritebutton.setChecked(true);
+                    }
+                    else{
+                        favouritebutton.setChecked(false);
+                    }
+
+
+                    dReview1.setVisibility(View.GONE);
+
+                    int movie_R1 = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1);
+                    movie_Review1F = data_d.getString(movie_R1);
+                    Log.v("Gavin", "Review Loader " + movie_Review1F);
+                    if (movie_Review1F.equals("b")){
+                        dReview1.setVisibility(View.GONE);
+                    }
+                    else{
+                        dReview1.setVisibility(View.VISIBLE);
+                        dReview1.setText(movie_Review1F);
+                    }
+
+                    int movie_A1 = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR1);
+                    movie_Review1_AuthorF = data_d.getString(movie_A1);
+                    if (movie_Review1_AuthorF.equals("b")){
+                        dReviewauthor1.setVisibility(View.GONE);
+                    }
+                    else{
+                        dReviewauthor1.setVisibility(View.VISIBLE);
+                        dReviewauthor1.setText(movie_Review1_AuthorF);
+                    }
+
+                    int movie_R2 = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW2);
+                    movie_Review2F = data_d.getString(movie_R2);
+                    if (movie_Review2F.equals("b")){
+                        dReview2.setVisibility(View.GONE);
+                    }
+                    else {
+                        dReview2.setVisibility(View.VISIBLE);
+                        dReview2.setText(movie_Review2F);
+                    }
+
+                    int movie_A2 = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR2);
+                    movie_Review2_AuthorF = data_d.getString(movie_A2);
+                    if (movie_Review2_AuthorF.equals("b")){
+                        dReviewauthor2.setVisibility(View.GONE);
+                    }
+                    else{
+                        dReviewauthor2.setVisibility(View.VISIBLE);
+                        dReviewauthor2.setText(movie_Review2_AuthorF);
+                    }
+
+                    int movie_R3 = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW3);
+                    movie_Review3F = data_d.getString(movie_R3);
+                    if (movie_Review3F.equals("b")){
+                        dReview3.setVisibility(View.GONE);
+                    }
+                    else{
+                        dReview3.setVisibility(View.VISIBLE);
+                        dReview3.setText(movie_Review3F);
+                    }
+
+                    int movie_A3 = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3);
+                    movie_Review3_AuthorF = data_d.getString(movie_A3);
+                    if (movie_Review3_AuthorF.equals("b")){
+                        dReviewauthor3.setVisibility(View.GONE);
+                    }
+                    else{
+                        dReviewauthor3.setVisibility(View.VISIBLE);
+                        dReviewauthor3.setText(movie_Review3_AuthorF);
+                    }
+
+
+                }
+
+
+
+                break;
+
         }
 
     }

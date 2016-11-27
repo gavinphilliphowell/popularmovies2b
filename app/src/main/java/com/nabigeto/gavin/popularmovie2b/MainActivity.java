@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity  implements MainActivityFrag
     public static final String KEY_FILE2 = "movie";
     public static final String KEY_FILE3 = "startmovie";
     public static final String KEY_FILE4 = "n";
+    public static final String KEY_FAVOURITE = "favourite_state";
+    public static final String KEY_FINDER = "favourite_finder";
 
     public Movie_Adapter loaddata;
     public Bundle onStartData_Bundle;
@@ -27,7 +29,8 @@ public class MainActivity extends AppCompatActivity  implements MainActivityFrag
 
     private int movie_index;
 
-
+    public boolean favourite_state;
+    public String favourite_finder;
 
 
 
@@ -94,6 +97,15 @@ Log.v("Gavin", "Test 1");
 
     }
 
+    @Override
+    public void favourite_state(Boolean favourite_state_m){
+        favourite_state = favourite_state_m;
+    }
+
+    @Override
+    public void favourite_finder(String favourite_finder_m) {
+        favourite_finder = favourite_finder_m;
+    }
 
     @Override
     public void onItemSelected(String table_ID) {
@@ -103,6 +115,8 @@ Log.v("Gavin", "Test 1");
             Log.v("Gavin", "MainActivity Passer" + table_ID);
 
             args.putString(KEY_FILE,table_ID);
+            args.putBoolean(KEY_FAVOURITE, favourite_state);
+            args.putString(KEY_FINDER, favourite_finder);
 
             Detail_Movie_Fragment DF = new Detail_Movie_Fragment();
             DF.setArguments(args);
@@ -112,6 +126,8 @@ Log.v("Gavin", "Test 1");
         } else {
             Intent intent = new Intent(this, Detail_Movie_Activity.class).putExtra(KEY_FILE2,table_ID);
             intent.putExtra(KEY_FILE3, table_ID);
+            intent.putExtra(KEY_FAVOURITE, favourite_state);
+            intent.putExtra(KEY_FINDER, favourite_finder);
             startActivity(intent);
             Log.v("Gavin", "Main Activity" + table_ID);
         }
