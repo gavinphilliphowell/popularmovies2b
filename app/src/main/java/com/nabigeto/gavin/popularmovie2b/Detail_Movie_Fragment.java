@@ -23,6 +23,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeIntents;
 import com.google.api.services.youtube.YouTube;
@@ -70,29 +71,29 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
 
     View view = null;
-/**
-    public String mTitle;
-    public String mRelease;
-    public String mRating;
-    public String mInfo;
-    public String mImage;
-    public String mBackground;
-**/
+    /**
+     public String mTitle;
+     public String mRelease;
+     public String mRating;
+     public String mInfo;
+     public String mImage;
+     public String mBackground;
+     **/
     static final String DETAIL_URI = "URI";
 
     private ShareActionProvider mShareActionProvider;
 
     /**
-    String mMovie_ID_http = ("/movie/" + mMovie_ID + "/video");
-    String mMovie_Trailer_http = ("/movie/" + mMovie_Trailer + "/reviews");
+     String mMovie_ID_http = ("/movie/" + mMovie_ID + "/video");
+     String mMovie_Trailer_http = ("/movie/" + mMovie_Trailer + "/reviews");
 
 
-    public static final String AUTHORITY = ".UtilitiesDB.movieContentProvider";
-    public static final String ACCOUNT_TYPE = "nabigeto.com";
-    public static final String ACCOUNT = "dummyaccount";
+     public static final String AUTHORITY = ".UtilitiesDB.movieContentProvider";
+     public static final String ACCOUNT_TYPE = "nabigeto.com";
+     public static final String ACCOUNT = "dummyaccount";
 
-    Account rAccount;
-    **/
+     Account rAccount;
+     **/
     public String dUri;
 
     public String dUri_favourite;
@@ -105,7 +106,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     private static final  int REVIEW_LOADER = 2;
     private static final int TRAILER_LOADER = 3;
     private static final int FAVOURITE_LOADER = 4;
-
+    private static final int SWITCH_LOADER = 5;
 
     private static final String [] DETAIL_COLUMNS = {
             Movie_Contract.MovieInfo.TABLE_NAME + "." +
@@ -153,13 +154,13 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
 
     /**    public static final int COL_REVIEW_ONE = 5;
-    public static final int COL_REVIEW_TWO = 6;
-    public static final int COL_MOVIE_TRAILER = 7;
-**/
+     public static final int COL_REVIEW_TWO = 6;
+     public static final int COL_MOVIE_TRAILER = 7;
+     **/
 
     public static final String [] Favourite_Columns = {
             Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F + "." +
-            Movie_Favourites_Contract.FavouriteInfo._ID,
+                    Movie_Favourites_Contract.FavouriteInfo._ID,
             Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID,
             Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID,
             Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE,
@@ -234,7 +235,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     public Detail_Movie_Fragment() {
         // Required empty public constructor
-      /**  dContext = getContext();  **/
+        /**  dContext = getContext();  **/
     }
 
     @Override
@@ -260,6 +261,8 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                 getLoaderManager().initLoader(DETAIL_LOADER, null, this);
                 getLoaderManager().initLoader(REVIEW_LOADER, null, this);
                 getLoaderManager().initLoader(TRAILER_LOADER, null, this);
+
+
             }
             Log.v("Gavin", "Detail Movie Fragment" + dUri);
 
@@ -273,6 +276,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
             getLoaderManager().initLoader(DETAIL_LOADER, null, this);
             getLoaderManager().initLoader(REVIEW_LOADER, null, this);
             getLoaderManager().initLoader(TRAILER_LOADER, null, this);
+
 
         }
 
@@ -300,7 +304,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
         }
 
-    /**    setRetainInstance(true);  **/
+        /**    setRetainInstance(true);  **/
         setHasOptionsMenu(false);
 
     }
@@ -346,74 +350,81 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
         favouritebutton.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View view){
-                    boolean checked = ((CheckBox) view).isChecked();
+            public void onClick(View view) {
+                boolean checked = ((CheckBox) view).isChecked();
 
-                    switch(view.getId()){
-                        case R.id.checkbox_favourite:
+                if (checked = true) {
 
-
-                            if(checked){
-
-                                Log.v("Gavin","got to this bit loader 2");
-
-                                Log.v("Gavin", "Checkbox checked");
-
-                                movie_Favourite = "y";
-
-                                ContentValues favouriteValues = new ContentValues();
-
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo._ID, m_id);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID, movie_EntryID);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE, movie_TitleF);
-                                Log.v("Gavin", "Detail Movie Fragment" + movie_TitleF);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING, movie_RatingF);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE, movie_ReleaseF);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_INFO, movie_InfoF);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE, movie_ImageF);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID, movie_id);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1, movie_Review1F);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW2, movie_Review2F);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW3, movie_Review3F);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR1, movie_Review1_AuthorF);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR2, movie_Review2_AuthorF);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3, movie_Review3_AuthorF);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1, movie_Trailer1);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2, movie_Trailer2);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3, movie_Trailer3);
-                                favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_FAVOURITE, movie_Favourite);
+                    Cursor favourite_check;
 
 
-                                     Uri movie_insert = getContext().getContentResolver().insert(
-                                            Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
-                                            favouriteValues);
-                                }
+                    String position_f = " _ID = " + dUri;
+                    favourite_check = getContext().getContentResolver().query(Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F, DETAIL_COLUMNS, position_f, null, null);
+
+                    if (favourite_check.getCount() <= 0) {
+
+                        Toast.makeText(getActivity(), movie_TitleF + "Already a favourite :) ", Toast.LENGTH_LONG).show();
+
+                    } else {
+
+                        Log.v("Gavin", "got to this bit loader 2");
+
+                        Log.v("Gavin", "Checkbox checked");
+
+                        movie_Favourite = "y";
+
+                        ContentValues favouriteValues = new ContentValues();
+
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo._ID, m_id);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID, movie_EntryID);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE, movie_TitleF);
+                        Log.v("Gavin", "Detail Movie Fragment" + movie_TitleF);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING, movie_RatingF);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RELEASE_DATE, movie_ReleaseF);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_INFO, movie_InfoF);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_IMAGE_FILE, movie_ImageF);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_MOVIE_ID, movie_id);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1, movie_Review1F);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW2, movie_Review2F);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW3, movie_Review3F);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR1, movie_Review1_AuthorF);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR2, movie_Review2_AuthorF);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW_AUTHOR3, movie_Review3_AuthorF);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER1, movie_Trailer1);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER2, movie_Trailer2);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3, movie_Trailer3);
+                        favouriteValues.put(Movie_Favourites_Contract.FavouriteInfo.COLUMN_FAVOURITE, movie_Favourite);
 
 
-                            else{
+                        Uri movie_insert = getContext().getContentResolver().insert(
+                                Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
+                                favouriteValues);
 
-
-                                String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " LIKE ?";
-                                String[] rSelectionArgs = {movie_TitleF};
-
-                                Log.v("Gavin","got to this bit loader 2");
-
-                                int favourite_details_delete = getContext().getContentResolver().delete(
-                                        Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
-                                        rSelectionClause,
-                                        rSelectionArgs);
-
-
-                            }
-                            break;
                     }
+
                 }
+
+                else {
+
+                        String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " LIKE ?";
+                        String[] rSelectionArgs = {movie_TitleF};
+
+                        Log.v("Gavin", "got to this bit loader 2");
+
+                        int favourite_details_delete = getContext().getContentResolver().delete(
+                                Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
+                                rSelectionClause,
+                                rSelectionArgs);
+
+
+                }
+            }
 
         });
 
         dTrailer1.setOnClickListener(new View.OnClickListener() {
             @Override
-                    public void onClick(View v){
+            public void onClick(View v){
                 watchYoutubeVideo(movie_Trailer1);
             }
         });
@@ -500,40 +511,40 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
 
 
-        case TRAILER_LOADER:
+            case TRAILER_LOADER:
 
-        position = " _ID = " + dUri;
-        /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
-         **/
-        row_Pref = dUri;
-        Log.v("Gavin", "dUuri" + row_Pref);
-        if (null != dUri) {
-            Log.v("Gavin", "Trailer Loader cursor created");
-            return new CursorLoader(
-                    getActivity(),
-                    Movie_Contract.MovieInfo.CONTENT_URI_R,
-                    DETAIL_COLUMNS,
-                    position,
-                    null,
-                    null
-
-            );
-
-        }
-        Log.v("Gavin", "Loader cursor finished" + "Trailer Loader");
-        Log.v("Gavin", "Loader cursor finished" + dUri);
-        return null;
-
-
-            case FAVOURITE_LOADER:
-
-                position = " title = " + mfavourite_finder;
+                position = " _ID = " + dUri;
                 /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
                  **/
                 row_Pref = dUri;
                 Log.v("Gavin", "dUuri" + row_Pref);
                 if (null != dUri) {
                     Log.v("Gavin", "Trailer Loader cursor created");
+                    return new CursorLoader(
+                            getActivity(),
+                            Movie_Contract.MovieInfo.CONTENT_URI_R,
+                            DETAIL_COLUMNS,
+                            position,
+                            null,
+                            null
+
+                    );
+
+                }
+                Log.v("Gavin", "Loader cursor finished" + "Trailer Loader");
+                Log.v("Gavin", "Loader cursor finished" + dUri);
+                return null;
+
+
+            case FAVOURITE_LOADER:
+
+                position = " _ID = " + dUri;
+                /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
+                 **/
+                row_Pref = dUri;
+                Log.v("Gavin", "dUuri" + row_Pref);
+                if (null != dUri) {
+                    Log.v("Gavin", "Favourite Loader cursor created");
                     return new CursorLoader(
                             getActivity(),
                             Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
@@ -549,7 +560,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                 Log.v("Gavin", "Loader cursor finished" + dUri);
                 return null;
 
-    }
+        }
 
         return null;
     }
@@ -684,148 +695,148 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                 break;
 
-                case REVIEW_LOADER:
+            case REVIEW_LOADER:
 
-                    int cursor_check_review = data_d.getCount();
+                int cursor_check_review = data_d.getCount();
 
-                    String check_review = Integer.toString(cursor_check_review);
-                    Log.v("Gavin", "cursor_check_detail" + check_review);
+                String check_review = Integer.toString(cursor_check_review);
+                Log.v("Gavin", "cursor_check_detail" + check_review);
 
-                    if (cursor_check_review == 0) {
+                if (cursor_check_review == 0) {
 
-                        String review_status = "Sorry - no reviews available :)";
-                        dReview1.setVisibility(View.VISIBLE);
-                        dReview1.setText(review_status);
+                    String review_status = "Sorry - no reviews available :)";
+                    dReview1.setVisibility(View.VISIBLE);
+                    dReview1.setText(review_status);
 
-                    }
+                }
 
-                    else{
-                        data_d.moveToFirst();
+                else{
+                    data_d.moveToFirst();
 
+                    dReview1.setVisibility(View.GONE);
+
+                    int movie_R1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1);
+                    movie_Review1F = data_d.getString(movie_R1);
+                    Log.v("Gavin", "Review Loader " + movie_Review1F);
+                    if (movie_Review1F.equals("b")){
                         dReview1.setVisibility(View.GONE);
-                        
-                        int movie_R1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1);
-                        movie_Review1F = data_d.getString(movie_R1);
-                        Log.v("Gavin", "Review Loader " + movie_Review1F);
-                        if (movie_Review1F.equals("b")){
-                            dReview1.setVisibility(View.GONE);
-                        }
-                        else{
-                            dReview1.setVisibility(View.VISIBLE);
-                            dReview1.setText(movie_Review1F);
-                        }
-
-                        int movie_A1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1);
-                        movie_Review1_AuthorF = data_d.getString(movie_A1);
-                        if (movie_Review1_AuthorF.equals("b")){
-                            dReviewauthor1.setVisibility(View.GONE);
-                        }
-                        else{
-                            dReviewauthor1.setVisibility(View.VISIBLE);
-                            dReviewauthor1.setText(movie_Review1_AuthorF);
-                        }
-
-                        int movie_R2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2);
-                        movie_Review2F = data_d.getString(movie_R2);
-                        if (movie_Review2F.equals("b")){
-                            dReview2.setVisibility(View.GONE);
-                        }
-                        else {
-                            dReview2.setVisibility(View.VISIBLE);
-                            dReview2.setText(movie_Review2F);
-                        }
-
-                        int movie_A2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR2);
-                        movie_Review2_AuthorF = data_d.getString(movie_A2);
-                        if (movie_Review2_AuthorF.equals("b")){
-                            dReviewauthor2.setVisibility(View.GONE);
-                        }
-                        else{
-                            dReviewauthor2.setVisibility(View.VISIBLE);
-                            dReviewauthor2.setText(movie_Review2_AuthorF);
-                        }
-
-                        int movie_R3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3);
-                        movie_Review3F = data_d.getString(movie_R3);
-                        if (movie_Review3F.equals("b")){
-                            dReview3.setVisibility(View.GONE);
-                        }
-                        else{
-                            dReview3.setVisibility(View.VISIBLE);
-                            dReview3.setText(movie_Review3F);
-                        }
-
-                        int movie_A3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR3);
-                        movie_Review3_AuthorF = data_d.getString(movie_A3);
-                        if (movie_Review3_AuthorF.equals("b")){
-                            dReviewauthor3.setVisibility(View.GONE);
-                        }
-                        else{
-                            dReviewauthor3.setVisibility(View.VISIBLE);
-                            dReviewauthor3.setText(movie_Review3_AuthorF);
-                        }
-
                     }
+                    else{
+                        dReview1.setVisibility(View.VISIBLE);
+                        dReview1.setText(movie_Review1F);
+                    }
+
+                    int movie_A1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1);
+                    movie_Review1_AuthorF = data_d.getString(movie_A1);
+                    if (movie_Review1_AuthorF.equals("b")){
+                        dReviewauthor1.setVisibility(View.GONE);
+                    }
+                    else{
+                        dReviewauthor1.setVisibility(View.VISIBLE);
+                        dReviewauthor1.setText(movie_Review1_AuthorF);
+                    }
+
+                    int movie_R2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2);
+                    movie_Review2F = data_d.getString(movie_R2);
+                    if (movie_Review2F.equals("b")){
+                        dReview2.setVisibility(View.GONE);
+                    }
+                    else {
+                        dReview2.setVisibility(View.VISIBLE);
+                        dReview2.setText(movie_Review2F);
+                    }
+
+                    int movie_A2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR2);
+                    movie_Review2_AuthorF = data_d.getString(movie_A2);
+                    if (movie_Review2_AuthorF.equals("b")){
+                        dReviewauthor2.setVisibility(View.GONE);
+                    }
+                    else{
+                        dReviewauthor2.setVisibility(View.VISIBLE);
+                        dReviewauthor2.setText(movie_Review2_AuthorF);
+                    }
+
+                    int movie_R3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3);
+                    movie_Review3F = data_d.getString(movie_R3);
+                    if (movie_Review3F.equals("b")){
+                        dReview3.setVisibility(View.GONE);
+                    }
+                    else{
+                        dReview3.setVisibility(View.VISIBLE);
+                        dReview3.setText(movie_Review3F);
+                    }
+
+                    int movie_A3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR3);
+                    movie_Review3_AuthorF = data_d.getString(movie_A3);
+                    if (movie_Review3_AuthorF.equals("b")){
+                        dReviewauthor3.setVisibility(View.GONE);
+                    }
+                    else{
+                        dReviewauthor3.setVisibility(View.VISIBLE);
+                        dReviewauthor3.setText(movie_Review3_AuthorF);
+                    }
+
+                }
 
                 break;
 
-                case TRAILER_LOADER:
+            case TRAILER_LOADER:
 
-                    String url_youtube;
+                String url_youtube;
 
-                    int cursor_check_trailer = data_d.getCount();
-                    String check_trailer = Integer.toString(cursor_check_trailer);
-                    Log.v("Gavin", "cursor_check_detail" + check_trailer);
+                int cursor_check_trailer = data_d.getCount();
+                String check_trailer = Integer.toString(cursor_check_trailer);
+                Log.v("Gavin", "cursor_check_detail" + check_trailer);
 
-                    if (cursor_check_trailer == 0){
+                if (cursor_check_trailer == 0){
 
-                        String trailer_status = "Sorry - no trailers available :)";
-                        movie_trailer_offline.setVisibility(View.VISIBLE);
-                        movie_trailer_offline.setText(trailer_status);
+                    String trailer_status = "Sorry - no trailers available :)";
+                    movie_trailer_offline.setVisibility(View.VISIBLE);
+                    movie_trailer_offline.setText(trailer_status);
 
-                    }
+                }
 
-                    else{
+                else{
 
 
                     data_d.moveToFirst();
 
-                        movie_trailer_offline.setVisibility(View.GONE);
+                    movie_trailer_offline.setVisibility(View.GONE);
 
-                        int trailer_A1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1);
-                        movie_Trailer1 = data_d.getString(trailer_A1);
-                        if (movie_Trailer1.equals("b")){
-                            dTrailer1.setVisibility(View.GONE);
-                        }
-                        else{
-                            dTrailer1.setVisibility(View.VISIBLE);
-                            url_youtube = "http://img.youtube.com/vi/" + movie_Trailer1 + "/1.jpg";
-                            Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer1);
-                        }
+                    int trailer_A1 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER1);
+                    movie_Trailer1 = data_d.getString(trailer_A1);
+                    if (movie_Trailer1.equals("b")){
+                        dTrailer1.setVisibility(View.GONE);
+                    }
+                    else{
+                        dTrailer1.setVisibility(View.VISIBLE);
+                        url_youtube = "http://img.youtube.com/vi/" + movie_Trailer1 + "/1.jpg";
+                        Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer1);
+                    }
 
-                        int trailer_A2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2);
-                        movie_Trailer2 = data_d.getString(trailer_A2);
-                        if (movie_Trailer2.equals("b")){
-                            dTrailer2.setVisibility(View.GONE);
-                        }
-                        else{
-                            dTrailer2.setVisibility(View.VISIBLE);
-                            url_youtube = "http://img.youtube.com/vi/" + movie_Trailer2 + "/1.jpg";
-                            Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer2);
-                        }
+                    int trailer_A2 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2);
+                    movie_Trailer2 = data_d.getString(trailer_A2);
+                    if (movie_Trailer2.equals("b")){
+                        dTrailer2.setVisibility(View.GONE);
+                    }
+                    else{
+                        dTrailer2.setVisibility(View.VISIBLE);
+                        url_youtube = "http://img.youtube.com/vi/" + movie_Trailer2 + "/1.jpg";
+                        Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer2);
+                    }
 
-                        int trailer_A3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3);
-                        movie_Trailer3 = data_d.getString(trailer_A3);
-                        if (movie_Trailer3.equals("b")){
-                            dTrailer3.setVisibility(View.GONE);
-                        }
-                        else{
-                            dTrailer3.setVisibility(View.VISIBLE);
-                            url_youtube = "http://img.youtube.com/vi/" + movie_Trailer3 + "/1.jpg";
-                            Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer3);
-                        }
-        }
-                    break;
+                    int trailer_A3 = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3);
+                    movie_Trailer3 = data_d.getString(trailer_A3);
+                    if (movie_Trailer3.equals("b")){
+                        dTrailer3.setVisibility(View.GONE);
+                    }
+                    else{
+                        dTrailer3.setVisibility(View.VISIBLE);
+                        url_youtube = "http://img.youtube.com/vi/" + movie_Trailer3 + "/1.jpg";
+                        Picasso.with(dContext).load(url_youtube).placeholder(R.drawable.worms_head).into(dTrailer3);
+                    }
+                }
+                break;
 
             case FAVOURITE_LOADER:
 
@@ -974,9 +985,6 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                 }
 
 
-
-                break;
-
         }
 
     }
@@ -999,9 +1007,9 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     public void watchYoutubeVideo(String id){
 
-       /**
-        Intent appIntent = YouTubeStandalonePlayer.createVideoIntent(getContext(), Youtube_KEY, id);
-**/
+        /**
+         Intent appIntent = YouTubeStandalonePlayer.createVideoIntent(getContext(), Youtube_KEY, id);
+         **/
 
         Intent appIntent = YouTubeIntents.createPlayVideoIntentWithOptions(getContext(), id, true, false);
         startActivity(appIntent);
