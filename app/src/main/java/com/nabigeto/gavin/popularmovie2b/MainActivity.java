@@ -105,6 +105,7 @@ Log.v("Gavin", "Test 1");
     @Override
     public void favourite_finder(String favourite_finder_m) {
         favourite_finder = favourite_finder_m;
+        Log.v("Gavin", "Main Activity " + favourite_finder);
     }
 
     @Override

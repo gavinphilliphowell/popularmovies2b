@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -251,9 +252,11 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
             dUri = arguments.getString(KEY_FILE);
             mFavourite_Status = arguments.getBoolean(KEY_FAVOURITE);
             mfavourite_finder = arguments.getString(KEY_FINDER);
+            Log.v("Gavin", "Detail Activity Fragment " + mfavourite_finder);
 
             if (mFavourite_Status == true){
                 getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
+                getLoaderManager().initLoader(SWITCH_LOADER, null, this);
                 String boolean_Value = String.valueOf(mFavourite_Status);
                 Log.v("Gavin", "Detail Activity Fragment " + boolean_Value);
             }
@@ -261,7 +264,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                 getLoaderManager().initLoader(DETAIL_LOADER, null, this);
                 getLoaderManager().initLoader(REVIEW_LOADER, null, this);
                 getLoaderManager().initLoader(TRAILER_LOADER, null, this);
-
+                getLoaderManager().initLoader(SWITCH_LOADER, null, this);
 
             }
             Log.v("Gavin", "Detail Movie Fragment" + dUri);
@@ -276,6 +279,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
             getLoaderManager().initLoader(DETAIL_LOADER, null, this);
             getLoaderManager().initLoader(REVIEW_LOADER, null, this);
             getLoaderManager().initLoader(TRAILER_LOADER, null, this);
+            getLoaderManager().initLoader(SWITCH_LOADER, null, this);
 
 
         }
@@ -355,17 +359,6 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                 if (checked = true) {
 
-                    Cursor favourite_check;
-
-
-                    String position_f = " _ID = " + dUri;
-                    favourite_check = getContext().getContentResolver().query(Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F, DETAIL_COLUMNS, position_f, null, null);
-
-                    if (favourite_check.getCount() <= 0) {
-
-                        Toast.makeText(getActivity(), movie_TitleF + "Already a favourite :) ", Toast.LENGTH_LONG).show();
-
-                    } else {
 
                         Log.v("Gavin", "got to this bit loader 2");
 
@@ -402,7 +395,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     }
 
-                }
+
 
                 else {
 
@@ -538,7 +531,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
             case FAVOURITE_LOADER:
 
-                position = " _ID = " + dUri;
+                position = " title = " + movie_TitleF;
                 /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
                  **/
                 row_Pref = dUri;
@@ -558,6 +551,40 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                 }
                 Log.v("Gavin", "Loader cursor finished" + "Favourite Loader");
                 Log.v("Gavin", "Loader cursor finished" + dUri);
+                return null;
+
+
+            case SWITCH_LOADER:
+
+                position = " COLUMN_NAME_MOVIE_ID = " + mfavourite_finder;
+                /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
+                 **/
+                row_Pref = mfavourite_finder;
+                Log.v("Gavin", "mfavourite_finder" + row_Pref);
+
+                try {
+                    if (null != mfavourite_finder) {
+                        Log.v("Gavin", "Favourite Loader cursor created");
+                        return new CursorLoader(
+                                getActivity(),
+                                Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
+                                DETAIL_COLUMNS,
+                                position,
+                                null,
+                                null
+
+                        );
+
+                    }
+
+                }
+                catch (SQLiteException e){
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), mfavourite_finder + " is already a favourite :)", Toast.LENGTH_LONG).show();
+
+                };
+                Log.v("Gavin", "Loader cursor finished " + "Switch Loader");
+                Log.v("Gavin", "Loader cursor finished " + mfavourite_finder);
                 return null;
 
         }
@@ -984,6 +1011,23 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                 }
 
+
+            case SWITCH_LOADER:
+
+                data_d.moveToFirst();
+
+                if (data_d.getCount() <= 0){
+
+                    mFavourite_Status = false;
+                    favouritebutton.setChecked(mFavourite_Status);
+
+                }
+                else{
+
+                    mFavourite_Status = true;
+                    favouritebutton.setChecked(mFavourite_Status);
+
+                }
 
         }
 
