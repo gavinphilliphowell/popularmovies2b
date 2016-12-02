@@ -252,13 +252,29 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
             dUri = arguments.getString(KEY_FILE);
             mFavourite_Status = arguments.getBoolean(KEY_FAVOURITE);
             mfavourite_finder = arguments.getString(KEY_FINDER);
-            Log.v("Gavin", "Detail Activity Fragment " + mfavourite_finder);
+            Log.v("Gavin", "Detail Activity Fragment this one" + mfavourite_finder);
 
             if (mFavourite_Status == true){
-                getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
-                getLoaderManager().initLoader(SWITCH_LOADER, null, this);
-                String boolean_Value = String.valueOf(mFavourite_Status);
-                Log.v("Gavin", "Detail Activity Fragment " + boolean_Value);
+
+                if (isOnline() != true) {
+
+                    getLoaderManager().initLoader(REVIEW_LOADER, null, this);
+                    getLoaderManager().initLoader(TRAILER_LOADER, null, this);
+                    getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
+                    getLoaderManager().initLoader(SWITCH_LOADER, null, this);
+                    String boolean_Value = String.valueOf(mFavourite_Status);
+                    Log.v("Gavin", "Detail Activity Fragment " + boolean_Value);
+
+                }
+                else
+                {
+
+                    getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
+                    getLoaderManager().initLoader(SWITCH_LOADER, null, this);
+                    String boolean_Value = String.valueOf(mFavourite_Status);
+                    Log.v("Gavin", "Detail Activity Fragment " + boolean_Value);
+                }
+
             }
             else {
                 getLoaderManager().initLoader(DETAIL_LOADER, null, this);
@@ -531,17 +547,17 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
             case FAVOURITE_LOADER:
 
-                position = " title = " + movie_TitleF;
+                position = " id = " + mfavourite_finder;
                 /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
                  **/
-                row_Pref = dUri;
-                Log.v("Gavin", "dUuri" + row_Pref);
+                row_Pref = mfavourite_finder;
+                Log.v("Gavin", "mfavourite_finder " + row_Pref);
                 if (null != dUri) {
                     Log.v("Gavin", "Favourite Loader cursor created");
                     return new CursorLoader(
                             getActivity(),
                             Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
-                            DETAIL_COLUMNS,
+                            Favourite_Columns,
                             position,
                             null,
                             null
@@ -556,7 +572,8 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
             case SWITCH_LOADER:
 
-                position = " COLUMN_NAME_MOVIE_ID = " + mfavourite_finder;
+                String[] rSelectionArgs = {mfavourite_finder};
+                position = " id = " + mfavourite_finder;
                 /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
                  **/
                 row_Pref = mfavourite_finder;
@@ -564,11 +581,11 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                 try {
                     if (null != mfavourite_finder) {
-                        Log.v("Gavin", "Favourite Loader cursor created");
+                        Log.v("Gavin", "Switch Loader cursor created");
                         return new CursorLoader(
                                 getActivity(),
                                 Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
-                                DETAIL_COLUMNS,
+                                Favourite_Columns,
                                 position,
                                 null,
                                 null
@@ -871,9 +888,9 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                 String check_detail_f = Integer.toString(cursor_check_detail_f);
                 Log.v("Gavin", "cursor_check_detail" + check_detail_f);
 
-                if (cursor_check_detail_f == 0) {
+                if (cursor_check_detail_f <= 0) {
 
-                    String detail_check = "Sorry - no reviews available :)";
+                    String detail_check = "Sorry - no details available :)";
                     movie_details_offline.setText(detail_check);
 
                 }
@@ -889,16 +906,11 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     movie_details_offline.setVisibility(View.GONE);
 
-                    int movie_EntryIDd = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_ENTRY_ID);
-                    movie_EntryID = data_d.getString(movie_EntryIDd);
 
                     int movie_Titled = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE);
                     movie_TitleF = data_d.getString(movie_Titled);
                     dTitle.setText(movie_TitleF);
 
-                    int movie_IDd = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo._ID);
-                    m_id = data_d.getString(movie_IDd);
-                    dID.setText(m_id);
 
                     int movie_Ratingd = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING);
                     movie_RatingF = data_d.getString(movie_Ratingd);
@@ -932,7 +944,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     }
 
 
-
+/**
                     int favourite_position = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_FAVOURITE);
                     movie_Favourite = data_d.getString(favourite_position);
                     Log.v("Gavin", "Favourite Status" + movie_Favourite);
@@ -943,6 +955,10 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     else{
                         favouritebutton.setChecked(false);
                     }
+**/
+
+
+                    favouritebutton.setChecked(true);
 
 
                     dReview1.setVisibility(View.GONE);
@@ -1014,20 +1030,10 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
             case SWITCH_LOADER:
 
-                data_d.moveToFirst();
 
-                if (data_d.getCount() <= 0){
+                    favouritebutton.setChecked(true);
 
-                    mFavourite_Status = false;
-                    favouritebutton.setChecked(mFavourite_Status);
 
-                }
-                else{
-
-                    mFavourite_Status = true;
-                    favouritebutton.setChecked(mFavourite_Status);
-
-                }
 
         }
 

@@ -305,7 +305,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                     String ppuri = puri.toString();
                     Log.v("Gavin", "MainActivityFragment" + ppuri);
 
-
+                    ((Callback) getActivity()).favourite_finder(movie_id);
 
                     Bundle settingsBundle = new Bundle();
                     settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
@@ -329,7 +329,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
 
                     ((Callback) getActivity()).onItemSelected(database_id);
-                    ((Callback) getActivity()).favourite_finder(movie_id);
+
 
 
 

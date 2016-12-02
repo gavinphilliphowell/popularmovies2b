@@ -100,12 +100,13 @@ Log.v("Gavin", "Test 1");
     @Override
     public void favourite_state(Boolean favourite_state_m){
         favourite_state = favourite_state_m;
+        Log.v("Gavin", "Main Activity the other one boolean " + favourite_state_m);
     }
 
     @Override
     public void favourite_finder(String favourite_finder_m) {
         favourite_finder = favourite_finder_m;
-        Log.v("Gavin", "Main Activity " + favourite_finder);
+        Log.v("Gavin", "Main Activity the other one" + favourite_finder);
     }
 
     @Override
@@ -130,7 +131,8 @@ Log.v("Gavin", "Test 1");
             intent.putExtra(KEY_FAVOURITE, favourite_state);
             intent.putExtra(KEY_FINDER, favourite_finder);
             startActivity(intent);
-            Log.v("Gavin", "Main Activity" + table_ID);
+            Log.v("Gavin", "Main Activity " + table_ID);
+            Log.v("Gavin", "Main Activity this one " + favourite_finder);
         }
 
     }

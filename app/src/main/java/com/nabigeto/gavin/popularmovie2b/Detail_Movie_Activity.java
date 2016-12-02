@@ -31,6 +31,7 @@ public class Detail_Movie_Activity extends AppCompatActivity {
             Boolean favourites_state = getIntent().getExtras().getBoolean(KEY_FAVOURITE);
             String favourites_finder = getIntent().getExtras().getString(KEY_FINDER);
             Log.v("Gavin", "DetailMovieActivity" + location_ID_d);
+            Log.v("Gavin", "Detail Movie Activity this one" + favourites_finder);
 
             String boolean_Value = String.valueOf(favourites_state);
             Log.v("Gavin", "MainActivity Fragment " + boolean_Value);
