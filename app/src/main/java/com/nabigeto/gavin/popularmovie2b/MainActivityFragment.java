@@ -40,11 +40,7 @@ import java.io.File;
 public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public Custom_Movie_Adapter mAdapter;
-    public static final String KEY_FILE = "Shared_Preference_KEY_FILE";
-    public static final String KEY_FILE2 = "movies";
-    public static final String KEY_FILE3 = "startmovie";
 
-    public static final String FRAGMENT_NAME = "Frag1";
 
     public int position;
 
@@ -53,7 +49,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public boolean favourite = true;
 
     public int selector_id = 1;
-
 
     public String movie_selection_type;
 
@@ -143,14 +138,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             movie_favourite_db_helper.onClear(db);
             movie_favourite_db_helper.onCreate(db);
 
-            Log.v("Gavin", "Favourite database and table created");
-
         }
 
         else {
 
-
-            Log.v("Gavin", "Favourite database and table already exist");
 
         }
 
@@ -165,6 +156,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     Toast.makeText(getActivity(), "Network connection available - we are getting your data", Toast.LENGTH_LONG).show();
 
     }
+
+        favourite = false;
 
     }
 
@@ -189,8 +182,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        String id_selection = Integer.toString(id);
-        Log.v("Gavin", "Selection" + id_selection);
 
         switch(id){
 
@@ -227,18 +218,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
             case(R.id.movie_options_sort3):
                 movie_selection_type = "favourite";
-/**
-                Bundle settingsBundleo = new Bundle();
-                settingsBundleo.putString("gridview_load", movie_selection_type);
-                settingsBundleo.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-                settingsBundleo.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-                ContentResolver.requestSync(mAccount, Movie_Favourites_Contract.CONTENT_AUTHORITY_F, settingsBundleo);
-**/
+
                 getLoaderManager().restartLoader(FAVOURITE_LOADER, null, this);
                 favourite = true;
                 ((Callback) getActivity()).favourite_state(favourite);
-                boolean_Value = String.valueOf(favourite);
-                Log.v("Gavin", "MainActivity Fragment " + boolean_Value);
 
                 break;
 
@@ -256,7 +239,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
-        Log.v("Gavin", "Got to this part - launching view");
 
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
 
@@ -265,7 +247,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         mAdapter = new Custom_Movie_Adapter(getActivity(), null, 0);
 
         gridView.setAdapter(mAdapter);
-        Log.e("Gavin", "Got to this bit in mainactivityfragment");
 
         movie_selection_type = "popular";
 
@@ -278,8 +259,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         favourite = false;
         ((Callback) getActivity()).favourite_state(favourite);
-        String boolean_Value = String.valueOf(favourite);
-        Log.v("Gavin", "MainActivity Fragment " + boolean_Value);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -297,13 +276,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                     String movie_id = cursor.getString(COL_MOVIE_ID);
                     String image = cursor.getString(COL_MOVIE_IMAGE_FILE);
                     String info = cursor.getString(COL_MOVIE_INFO);
-                    Log.v("Gavin", "MainActivityFragement" + position);
-                    Log.v("Gavin", "MainActivityFragment" + movie_id);
-                    Log.v("Gavin", "MainActivityFragment" + image);
-                    Log.v("Gavin", "MainActivityFragment" + info);
                     Uri puri = Movie_Contract.MovieInfo.CONTENT_URI_R;
                     String ppuri = puri.toString();
-                    Log.v("Gavin", "MainActivityFragment" + ppuri);
+
 
                     ((Callback) getActivity()).favourite_finder(movie_id);
 
@@ -323,14 +298,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                     ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY_T, settingsBundlet);
 
-                    Log.v("Gavin", movie_id);
-                    Log.v("Gavin", database_id);
-
-
 
                     ((Callback) getActivity()).onItemSelected(database_id);
-
-
 
 
                 }
@@ -377,18 +346,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             case MOVIE_LOADER:
 
                 String sortOrder = Movie_Contract.MovieInfo.COLUMN_NAME_RATING + " ASC";
-                Log.v("Gavin", sortOrder);
-                String view2 = Movie_Contract.MovieInfo.CONTENT_URI.toString();
-                Log.v("Gavin", "Main Activity_1" + view2);
 
-                Uri movie = Movie_Contract.MovieInfo.buildMovie_InfoUri(i);
-
-                String movie_table = Movie_Contract.MovieInfo.TABLE_NAME;
-
-                Uri movie_table_uri = Uri.parse(movie_table);
-                String rSelectionClause = Movie_Contract.MovieInfo._ID + " LIKE ?";
-                String moviesortOrder = Movie_Contract.MovieInfo.COLUMN_NAME_RATING + " ASC";
-                Log.v("Gavin", "Main Activity Fragment - Movie Loader 1");
                 CursorLoader movie_loader =  new CursorLoader(getContext(),
                         Movie_Contract.MovieInfo.CONTENT_URI,
                         MOVIE_COLUMNS,
@@ -400,13 +358,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
             case FAVOURITE_LOADER:
 
-                String favourite_table = Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F;
-
-                Uri favourite_table_uri = Uri.parse(favourite_table);
-                String fSelectionClause = Movie_Favourites_Contract.FavouriteInfo._ID + " LIKE ?";
                 String favouritesortOrder = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_RATING + " ASC";
-
-                Log.v("Gavin", "Main Activity Fragment - Favourite Loader 1");
 
                 CursorLoader favourite_loader = new CursorLoader(getContext(),
                         Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
@@ -414,9 +366,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                         null,
                         null,
                         favouritesortOrder);
-
-                Log.v("Gavin", "Main Activity Fragment - Favourite Loader 2");
-
 
                 return favourite_loader;
 
@@ -446,10 +395,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         }
 
-
-   /**     if (mPosition != GridView.INVALID_POSITION) {
-            gridView.smoothScrollToPosition(mPosition);
-        }  **/
     }
 
     @Override
@@ -476,15 +421,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         mUseCaseLayout = useCaseLayout;
 
-        /**      if(mAdapter != null) {
-
-         mAdapter.setuseCaseLayout(mUseCaseLayout);
-
-         }
-
-         **/
-
     }
+
+
     @Override
     public void onResume() {
         getLoaderManager().restartLoader(MOVIE_LOADER, null, this);

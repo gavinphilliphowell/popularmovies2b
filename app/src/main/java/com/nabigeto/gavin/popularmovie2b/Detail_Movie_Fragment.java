@@ -133,12 +133,6 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
     public static final int COL_FAVOURITE = 17;
 
 
-
-    /**    public static final int COL_REVIEW_ONE = 5;
-     public static final int COL_REVIEW_TWO = 6;
-     public static final int COL_MOVIE_TRAILER = 7;
-     **/
-
     public static final String [] Favourite_Columns = {
             Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F + "." +
                     Movie_Favourites_Contract.FavouriteInfo._ID,
@@ -215,8 +209,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
 
     public Detail_Movie_Fragment() {
-        // Required empty public constructor
-        /**  dContext = getContext();  **/
+
     }
 
     @Override
@@ -236,14 +229,13 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
             if (mFavourite_Status == true){
 
-                if (isOnline() != true) {
+                if (isOnline() == true) {
 
+                    getLoaderManager().initLoader(DETAIL_LOADER, null, this);
                     getLoaderManager().initLoader(REVIEW_LOADER, null, this);
                     getLoaderManager().initLoader(TRAILER_LOADER, null, this);
-                    getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
                     getLoaderManager().initLoader(SWITCH_LOADER, null, this);
-                    String boolean_Value = String.valueOf(mFavourite_Status);
-                    Log.v("Gavin", "Detail Activity Fragment " + boolean_Value);
+
 
                 }
                 else
@@ -251,8 +243,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
                     getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
                     getLoaderManager().initLoader(SWITCH_LOADER, null, this);
-                    String boolean_Value = String.valueOf(mFavourite_Status);
-                    Log.v("Gavin", "Detail Activity Fragment " + boolean_Value);
+
                 }
 
             }
