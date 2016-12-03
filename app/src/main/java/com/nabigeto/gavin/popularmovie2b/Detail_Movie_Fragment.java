@@ -69,32 +69,12 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
     public String mfavourite_finder;
 
-
-
     View view = null;
-    /**
-     public String mTitle;
-     public String mRelease;
-     public String mRating;
-     public String mInfo;
-     public String mImage;
-     public String mBackground;
-     **/
+
     static final String DETAIL_URI = "URI";
 
     private ShareActionProvider mShareActionProvider;
 
-    /**
-     String mMovie_ID_http = ("/movie/" + mMovie_ID + "/video");
-     String mMovie_Trailer_http = ("/movie/" + mMovie_Trailer + "/reviews");
-
-
-     public static final String AUTHORITY = ".UtilitiesDB.movieContentProvider";
-     public static final String ACCOUNT_TYPE = "nabigeto.com";
-     public static final String ACCOUNT = "dummyaccount";
-
-     Account rAccount;
-     **/
     public String dUri;
 
     public String dUri_favourite;
@@ -373,7 +353,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
             public void onClick(View view) {
                 boolean checked = ((CheckBox) view).isChecked();
 
-                if (checked = true) {
+                if (checked == true) {
 
 
                         Log.v("Gavin", "got to this bit loader 2");
@@ -413,7 +393,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
 
 
-                else {
+                if (checked == false) {
 
                         String rSelectionClause = Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TITLE + " LIKE ?";
                         String[] rSelectionArgs = {movie_TitleF};
@@ -548,8 +528,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
             case FAVOURITE_LOADER:
 
                 position = " id = " + mfavourite_finder;
-                /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
-                 **/
+
                 row_Pref = mfavourite_finder;
                 Log.v("Gavin", "mfavourite_finder " + row_Pref);
                 if (null != dUri) {
@@ -572,34 +551,24 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
             case SWITCH_LOADER:
 
-                String[] rSelectionArgs = {mfavourite_finder};
                 position = " id = " + mfavourite_finder;
-                /**      Uri prefs_uri2 =  + " _ID " prefs_uri.getLastPathSegment();
-                 **/
+
                 row_Pref = mfavourite_finder;
                 Log.v("Gavin", "mfavourite_finder" + row_Pref);
 
-                try {
-                    if (null != mfavourite_finder) {
-                        Log.v("Gavin", "Switch Loader cursor created");
-                        return new CursorLoader(
-                                getActivity(),
-                                Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
-                                Favourite_Columns,
-                                position,
-                                null,
-                                null
+                if (null != mfavourite_finder) {
+                    Log.v("Gavin", "Switch Loader cursor created");
+                    return new CursorLoader(
+                            getActivity(),
+                            Movie_Favourites_Contract.FavouriteInfo.CONTENT_URI_F,
+                            Favourite_Columns,
+                            position,
+                            null,
+                            null
 
-                        );
-
-                    }
+                    );
 
                 }
-                catch (SQLiteException e){
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(), mfavourite_finder + " is already a favourite :)", Toast.LENGTH_LONG).show();
-
-                };
                 Log.v("Gavin", "Loader cursor finished " + "Switch Loader");
                 Log.v("Gavin", "Loader cursor finished " + mfavourite_finder);
                 return null;
@@ -721,18 +690,6 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                     movie_Trailer3 = data_d.getString(filmtrailer3);
 
                     dTitle.setText(movie_TitleF);
-
-                    int favourite_position = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_FAVOURITE);
-                    movie_Favourite = data_d.getString(favourite_position);
-                    Log.v("Gavin", "Favourite Status" + movie_Favourite);
-
-                    if(movie_Favourite.equals("y")) {
-                        favouritebutton.setChecked(true);
-                    }
-                    else{
-                        favouritebutton.setChecked(false);
-                    }
-
 
 
                 }
@@ -943,25 +900,7 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
                         Log.v("Gavin", "Loading picasso in detail fragment - cache");
                     }
 
-
-/**
-                    int favourite_position = data_d.getColumnIndex(Movie_Contract.MovieInfo.COLUMN_FAVOURITE);
-                    movie_Favourite = data_d.getString(favourite_position);
-                    Log.v("Gavin", "Favourite Status" + movie_Favourite);
-
-                    if(movie_Favourite.equals("y")) {
-                        favouritebutton.setChecked(true);
-                    }
-                    else{
-                        favouritebutton.setChecked(false);
-                    }
-**/
-
-
-                    favouritebutton.setChecked(true);
-
-
-                    dReview1.setVisibility(View.GONE);
+            dReview1.setVisibility(View.GONE);
 
                     int movie_R1 = data_d.getColumnIndex(Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_REVIEW1);
                     movie_Review1F = data_d.getString(movie_R1);
@@ -1030,9 +969,19 @@ public class Detail_Movie_Fragment extends Fragment implements LoaderManager.Loa
 
             case SWITCH_LOADER:
 
+                int switch_checker = data_d.getCount();
 
+                if (switch_checker <=0){
+                    favouritebutton.setChecked(false);
+                    Log.v("Gavin", "Detail Movie Fragment false " + switch_checker);
+
+                }
+                else {
+
+                    Log.v("Gavin", "Detail Movie Fragment true " + switch_checker);
+                    Toast.makeText(getActivity(), "Favourite :)", Toast.LENGTH_LONG).show();
                     favouritebutton.setChecked(true);
-
+                }
 
 
         }
