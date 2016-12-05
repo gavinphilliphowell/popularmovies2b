@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
@@ -149,6 +150,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         getLoaderManager().initLoader(FAVOURITE_LOADER, null, this);
 
 
+
         if (isOnline() != true) {
     Toast.makeText(getActivity(), "No network detected", Toast.LENGTH_LONG).show();
 
@@ -187,13 +189,17 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
             case(R.id.movie_options_sort1):
                 movie_selection_type = "popular";
-
+/**
+                getLoaderManager().destroyLoader(FAVOURITE_LOADER);
+                getLoaderManager().restartLoader(MOVIE_LOADER, null, this);
+**/
                 Bundle settingsBundlem = new Bundle();
 
                 settingsBundlem.putString("gridview_load", movie_selection_type);
                 settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
                 settingsBundlem.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
                 ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlem);
+
                 favourite = false;
                 ((Callback) getActivity()).favourite_state(favourite);
                 String boolean_Value = String.valueOf(favourite);
@@ -203,12 +209,16 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
             case(R.id.movie_options_sort2):
                 movie_selection_type = "top_rated";
-
+/**
+                getLoaderManager().destroyLoader(FAVOURITE_LOADER);
+                getLoaderManager().restartLoader(MOVIE_LOADER, null, this);
+**/
                 Bundle settingsBundlen = new Bundle();
                 settingsBundlen.putString("gridview_load", movie_selection_type);
                 settingsBundlen.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
                 settingsBundlen.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
                 ContentResolver.requestSync(mAccount, Movie_Contract.CONTENT_AUTHORITY, settingsBundlen);
+
                 favourite = false;
                 ((Callback) getActivity()).favourite_state(favourite);
                 boolean_Value = String.valueOf(favourite);
@@ -219,7 +229,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             case(R.id.movie_options_sort3):
                 movie_selection_type = "favourite";
 
-                getLoaderManager().restartLoader(FAVOURITE_LOADER, null, this);
+   /**             getLoaderManager().destroyLoader(MOVIE_LOADER);
+      **/          getLoaderManager().restartLoader(FAVOURITE_LOADER, null, this);
+
                 favourite = true;
                 ((Callback) getActivity()).favourite_state(favourite);
 
@@ -228,7 +240,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
 
             case(R.id.movie_options_sort4):
-
+                Intent intent = new Intent(getContext(), SettingsActivity.class);
+                startActivity(intent);
                 break;
         }
 
@@ -259,6 +272,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         favourite = false;
         ((Callback) getActivity()).favourite_state(favourite);
+
+        getLoaderManager().destroyLoader(FAVOURITE_LOADER);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -390,7 +405,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             break;
 
             case FAVOURITE_LOADER:
-                mAdapter.swapCursor(data);
+
+                if (favourite == true) {
+                    mAdapter.swapCursor(data);
+                }
+
             break;
 
         }

@@ -48,9 +48,10 @@ public class MainActivity extends AppCompatActivity  implements MainActivityFrag
             mTwoPane = true;
             Log.v("Gavin", "Got this far activity");
             Log.v("Gavin", "True");
+            Bundle args = new Bundle();
 
             if (savedInstanceState == null) {
-
+            args.putString(KEY_FILE,"3");
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_detail_container, new Detail_Movie_Fragment(), FRAGMENT_NAME).commit();
 
             }
@@ -116,7 +117,12 @@ Log.v("Gavin", "Test 1");
             Bundle args = new Bundle();
             Log.v("Gavin", "MainActivity Passer" + table_ID);
 
-            args.putString(KEY_FILE,table_ID);
+            if (table_ID == null){
+                args.putString(KEY_FILE,"3");
+            }
+            else{
+                args.putString(KEY_FILE,table_ID);
+            }
             args.putBoolean(KEY_FAVOURITE, favourite_state);
             args.putString(KEY_FINDER, favourite_finder);
 
