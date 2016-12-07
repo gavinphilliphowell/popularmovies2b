@@ -33,41 +33,37 @@ public class MainActivity extends AppCompatActivity  implements MainActivityFrag
     public String favourite_finder;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.v("Gavin", "Checking start of app");
 
         setContentView(R.layout.activity_main);
 
-        Log.v("Gavin", "Checking this one");
 
         if (findViewById(R.id.fragment_detail_container) != null) {
             mTwoPane = true;
-            Log.v("Gavin", "Got this far activity");
-            Log.v("Gavin", "True");
             Bundle args = new Bundle();
 
-            if (savedInstanceState == null) {
-            args.putString(KEY_FILE,"3");
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_detail_container, new Detail_Movie_Fragment(), FRAGMENT_NAME).commit();
+            Detail_Movie_Fragment DF = new Detail_Movie_Fragment();
 
-            }
+
+                args.putString(KEY_FILE, "3");
+
+                DF.setArguments(args);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_detail_container, DF, FRAGMENT_NAME).commit();
+
+
+
         } else {
 
             mTwoPane = false;
-            Log.v("Gavin", "Got this far activity + 2");
-            Log.v("Gavin", "False");
         }
 
-        MainActivityFragment mainActivityFragment = ((MainActivityFragment)getSupportFragmentManager().findFragmentById(R.id.main_activity_fragment));
+        MainActivityFragment mainActivityFragment = ((MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.main_activity_fragment));
         mainActivityFragment.setuseCaseLayout(!mTwoPane);
-Log.v("Gavin", "Test 1");
+        }
 
-        Log.v("Gavin", "Test 2");
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -92,36 +88,32 @@ Log.v("Gavin", "Test 1");
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
 
 
     }
 
     @Override
-    public void favourite_state(Boolean favourite_state_m){
+    public void favourite_state(Boolean favourite_state_m) {
         favourite_state = favourite_state_m;
-        Log.v("Gavin", "Main Activity the other one boolean " + favourite_state_m);
-    }
+        }
 
     @Override
     public void favourite_finder(String favourite_finder_m) {
         favourite_finder = favourite_finder_m;
-        Log.v("Gavin", "Main Activity the other one" + favourite_finder);
-    }
+        }
 
     @Override
     public void onItemSelected(String table_ID) {
         if (mTwoPane) {
 
             Bundle args = new Bundle();
-            Log.v("Gavin", "MainActivity Passer" + table_ID);
 
-            if (table_ID == null){
-                args.putString(KEY_FILE,"3");
-            }
-            else{
-                args.putString(KEY_FILE,table_ID);
+            if (table_ID == null) {
+                args.putString(KEY_FILE, "16");
+            } else {
+                args.putString(KEY_FILE, table_ID);
             }
             args.putBoolean(KEY_FAVOURITE, favourite_state);
             args.putString(KEY_FINDER, favourite_finder);
@@ -132,15 +124,22 @@ Log.v("Gavin", "Test 1");
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_detail_container, DF, FRAGMENT_NAME).commit();
 
         } else {
-            Intent intent = new Intent(this, Detail_Movie_Activity.class).putExtra(KEY_FILE2,table_ID);
-            intent.putExtra(KEY_FILE3, table_ID);
-            intent.putExtra(KEY_FAVOURITE, favourite_state);
-            intent.putExtra(KEY_FINDER, favourite_finder);
-            startActivity(intent);
-            Log.v("Gavin", "Main Activity " + table_ID);
-            Log.v("Gavin", "Main Activity this one " + favourite_finder);
+
+                Intent intent = new Intent(this, Detail_Movie_Activity.class).putExtra(KEY_FILE2, table_ID);
+
+            if (table_ID == null){
+                    intent.putExtra(KEY_FILE3, "16");
+                }
+            else {
+                    intent.putExtra(KEY_FILE3, table_ID);
+                }
+
+                intent.putExtra(KEY_FAVOURITE, favourite_state);
+                intent.putExtra(KEY_FINDER, favourite_finder);
+                startActivity(intent);
+
+
         }
 
     }
-
 }

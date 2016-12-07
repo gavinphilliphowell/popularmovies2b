@@ -53,7 +53,6 @@ public class Movie_Favourites_Contract {
         public static final String COLUMN_FAVOURITE = "favourites_selection";
 
         public static Uri buildMovie_InfoUri_F(long id) {
-            Log.v("Gavin", "Build MovieInfoURI");
 
             return CONTENT_URI_F.buildUpon().appendPath(String.valueOf(id)).build();
 
@@ -61,7 +60,6 @@ public class Movie_Favourites_Contract {
 
         public static String getMovieNameFromUri(Uri uri) {
 
-            Log.v("Gavin", "Movie Contract");
             return uri.getPathSegments().get(1);
 
         }

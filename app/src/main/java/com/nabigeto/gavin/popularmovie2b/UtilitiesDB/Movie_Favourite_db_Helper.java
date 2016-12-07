@@ -48,18 +48,8 @@ public class Movie_Favourite_db_Helper extends SQLiteOpenHelper {
                     Movie_Favourites_Contract.FavouriteInfo.COLUMN_NAME_TRAILER3 + " TEXT NOT NULL, " +
                     Movie_Favourites_Contract.FavouriteInfo.COLUMN_FAVOURITE + " TEXT NOT NULL " + ");";
 
-            Log.v("Gavin", "Got to this bit in db Helper 2");
 
-
-            /**      sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MovieInfo.TABLE_NAME);
-             **/
             sqLiteDatabase.execSQL(SQL_CREATE_FAVOURITE_TABLE);
-
-        /**        c.close();
-
-        }
-
-         **/
     }
 
 

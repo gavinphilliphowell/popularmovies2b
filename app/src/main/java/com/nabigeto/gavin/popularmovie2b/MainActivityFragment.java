@@ -111,9 +111,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     public interface Callback {
 
-        public void onItemSelected(String location_ID);
-        public void favourite_state(Boolean favourite_state_m);
-        public void favourite_finder(String movie_ID);
+        void onItemSelected(String location_ID);
+        void favourite_state(Boolean favourite_state_m);
+        void favourite_finder(String movie_ID);
 
     }
 
@@ -189,10 +189,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
             case(R.id.movie_options_sort1):
                 movie_selection_type = "popular";
-/**
-                getLoaderManager().destroyLoader(FAVOURITE_LOADER);
-                getLoaderManager().restartLoader(MOVIE_LOADER, null, this);
-**/
+
                 Bundle settingsBundlem = new Bundle();
 
                 settingsBundlem.putString("gridview_load", movie_selection_type);
@@ -209,10 +206,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
             case(R.id.movie_options_sort2):
                 movie_selection_type = "top_rated";
-/**
-                getLoaderManager().destroyLoader(FAVOURITE_LOADER);
-                getLoaderManager().restartLoader(MOVIE_LOADER, null, this);
-**/
+
                 Bundle settingsBundlen = new Bundle();
                 settingsBundlen.putString("gridview_load", movie_selection_type);
                 settingsBundlen.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
@@ -229,8 +223,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             case(R.id.movie_options_sort3):
                 movie_selection_type = "favourite";
 
-   /**             getLoaderManager().destroyLoader(MOVIE_LOADER);
-      **/          getLoaderManager().restartLoader(FAVOURITE_LOADER, null, this);
+             getLoaderManager().restartLoader(FAVOURITE_LOADER, null, this);
 
                 favourite = true;
                 ((Callback) getActivity()).favourite_state(favourite);
@@ -340,7 +333,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         if (mPosition != GridView.INVALID_POSITION)
             savedInstanceState.putInt(SELECTED_KEY,mPosition);
             savedInstanceState.putBoolean(SELECTED_KEY, favourite);
- /**       savedInstanceState.putParcelableArrayList(KEY_FILE, movieList);  **/
+
         super.onSaveInstanceState(savedInstanceState);
     }
 

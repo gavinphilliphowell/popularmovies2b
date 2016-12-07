@@ -15,7 +15,6 @@ public class TrailerSyncService extends Service {
 
         @Override
         public void onCreate() {
-            Log.v("Gavin", "onCreate - TrailerSyncService");
             synchronized (sTSyncAdapterLock) {
                 if (sTrailerSyncAdapter == null) {
                     sTrailerSyncAdapter = new TrailerSyncAdapter(getApplicationContext(), false, true);

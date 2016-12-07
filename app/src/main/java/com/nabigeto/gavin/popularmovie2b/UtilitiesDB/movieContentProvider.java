@@ -17,9 +17,8 @@ import android.widget.Switch;
  * Created by Gavin on 3/29/2016.
  */
 public class movieContentProvider extends ContentProvider {
-/**
-    public static final UriMatcher sUriMatcher = buildUriMatcher();
-**/
+
+
     private Movie_db_Helper mOpenHelper;
 
     private static final UriMatcher sUriMatcher;
@@ -54,8 +53,6 @@ public class movieContentProvider extends ContentProvider {
 
         selection = sMovie_InfoSettingSelection;
         selectionArgs = new String[]{Movie_Info_Setting};
-
-        Log.v("Gavin", "in the provider");
 
         return sMovie_InfoQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
@@ -118,7 +115,6 @@ public class movieContentProvider extends ContentProvider {
         Cursor retCursor;
 
         String suri = uri.toString();
-        Log.v("Gavin", "movieContentProvider" + suri);
 
         switch (sUriMatcher.match(uri)) {
 
@@ -150,13 +146,12 @@ public class movieContentProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         Uri returnUri;
-        Log.v("Gavin", "Tester 1");
+
         switch(match) {
 
             case MOVIE_INFO: {
 
                 long _id = db.insert(Movie_Contract.MovieInfo.TABLE_NAME, null, contentValues);
-                Log.v("Gavin", "Inserting");
                 if (_id > 0)
                     returnUri = Movie_Contract.MovieInfo.buildMovie_InfoUri(_id);
                 else
@@ -229,12 +224,9 @@ public class movieContentProvider extends ContentProvider {
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values){
 
-        Log.v("Gavin", "Bulk insert underway");
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        Log.v("Gavin", "Bulk insert completed");
         final int match = sUriMatcher.match(uri);
         String smatch = Integer.toString(match);
-        Log.v("Gavin", smatch);
 
         switch(match){
             case MOVIE_INFO:
@@ -242,7 +234,6 @@ public class movieContentProvider extends ContentProvider {
                 int returnCount = 0;
                 try {
                     for (ContentValues value : values){
-                        Log.v("Gavin", "Trying to insert" + value);
                         long _id = db.insert(Movie_Contract.MovieInfo.TABLE_NAME, null, value);
                         if(_id != -1) {
                             returnCount++;

@@ -46,7 +46,6 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private final static String[] NOTIFY_MOVIE_PROJECTION = new String[]{
 
-    /**        Movie_Contract.MovieInfo.COLUMN_NAME_ENTRY_KEY,  **/
             Movie_Contract.MovieInfo.COLUMN_NAME_MOVIE_ID,
             Movie_Contract.MovieInfo.COLUMN_NAME_TITLE,
             Movie_Contract.MovieInfo.COLUMN_NAME_RELEASE_DATE,
@@ -60,8 +59,6 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
             Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER2,
             Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3,
             Movie_Contract.MovieInfo.COLUMN_FAVOURITE,
-   /**         Movie_Contract.MovieInfo.COLUMN_NAME_BACKGROUND,
-**/
     };
 
 
@@ -75,7 +72,7 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
 
         final int numMovies =10;
-        final String MOVIE_KEY = "bb8bfd709e4e16f868ddf8fbd62b2d59";
+        final String MOVIE_KEY = "";
         String movie_api_id;
         String movie_database_id;
 
@@ -84,14 +81,10 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
            movie_api_id = extras.getString("reviewsync_api");
            movie_database_id = extras.getString("reviewsync_database");
-        Log.v("Gavin", "extras loaded");
-        Log.v("Gavin", "Sync Movie Location" + movie_database_id);
-           Log.v("Gavin", "Sync Movie ID" + movie_api_id);
        }
         else {
            movie_database_id = "8";
            movie_api_id = "27579";
-           Log.v("Gavin", "no extras loaded");
        }
 
 
@@ -118,7 +111,6 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
             String Web_Location_URL = builder.build().toString();
 
-            Log.v("Gavin", "Reviews" + Web_Location_URL);
 
             URL url = new URL(Web_Location_URL);
 
@@ -145,13 +137,11 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.
-                Log.v("Gavin", "Nothing to show");
                 return;
             }
 
             movieJsonStr = buffer.toString();
 
-            Log.v("Gavin", movieJsonStr);
 
         } catch (IOException e) {
             Log.e("MainActivityFragment", e.getMessage(), e);
@@ -171,7 +161,6 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
             }
         }
         try {
-            Log.v("Gavin", "Gotten to this bit review sync adapter");
             get_movie_details_Json(movieJsonStr, movie_api_id, movie_database_id);
 
         } catch (JSONException e) {
@@ -186,9 +175,6 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
-/**
-        ArrayList<Movie_Adapter> movie_adapters = new ArrayList<Movie_Adapter>();
-**/
         final String OWM_RESULTS_R = "reviews";
         final String OWM_RESULTS_TOTAL = "total_results";
         final String OWM_RESULTS_RE = "results";
@@ -198,19 +184,15 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
         final String OWM_ID = "id";
 
-        Log.v("Gavin", "Review Sync Adapter" + movie_id_string);
 
         try {
 
 
             JSONObject reviewJson = new JSONObject(movieJsonStr);
 
-     /**       JSONObject review_object = reviewJson.getJSONObject(OWM_RESULTS_RE);
-**/
 
             int review_case = reviewJson.getInt(OWM_RESULTS_TOTAL);
             String total_reviewst = Integer.toString(review_case);
-            Log.v("Gavin", "Review Sync Adapter total reviews" + total_reviewst);
 
             JSONArray results_SubR = reviewJson.getJSONArray(OWM_RESULTS_RE);
 
@@ -219,7 +201,6 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
             int length_results = results_SubR.length();
             String length_results_t = Integer.toString(length_results);
-            Log.v("Gavin", "Review Sync Adapter" + length_results_t);
 
             int length_t = 0;
 
@@ -230,30 +211,10 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
                 for (int i = 0; i < results_SubR.length(); i++) {
                     review_name[i] = results_SubR.getJSONObject(i).getString(OWM_REVIEW_FILTER);
                     review_author[i] = results_SubR.getJSONObject(i).getString(OWM_REVIEW_AUTHOR);
-                    Log.v("Gavin", "review name" + review_name[i]);
-                    Log.v("Gavin", "review author" + review_author[i]);
                 }
             }
 
 
-/**
-            Vector<ContentValues> cMector = new Vector<ContentValues>(movieArray.length());
-
-           /** long favouriteID =addFavourite(OWM_NAME, "y");
-                    **/
-            Log.v("Gavin", "Started JSON");
-/**
-            for (int i = 0; i < movieArray.length(); i++) {
-
-        /**        String number_ID;
-                String reviews1;
-                String reviews2;
-                String reviews3;  **/
- /**               String trailer1;
-                String trailer2;
-                String trailer3;
-       /**         String id;
-**/
 
 
             Movie_db_Helper mdbmovie = new Movie_db_Helper(getContext());
@@ -273,33 +234,27 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
 
                     reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1, review_name[0]);
                     reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1, review_author[0]);
-                    Log.v("Gavin", "reviewValues" + review_name[0]);
                     break;
 
                 case (2):
 
                     reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1, review_name[0]);
                     reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1, review_author[0]);
-                    Log.v("Gavin", "reviewValues" + review_name[0]);
 
                     reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2, review_name[1]);
                     reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR2, review_author[1]);
-                    Log.v("Gavin", "reviewValues" + review_name[1]);
                     break;
 
                 case(3):
 
                     reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW1, review_name[0]);
                     reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR1, review_author[0]);
-                    Log.v("Gavin", "reviewValues" + review_name[0]);
 
                     reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW2, review_name[1]);
                     reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR2, review_author[1]);
-                    Log.v("Gavin", "reviewValues" + review_name[1]);
 
                     reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW3, review_name[2]);
                     reviewValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_REVIEW_AUTHOR3, review_author[2]);
-                    Log.v("Gavin", "reviewValues" + review_name[2]);
                     break;
 
             }
@@ -310,10 +265,8 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
             if(review_case >= 1) {
 
 
-            Log.v("Gavin", "got to this bit loader");
             String rSelectionClause = Movie_Contract.MovieInfo._ID + " LIKE ?";
             String[] rSelectionArgs = {movie_id_database};
-            Log.v("Gavin","got to this bit loader 2");
 
             int num_rows = getContext().getContentResolver().update(
                     Movie_Contract.MovieInfo.CONTENT_URI_R,
@@ -321,44 +274,14 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
                     rSelectionClause,
                     rSelectionArgs
             );
-            Log.v("Gavin", "got to this bit loader 3");
         }
             else {
-                Log.v("Gavin", "No reviews");
 
 
             }
 
             db.close();
 
-/**
-                cMector.add(movieValues);
-
-                /**
-                 Movie_Adapter movie_data = new Movie_Adapter(name, rating, release, info, image, background, id);
-                 movie_adapters.add(movie_data);
-                 **/
-/**
-            }
-        **/
-  /**          int inserted = 0;
-            String Start = "0";
-
-            if (cMector.size() > 0) {
-
-                Log.v("Gavin", "Started Database Upload");
-
-                ContentValues[] cvArray = new ContentValues[cMector.size()];
-                cMector.toArray(cvArray);
-                getContext().getContentResolver().bulkInsert(Movie_Contract.MovieInfo.CONTENT_URI, cvArray);
-        /**        getContext().getContentResolver().bulkInsert(Movie_Contract.Favourites.CONTENT_URI,cvArray);
-
-               Log.v("Gavin", "Database Upload Complete");
-
-                getContext().getContentResolver().delete(Movie_Contract.MovieInfo.CONTENT_URI, Movie_Contract.MovieInfo.COLUMN_NAME_ENTRY_ID + "<=?", new String[]{Start});
-                **/
-   /**         }
-**/
         }
 
 
@@ -367,41 +290,6 @@ public class ReviewSyncAdapter extends AbstractThreadedSyncAdapter {
         }
 
     }
-/**
-    long addFavourite(String favouritesTitle, String addDatabase) {
-        long favouriteID;
-
-        Cursor favouriteCursor = getContext().getContentResolver().query(
-                Movie_Contract.Favourites.CONTENT_URI,
-                new String[]{Movie_Contract.Favourites._ID},
-                Movie_Contract.Favourites.COLUMN_NAME_TITLE_F + " = ?",
-                new String[]{favouritesTitle},
-                null);
-
-        if (favouriteCursor.moveToFirst()) {
-            int favouriteIdIndex = favouriteCursor.getColumnIndex(Movie_Contract.Favourites._ID);
-            favouriteID = favouriteCursor.getLong(favouriteIdIndex);
-        } else {
-
-            ContentValues favouriteValues = new ContentValues();
-
-            favouriteValues.put(Movie_Contract.Favourites.COLUMN_NAME_TITLE_F, favouritesTitle);
-            favouriteValues.put(Movie_Contract.Favourites.COLUMN_NAME_FAVOURITE, addDatabase);
-
-            Uri insertUri = getContext().getContentResolver().insert(
-                    Movie_Contract.Favourites.CONTENT_URI,
-                    favouriteValues
-            );
-
-            favouriteID = ContentUris.parseId(insertUri);
-        }
-
-        favouriteCursor.close();
-
-        return favouriteID;
-
-    }
-**/
 
     public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
         Account account = getSyncAccount(context);

@@ -52,7 +52,6 @@ public class movie_favouriteContentProvider extends ContentProvider {
         selection = sMovie_InfoSettingSelection;
         selectionArgs = new String[]{Favourite_Info_Setting};
 
-        Log.v("Gavin", "in the provider");
 
         return sMovie_InfoQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
@@ -105,7 +104,6 @@ public class movie_favouriteContentProvider extends ContentProvider {
             Cursor retCursor;
 
             String suri = uri.toString();
-            Log.v("Gavin", "movie_favourite ContentProvider" + suri);
 
             final int typeUri = sUriMatcher.match(uri);
 
@@ -141,13 +139,11 @@ public class movie_favouriteContentProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         Uri returnUri;
-        Log.v("Gavin", "Tester 1");
         switch(match) {
 
             case FAVOURITE_INFO: {
 
                 long db_id = db.insert(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F, null, contentValues);
-                Log.v("Gavin", "Inserting");
                 if (db_id > 0)
                     returnUri = Movie_Favourites_Contract.FavouriteInfo.buildMovie_InfoUri_F(db_id);
                 else
@@ -219,12 +215,9 @@ public class movie_favouriteContentProvider extends ContentProvider {
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values){
 
-        Log.v("Gavin", "Bulk insert underway");
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        Log.v("Gavin", "Bulk insert completed");
         final int match = sUriMatcher.match(uri);
         String smatch = Integer.toString(match);
-        Log.v("Gavin", smatch);
 
         switch(match){
             case FAVOURITE_INFO:
@@ -232,7 +225,6 @@ public class movie_favouriteContentProvider extends ContentProvider {
                 int returnCount = 0;
                 try {
                     for (ContentValues value : values){
-                        Log.v("Gavin", "Trying to insert" + value);
                         long _id = db.insert(Movie_Favourites_Contract.FavouriteInfo.TABLE_NAME_F, null, value);
                         if(_id != -1) {
                             returnCount++;

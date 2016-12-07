@@ -48,7 +48,6 @@ public class trailerContentProvider extends ContentProvider {
         selection = sMovie_InfoSettingSelection;
         selectionArgs = new String[]{Movie_Info_Setting};
 
-        Log.v("Gavin", "in the provider");
 
         return sMovie_InfoQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
@@ -99,7 +98,6 @@ public class trailerContentProvider extends ContentProvider {
         Cursor retCursor;
 
         String suri = uri.toString();
-        Log.v("Gavin", "movieContentProvider" + suri);
 
         switch (sUriMatcher.match(uri)) {
 
@@ -132,13 +130,11 @@ public class trailerContentProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         Uri returnUri;
-        Log.v("Gavin", "Tester 1");
         switch(match) {
 
             case MOVIE_INFO: {
 
                 long _id = db.insert(Movie_Contract.MovieInfo.TABLE_NAME, null, contentValues);
-                Log.v("Gavin", "Inserting");
                 if (_id > 0)
                     returnUri = Movie_Contract.MovieInfo.buildMovie_InfoUri(_id);
                 else
@@ -210,12 +206,9 @@ public class trailerContentProvider extends ContentProvider {
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values){
 
-        Log.v("Gavin", "Bulk insert underway");
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        Log.v("Gavin", "Bulk insert completed");
         final int match = sUriMatcher.match(uri);
         String smatch = Integer.toString(match);
-        Log.v("Gavin", smatch);
 
         switch(match){
             case MOVIE_INFO:
@@ -223,7 +216,6 @@ public class trailerContentProvider extends ContentProvider {
                 int returnCount = 0;
                 try {
                     for (ContentValues value : values){
-                        Log.v("Gavin", "Trying to insert" + value);
                         long _id = db.insert(Movie_Contract.MovieInfo.TABLE_NAME, null, value);
                         if(_id != -1) {
                             returnCount++;

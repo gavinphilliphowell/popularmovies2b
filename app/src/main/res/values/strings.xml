@@ -7,6 +7,9 @@
     <string name="detail_view_plot_synposis">Plot: </string>
     <string name="detail_view_user_rating">User Rating: </string>
     <string name="detail_view_release_date">Release Date: </string>
+    <string name="detail_view_reviews">Reviews</string>
+    <string name="detail_view_trailer">Trailers</string>
+    <string name="detail_view_not_online">Sorry offline - not details about the film available</string>
 
     <string name="movie_sort_most_popular">Most Popular </string>
     <string name="movie_sort_highest_rating">Highest Rating</string>
@@ -22,5 +25,8 @@
     <string name="content_authority_movie"> com.nabigeto.gavin.popularmovie2b.Sync.MovieSyncAdapter</string>
     <string name="content_authority_review"> com.nabigeto.gavin.popularmovie2b.Sync.ReviewSyncAdapter </string>
     <string name="content_authority_trailer"> com.nabigeto.gavin.popularmovie2b.Sync.TrailerSyncAdapter </string>
+
+    <string name="key_internet_movie_database"> </string>
+    <string name="key_youtube.com"> </string>
 
 </resources>

@@ -49,8 +49,6 @@ public class Movie_db_Helper extends SQLiteOpenHelper {
                 MovieInfo.COLUMN_FAVOURITE + " TEXT NOT NULL " + ");";
 
 
-        Log.v("Gavin", "Got to this bit in db Helper 2");
-
 
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIE_TABLE);
 

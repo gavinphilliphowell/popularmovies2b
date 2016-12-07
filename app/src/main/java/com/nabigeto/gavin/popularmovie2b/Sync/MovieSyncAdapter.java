@@ -56,7 +56,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public MovieSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
-        Log.v("Gavin", "Test begining");
 
 
     }
@@ -65,15 +64,12 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
 
         final int numMovies =10;
-        final String MOVIE_KEY = "bb8bfd709e4e16f868ddf8fbd62b2d59";
-        Log.v("Gavin", "MovieSync Adapter Started");
+        final String MOVIE_KEY = "";
 
         int database_location = extras.getInt("gridview_default_load");
         String show_database_location = Integer.toString(database_location);
-        Log.v("Gavin", "Movie Sync Adapter extras" + show_database_location);
 
         String api_selection_option = extras.getString("gridview_load");
-        Log.v("Gavin", "Movie Sync Adapter extras" + api_selection_option);
 
         Movie_db_Helper mdbmovie = new Movie_db_Helper(getContext());
 
@@ -98,20 +94,8 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                     .appendPath(api_selection_option)
                     .appendQueryParameter("api_key", MOVIE_KEY);
 
-            /**
-             .authority("api.themoviedb.org")
-             .appendPath("3")
-             .appendPath("discover")
-             .appendPath("movie")
-             .appendQueryParameter("sort_by", api_selection_option)
-             .appendQueryParameter("release_date.gte", "1940")
-             .appendQueryParameter("vote_count.get", "100")
-             .appendQueryParameter("api_key", MOVIE_KEY);
-             *
-             */
             String Web_Location_URL = builder.build().toString();
 
-            Log.v("Gavin", Web_Location_URL);
 
             URL url = new URL(Web_Location_URL);
 
@@ -138,7 +122,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.
-                Log.v("Gavin", "Nothing to show");
                 return;
             }
 
@@ -193,7 +176,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
         final String picture_URL = "http://image.tmdb.org/t/p/w185//";
 
-        Log.v("Gavin", picture_URL);
 
 
         try {
@@ -204,9 +186,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
             Vector<ContentValues> cMector = new Vector<ContentValues>(movieArray.length());
 
-           /** long favouriteID =addFavourite(OWM_NAME, "y");
-                    **/
-            Log.v("Gavin", "Started JSON");
 
             for (int i = 0; i < movieArray.length(); i++) {
 
@@ -237,7 +216,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 ContentValues movieValues = new ContentValues();
 
 
-            /**    movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_ENTRY_KEY, favouriteID);  **/
                 movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_ENTRY_ID, number_ID);
                 movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_MOVIE_ID, id);
                 movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TITLE, title);
@@ -261,15 +239,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 movieValues.put(Movie_Contract.MovieInfo.COLUMN_NAME_TRAILER3, "b");
 
 
-                Log.v("Gavin", number_ID);
-                Log.v("Gavin", title);
-
                 cMector.add(movieValues);
-
-                /**
-                 Movie_Adapter movie_data = new Movie_Adapter(name, rating, release, info, image, background, id);
-                 movie_adapters.add(movie_data);
-                 **/
 
             }
 
@@ -278,14 +248,10 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
             if (cMector.size() > 0) {
 
-                Log.v("Gavin", "Started Database Upload");
                 Uri uri = Uri.parse("content://" + "com.nabigeto.gavin.popularmovie2b.UtilitiesDB.movieContent.provider");
                 ContentValues[] cvArray = new ContentValues[cMector.size()];
                 cMector.toArray(cvArray);
                 getContext().getContentResolver().bulkInsert(Movie_Contract.MovieInfo.CONTENT_URI, cvArray);
-        /**        getContext().getContentResolver().bulkInsert(Movie_Contract.Favourites.CONTENT_URI,cvArray);
-**/
-                Log.v("Gavin", "Database Upload Complete");
 
                 getContext().getContentResolver().delete(Movie_Contract.MovieInfo.CONTENT_URI, Movie_Contract.MovieInfo.COLUMN_NAME_ENTRY_ID + "<=?", new String[]{Start});
 
@@ -299,41 +265,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         }
 
     }
-/**
-    long addFavourite(String favouritesTitle, String addDatabase) {
-        long favouriteID;
-
-        Cursor favouriteCursor = getContext().getContentResolver().query(
-                Movie_Contract.Favourites.CONTENT_URI,
-                new String[]{Movie_Contract.Favourites._ID},
-                Movie_Contract.Favourites.COLUMN_NAME_TITLE_F + " = ?",
-                new String[]{favouritesTitle},
-                null);
-
-        if (favouriteCursor.moveToFirst()) {
-            int favouriteIdIndex = favouriteCursor.getColumnIndex(Movie_Contract.Favourites._ID);
-            favouriteID = favouriteCursor.getLong(favouriteIdIndex);
-        } else {
-
-            ContentValues favouriteValues = new ContentValues();
-
-            favouriteValues.put(Movie_Contract.Favourites.COLUMN_NAME_TITLE_F, favouritesTitle);
-            favouriteValues.put(Movie_Contract.Favourites.COLUMN_NAME_FAVOURITE, addDatabase);
-
-            Uri insertUri = getContext().getContentResolver().insert(
-                    Movie_Contract.Favourites.CONTENT_URI,
-                    favouriteValues
-            );
-
-            favouriteID = ContentUris.parseId(insertUri);
-        }
-
-        favouriteCursor.close();
-
-        return favouriteID;
-
-    }
-**/
 
     public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
         Account account = getSyncAccount(context);
@@ -389,7 +320,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static void initialiseSyncAdapter(Context context){
         getSyncAccount(context);
-        Log.v("Gavin", "Sync adapter launched 1");
     }
 
 }

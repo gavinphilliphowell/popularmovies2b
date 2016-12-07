@@ -66,21 +66,18 @@ public class Movie_Contract {
 
 
         public static Uri buildMovie_InfoUri(long id) {
-            Log.v("Gavin", "Build MovieInfoURI");
 
             return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
 
         }
 
         public static Uri buildMovie_InfoUri_R(long id) {
-            Log.v("Gavin", "Build MovieInfoURI");
 
             return CONTENT_URI_R.buildUpon().appendPath(String.valueOf(id)).build();
 
         }
 
         public static Uri buildMovie_InfoUri_T(long id) {
-            Log.v("Gavin", "Build MovieInfoURI");
 
             return CONTENT_URI_T.buildUpon().appendPath(String.valueOf(id)).build();
 
@@ -88,7 +85,6 @@ public class Movie_Contract {
 
         public static String getMovieNameFromUri(Uri uri) {
 
-            Log.v("Gavin", "Movie Contract");
             return uri.getPathSegments().get(1);
 
         }

@@ -55,18 +55,6 @@ public class Custom_Movie_Adapter extends CursorAdapter {
         int viewType = getItemViewType(cursor.getPosition());
 
         int layoutId = 1;
-   /**     switch (viewType) {
-
-            case VIEW_TYPE_DETAIL: {
-                layoutId = R.layout.fragment_details_layout;
-                break;
-            }
-            case VIEW_TYPE_GRID_VIEW: {
-    layoutId = R.layout.fragment_movie_grid_layout;
-                break;
-            }
-
-    **/
 
 
 
@@ -117,10 +105,7 @@ public class Custom_Movie_Adapter extends CursorAdapter {
             }
 
                     String movieTitles = cursor.getString(MainActivityFragment.COL_MOVIE_TITLE) + " " + cursor.getString(MainActivityFragment.COL_MOVIE_RATING);
-                    Log.v("Gavin", movieTitles + " loading this text");
                     viewHolder.movieTitle.setText(movieTitles);
-        /**       break;
-         **/
     }
 
     public boolean isOnline() {

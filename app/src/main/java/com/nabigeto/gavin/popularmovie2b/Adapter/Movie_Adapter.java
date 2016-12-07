@@ -86,8 +86,6 @@ public class Movie_Adapter implements Parcelable {
 
     public String getMovieID () {return movieID;}
 
-;
-
 
     public void setTitle (String movieName){ this.movieName = movieName; }
 
@@ -116,6 +114,7 @@ public class Movie_Adapter implements Parcelable {
 
 
     public static final Creator<Movie_Adapter> CREATOR = new Creator<Movie_Adapter>() {
+
         @Override
         public Movie_Adapter createFromParcel(Parcel parcel){
             return new Movie_Adapter(parcel);
